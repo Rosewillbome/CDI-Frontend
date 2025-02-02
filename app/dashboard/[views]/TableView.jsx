@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Calendar } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { FiDownload, FiInfo } from "react-icons/fi";
 
 const TableView = () => {
   // Dummy data for table
@@ -23,30 +24,21 @@ const TableView = () => {
 
   return (
     <div className="space-y-6">
+      
       <h1 className="text-2xl font-bold text-gray-900">Table View</h1>
 
       {/* Filters Section */}
       <div className="flex items-center justify-between space-x-4 mb-4">
         {/* Date Picker */}
-        <div className="flex items-center space-x-2">
-          <Calendar className="h-4 w-4 text-gray-500" />
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
-            dateFormat="yyyy-MM-dd"
-            placeholderText="Select a date"
-            className="border px-3 py-2 rounded-md"
-            isClearable
-          />
-        </div>
+        <div className="">
+            <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip items-center" 
+                    data-tooltip="Download Chart">
+             Download csv <FiDownload className="text-gray-600" size={20} />
+            </button>
+          </div>
 
         {/* Clear Filters Button */}
-        <button
-          onClick={clearFilters}
-          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-        >
-          Clear All Filters
-        </button>
+        
       </div>
 
       {/* Table Section */}
