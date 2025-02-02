@@ -218,7 +218,7 @@ export default function Home() {
       {/* Main Content */}
       <div className=" flex-1 ml-[32%] mr-[16.67%]">
         <div className="flex items-center gap-4">
-          <h2 className="text-xl font-bold text-[#651d32]">
+          <h2 className="text-2xl font-bold text-[#651d32]">
             How is Drought affecting your District?
           </h2>
           <div className="relative">
