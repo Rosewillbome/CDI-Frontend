@@ -19,7 +19,7 @@ function Navbar() {
         <h1 className="text-3xl text-[#308DE0] font-bold">MONITORING TOOL</h1>
       </div>
 
-      <div className="flex-1 flex justify-center">
+      <div className="flex-1 flex justify-center items-center">
         {navItems?.map((data,index)=>(
           <Navbtn label={data?.label} hlink={data?.path} key={index}/>
         ))}

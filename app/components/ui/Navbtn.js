@@ -22,7 +22,7 @@ function Navbtn({ hlink, label }) {
     <Link
       href={hlink}
       className={`mr-2 ml-2 text-black font-bold text-xl mt-6 hover:text-blue-600 ${
-        isActive(pathname) ? "border-b-2 border-blue-600" : ""
+        isActive(pathname) ? "border-b-2 border-blue-600" :""
       } `}
     >
       {label}
