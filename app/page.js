@@ -28,7 +28,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#f1f1f1] p-8 sm:p-20 font-geist-sans flex flex-row gap-8">
       {/* Sidebar Section */}
       <div
-  className="bg-[#308DE0] text-white p-6 flex flex-col gap-6 w-[32%] h-full fixed left-0 top-0"
+  className="bg-[#308DE0] shadow-xl shadow-[#308DE0] border-r text-white p-6 flex flex-col gap-6 w-[32%] h-full fixed left-0 top-0"
   style={{
     clipPath: "polygon(0 0, 100% 0, 90% 100%, 0% 100%)",
     boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
@@ -266,25 +266,25 @@ export default function Home() {
             </div>
 
             {/* Legend */}
-            <div className="absolute bottom-4 right-4 bg-white p-2 rounded-md shadow-md">
+            <div className="absolute bottom-4 right-4 bg-white p-1 shadow-md">
               <h3 className="text-sm text-black font-semibold mb-2">Legend</h3>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1">
                 <div
-                  className="px-2 py-1 rounded-md text-sm text-gray-500"
+                  className="px-2 py-1  text-sm text-gray-500"
                   style={{ backgroundColor: "#E5E7EB" }}
                 >
                   Other
                 </div>
 
                 <div
-                  className="px-2 py-1 rounded-md text-sm text-white"
-                  style={{ backgroundColor: "#FF7C72" }}
+                  className="px-2 py-1 text-sm text-white"
+                  style={{ backgroundColor: "#D03A27" }}
                 >
                   Severe (0.4-0.6)
                 </div>
                 <div
-                  className="px-2 py-1 rounded-md text-sm text-white"
-                  style={{ backgroundColor: "#FFA6A6" }}
+                  className="px-2 py-1 text-sm text-white"
+                  style={{ backgroundColor: "#940905" }}
                 >
                   Extreme (&lt;0.4)
                 </div>

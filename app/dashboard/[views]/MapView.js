@@ -1,93 +1,121 @@
-import React from "react";
+import React, { useState } from "react";
 import { DROUGHT_SEVERITY_LEVELS } from "../../utils/drought_levels";
-const MapView = () => {
-  return (
-    <div className="flex h-full">
-      <div className="w-2/3 bg-gray-200 p-4 relative">
-        <div className="h-full  flex justify-center items-center relative">
-          <span className=" font-semibold">Map Placeholder.</span>
+import { FiDownload, FiInfo } from "react-icons/fi";
 
-          <div className="absolute bottom-4 right-4 bg-white shadow-lg p-2 text-sm ">
+const years = Array.from({ length: 25 }, (_, i) => 2001 + i);
+const months = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+const MapView = () => {
+  const [selectedYear, setSelectedYear] = useState(2010);
+  const [selectedMonth, setSelectedMonth] = useState(0);
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+
+  const handleSliderChange = (event) => {
+    const value = parseInt(event.target.value);
+    setSelectedYear(years[Math.floor(value / 12)]);
+    setSelectedMonth(value % 12);
+  };
+
+  return (
+    <div className="bg-gray-50 flex flex-col h-full p-6 space-y-6">
+      {/* Header Section */}
+      <div className="text-center space-y-2">
+        <div className="flex items-center justify-center space-x-3">
+          
+          <h1 className="text-3xl font-bold text-gray-800">Combined Drought Index (CDI)</h1>
+        </div>
+        <h2 className="text-xl text-gray-600 font-medium">
+          {selectedDistrict || "Acholi District"}
+        </h2>
+      </div>
+
+      {/* Main Content Container */}
+      <div className="flex h-[60vh] mb-4 gap-6">
+        {/* Map Section */}
+        <div className="w-[60%] bg-white rounded-xl shadow-lg p-4 relative">
+          <div className="absolute top-4 right-4 flex space-x-2">
+            <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip" 
+                    data-tooltip="Download Map">
+              <FiDownload className="text-gray-600" size={20} />
+            </button>
+          </div>
+          <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg">
+            <span className="text-gray-400 font-medium">Map placeholder</span>
+          </div>
+          
+          {/*  Legend  */}
+          <div className="absolute bottom-4 right-4 bg-white shadow-lg p-2 text-sm">
             <h3 className="font-semibold mb-2">Legend</h3>
             <div className="space-y-1">
               {DROUGHT_SEVERITY_LEVELS.map((level) => (
                 <div
                   key={level.range}
-                  className="flex items-center space-x-2 p-1 rounded"
+                  className="flex items-center space-x-2 p-1"
                   style={{ backgroundColor: level.color }}
                 >
-                  <span className="text-xs text-white">{level.label}</span>
-                  <span className="text-[10px] text-gray-600">
-                    ({level.range})
-                  </span>
+                  <span className="text-xs ">{level.label}</span>
+                  <span className="text-[10px] text-gray-600">({level.range})</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
+
+        {/* Chart Section  */}
+        <div className="w-[40%] bg-white rounded-xl shadow-lg p-4 relative">
+          <div className="absolute top-4 right-4 flex space-x-2">
+            <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip" 
+                    data-tooltip="Download Chart">
+              <FiDownload className="text-gray-600" size={20} />
+            </button>
+          </div>
+          <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg">
+            <span className="text-gray-400 font-medium">Time series</span>
+          </div>
+        </div>
       </div>
 
-      <div className="w-1/3 bg-white p-8 overflow-y-auto max-h-[calc(100vh-32px)]">
-        <h1 className="text-2xl font-bold text-[#4A8BD0] mb-4">
-          Key Notes for the Uganda National Online Drought Monitoring Tool
-          Report
-        </h1>
-        <p className="text-gray-700 mb-4">
-          Drought is a significant challenge in Uganda, impacting agriculture,
-          water resources, and livelihoods. The Uganda National Online Drought
-          Monitoring Tool (UNODMT) is designed to provide real-time, data-driven
-          insights for effective drought management. This tool uses the FAO
-          Combined Drought Index (CDI), which integrates multiple data sources
-          to assess drought intensity, duration, and spatial extent. The primary
-          purpose of the tool is to enable proactive drought monitoring and
-          management while supporting policymakers, researchers, and farmers
-          with actionable insights. It aligns with Uganda's strategies for
-          sustainable resource management and climate resilience.
-        </p>
-        <p className="text-gray-700 mb-4">
-          The methodology involves comprehensive data collection, integrating
-          meteorological, soil moisture, vegetation health, and socio-economic
-          indicators. The FAO Combined Drought Index (CDI) is applied to merge
-          meteorological, agricultural, and hydrological dimensions of drought
-          into a single composite measure. The system utilizes GIS for
-          geospatial analysis, machine learning for predictive modeling, and
-          real-time satellite data for monitoring. An interactive dashboard
-          provides visualizations, alerts, and downloadable reports to enhance
-          accessibility. Validation against historical drought events and
-          ongoing stakeholder engagement ensures the tool’s accuracy and
-          relevance.
-        </p>
-        <p className="text-gray-700 mb-4">
-          Drought severity is categorized into six levels: no drought, mild
-          drought, moderate drought, severe drought, extreme drought, and
-          exceptional drought. These levels reflect increasing intensity and
-          impacts, ranging from normal conditions with adequate resources to
-          catastrophic conditions marked by ecosystem collapse and severe
-          socio-economic consequences. Each level is assessed using thresholds
-          for precipitation deficits, soil moisture anomalies, and vegetation
-          health indices.
-        </p>
-        <p className="text-gray-700 mb-4">
-          The tool integrates satellite-based and ground-based data to deliver
-          real-time updates and predictive analytics for drought forecasting.
-          Its user-friendly interface offers customizable reports and
-          region-specific alerts, ensuring that users can make informed
-          decisions. This tool enhances Uganda's capacity for drought
-          preparedness, response, and recovery by supporting evidence-based
-          policymaking and resource allocation. It ultimately reduces the
-          socio-economic impacts of drought on vulnerable communities and
-          strengthens national resilience.
-        </p>
-        <p className="text-gray-700 mb-4">
-          For further information, readers can consult FAO CDI guidelines, UNMA
-          reports, and global drought monitoring systems. Additional details are
-          available through remote sensing platforms like MODIS and SMOS for
-          vegetation and soil moisture data. Uganda’s Climate Resilience
-          Framework offers insights into policy alignment and resource
-          management strategies. These resources complement the report and
-          provide a deeper understanding of the methodology and applications of
-          the Uganda National Online Drought Monitoring Tool.
-        </p>
+      {/* Time Selector Section */}
+      <div className=" ">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-lg font-semibold text-gray-700">
+            {months[selectedMonth]} {selectedYear}
+          </h3>
+          <span className="text-sm text-gray-500">
+            {2001} - {2025}
+          </span>
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={(2025 - 2001) * 12 + 11}
+          step={1}
+          value={selectedYear * 12 + selectedMonth - 2001 * 12}
+          onChange={handleSliderChange}
+          className="w-full range-slider"
+        />
+      </div>
+
+      {/* Key Note Section */}
+      <div className="w-[60%] bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl shadow-lg p-6">
+        <h2 className="text-xl font-semibold mb-4">Key Insights</h2>
+        <ul className="space-y-3 text-sm">
+          <li className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-white rounded-full" />
+            <span>Real-time drought monitoring using FAO Combined Drought Index (CDI)</span>
+          </li>
+          <li className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-white rounded-full" />
+            <span>Integrated analysis of precipitation, soil moisture, and vegetation health</span>
+          </li>
+          <li className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-white rounded-full" />
+            <span>Supports Uganda's climate resilience and sustainable resource management</span>
+          </li>
+        </ul>
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
-'use client'
+"use client";
 import Image from "next/image";
 import { useState } from "react";
-import { Info, Download, Calendar, ArrowUpRight } from 'lucide-react';
+import { Info, Download, Calendar, Filter, ArrowUpRight } from "lucide-react";
+
 const UgandaMap = ({ district }) => {
   return (
     <div className="h-64 bg-gray-100 rounded-lg overflow-hidden mb-6">
@@ -21,7 +22,7 @@ const TimeSeriesChart = ({ district, onFullView }) => {
       </div>
       <button
         onClick={onFullView}
-        className="absolute top-2 right-2 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 flex items-center gap-1"
+        className="absolute top-2 right-2 px-3 py-1 bg-[#308DE0] text-white text-sm rounded hover:bg-blue-700 flex items-center gap-1"
       >
         Full View <ArrowUpRight size={16} />
       </button>
@@ -29,16 +30,18 @@ const TimeSeriesChart = ({ district, onFullView }) => {
   );
 };
 
-const TDIChart  = ({ district, onFullView }) => {
+const TDIChart = ({ district, onFullView }) => {
   return (
     <div className="mb-6 relative">
-      <h3 className="text-lg font-semibold mb-4">Temperature Drought Index (TDI)</h3>
+      <h3 className="text-lg font-semibold mb-4">
+        Temperature Drought Index (TDI)
+      </h3>
       <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
         TDI Analysis for {district}
       </div>
       <button
         onClick={onFullView}
-        className="absolute top-2 right-2 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 flex items-center gap-1"
+        className="absolute top-2 right-2 px-3 py-1 bg-[#308DE0] text-white text-sm rounded hover:bg-blue-700 flex items-center gap-1"
       >
         Full View <ArrowUpRight size={16} />
       </button>
@@ -46,15 +49,11 @@ const TDIChart  = ({ district, onFullView }) => {
   );
 };
 
-const FullScreenView  = ({
-  title,
-  children,
-  onClose,
-}) => {
+const FullScreenView = ({ title, children, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center">
       <div className="bg-white w-11/12 lg:w-3/4 h-5/6 rounded-lg overflow-hidden shadow-lg">
-        <div className="p-4 flex justify-between items-center bg-blue-600 text-white">
+        <div className="p-4 flex justify-between items-center bg-[#308DE0] text-white">
           <h2 className="text-lg font-semibold">{title}</h2>
           <button
             onClick={onClose}
@@ -68,8 +67,6 @@ const FullScreenView  = ({
     </div>
   );
 };
-
-
 
 const DistrictSection = ({
   district,
@@ -93,7 +90,9 @@ const DistrictSection = ({
       )}
       <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold text-red-600">Compare this District with another</h2>
+          <h2 className="text-lg font-semibold text-red-600">
+            Compare this District with another
+          </h2>
           <Info size={18} className="text-gray-500 cursor-help" />
         </div>
         <div className="flex items-center gap-4 flex-wrap">
@@ -165,14 +164,16 @@ const DistrictSection = ({
   );
 };
 export default function Home() {
-  const [selectedIndicator, setSelectedIndicator] = useState('Combined Drought Index (CDI)');
-  const [selectedYear, setSelectedYear] = useState('2025');
-  const [selectedMonth, setSelectedMonth] = useState('January');
-  const [leftDistrict, setLeftDistrict] = useState('Acholi District');
-  const [rightDistrict, setRightDistrict] = useState('Tamawambo District');
+  const [selectedIndicator, setSelectedIndicator] = useState(
+    "Combined Drought Index (CDI)"
+  );
+  const [selectedYear, setSelectedYear] = useState("2025");
+  const [selectedMonth, setSelectedMonth] = useState("January");
+  const [leftDistrict, setLeftDistrict] = useState("Acholi District");
+  const [rightDistrict, setRightDistrict] = useState("Tamawambo District");
 
   const handleDownloadAllPdf = () => {
-    console.log('Downloading all maps as PDF');
+    console.log("Downloading all maps as PDF");
   };
 
   const handleMapDownload = (district) => {
@@ -180,27 +181,47 @@ export default function Home() {
   };
 
   const handleClearFilters = () => {
-    setSelectedIndicator('Combined Drought Index (CDI)');
-    setSelectedYear('2025');
-    setSelectedMonth('January');
-    setLeftDistrict('Acholi District');
-    setRightDistrict('Tamawambo District');
+    setSelectedIndicator("Combined Drought Index (CDI)");
+    setSelectedYear("2025");
+    setSelectedMonth("January");
+    setLeftDistrict("Acholi District");
+    setRightDistrict("Tamawambo District");
   };
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
-      <div className="lg:w-72 bg-[#4A8BD0] text-white">
+      <div className="lg:w-72 bg-[#308DE0] text-white">
         <div className="p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium mb-2">Compare Indicators</label>
+            <div className="mb-8">
+              <h2 className="text-white flex items-center gap-2 text-lg font-semibold">
+                <Filter className="h-5 w-5 text-white/80" />
+                Dashboard Filters
+              </h2>
+              <p className="text-sm text-white/70 mt-2">
+                Refine your analytics view
+              </p>
+            </div>
+
+            <label className="flex gap-2 text-sm items-center font-medium mb-3">
+              {" "}
+              <Filter className="h-5 w-5 text-white/80" />
+              Filter Indicators
+            </label>
             <select
-              className="w-full p-3 bg-white/10 border border-white/20 rounded-md text-white focus:ring-2 focus:ring-white/30"
+              className="w-full p-3  border border-white rounded-md text-gray-700 "
               value={selectedIndicator}
               onChange={(e) => setSelectedIndicator(e.target.value)}
             >
-              <option value="Combined Drought Index (CDI)">Combined Drought Index (CDI)</option>
-              <option value="Temperature Drought Index (TDI)">Temperature Drought Index (TDI)</option>
-              <option value="Precipitation Drought Index (PDI)">Precipitation Drought Index (PDI)</option>
+              <option value="Combined Drought Index (CDI)">
+                Combined Drought Index (CDI)
+              </option>
+              <option value="Temperature Drought Index (TDI)">
+                Temperature Drought Index (TDI)
+              </option>
+              <option value="Precipitation Drought Index (PDI)">
+                Precipitation Drought Index (PDI)
+              </option>
             </select>
           </div>
 
@@ -222,7 +243,9 @@ export default function Home() {
       </div>
 
       <div className="flex-1 p-8">
-        <h1 className="text-2xl font-bold text-center mb-8 text-[#4A8BD0]">{selectedIndicator}</h1>
+        <h1 className="text-2xl font-bold text-center mb-8 text-[#4A8BD0]">
+          {selectedIndicator}
+        </h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <DistrictSection
             district={leftDistrict}
