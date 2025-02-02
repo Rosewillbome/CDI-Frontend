@@ -12,7 +12,7 @@ const DashboardNav = () => {
 
   return (
     <div className="relative">
-      <nav className="flex justify-center mt-2">
+      <nav className="flex justify-center mt-6">
         {navItems.map((item, index) => (
           <Link
             key={item.path}
