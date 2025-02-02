@@ -28,186 +28,192 @@ export default function Home() {
     <div className="min-h-screen bg-[#f1f1f1] p-8 sm:p-20 font-geist-sans flex flex-row gap-8">
       {/* Sidebar Section */}
       <div
-        className="bg-[#308DE0] text-white p-6 flex flex-col gap-6 w-[32%] h-full fixed left-0 top-0"
-        style={{
-          clipPath: "polygon(0 0, 100% 0, 90% 100%, 0% 100%)",
-          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
-          backdropFilter: "blur(20px)",
-          backgroundColor: "rgba(48, 141, 224, 0.9)",
-        }}
-      >
-        <div>
-          <h2 className="text-xl font-thin">UGANDA NATIONAL DROUGHT</h2>
-          <h1 className="text-3xl font-bold">MONITORING TOOL</h1>
-        </div>
+  className="bg-[#308DE0] text-white p-6 flex flex-col gap-6 w-[32%] h-full fixed left-0 top-0"
+  style={{
+    clipPath: "polygon(0 0, 100% 0, 90% 100%, 0% 100%)",
+    boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+    backdropFilter: "blur(20px)",
+    backgroundColor: "rgba(48, 141, 224, 0.9)",
+  }}
+>
+  {/* Header */}
+  <div>
+    <h2 className="text-xl font-thin">UGANDA NATIONAL DROUGHT</h2>
+    <h1 className="text-3xl font-bold">MONITORING TOOL</h1>
+  </div>
 
-        <div className="flex border border-[#F1F1F1] rounded-3xl text-sm overflow-hidden w-[70%]">
-          <button
-            className={`py-2 px-4 flex-1 text-center transition-all ${
-              activeTab === "introduction"
-                ? "bg-[#F1F1F1] text-black"
-                : "bg-[#308DE0] text-white"
-            }`}
-            onClick={() => setActiveTab("introduction")}
-          >
-            Introduction
-          </button>
-          <div className="w-[1px] bg-white"></div>
-          <button
-            className={`py-2 px-4 flex-1 text-center transition-all ${
-              activeTab === "methodology"
-                ? "bg-[#F1F1F1] text-black"
-                : "bg-[#308DE0] text-white"
-            }`}
-            onClick={() => setActiveTab("methodology")}
-          >
-            Methodology
-          </button>
-        </div>
+  {/* Tab Buttons */}
+  <div className="flex border border-[#F1F1F1] rounded-3xl text-sm overflow-hidden w-[70%]">
+    <button
+      className={`py-2 px-4 flex-1 text-center transition-all ${
+        activeTab === "introduction"
+          ? "bg-[#F1F1F1] text-black"
+          : "bg-[#308DE0] text-white"
+      }`}
+      onClick={() => setActiveTab("introduction")}
+    >
+      Introduction
+    </button>
+    <div className="w-[1px] bg-white"></div>
+    <button
+      className={`py-2 px-4 flex-1 text-center transition-all ${
+        activeTab === "methodology"
+          ? "bg-[#F1F1F1] text-black"
+          : "bg-[#308DE0] text-white"
+      }`}
+      onClick={() => setActiveTab("methodology")}
+    >
+      Methodology
+    </button>
+  </div>
 
-        <div
-          className="text-sm transition-opacity overflow-y-auto"
-          style={{
-            maxHeight: "calc(100vh - 200px)",
-            maxWidth: "90%",
-          }}
+  {/* Content Container */}
+  <div
+    className="text-sm transition-opacity overflow-y-auto"
+    style={{
+      height: "60vh", // Fixed height for consistency
+      maxWidth: "90%", // Adjusted for better spacing
+    }}
+  >
+    {activeTab === "introduction" ? (
+      <>
+        <p className="">
+          The Uganda National Online Drought Monitoring Tool (UNODMT)
+          hosted by the National Emergency Coordination and Operations
+          Centre (NECOC) within the Office of the Prime Minister (OPM) in
+          Uganda, has been developed by the Food and Agriculture Uganda
+          office. This is in response to the country’s increasing
+          vulnerability to drought and other natural hazards. Over the
+          past decade, Uganda faces a growing number of hazards each year,
+          with the INFORM Risk Index ranking the country 12th out of 191
+          globally in 2024, showing a worsening situation compared to the
+          previous year. As an agrarian nation heavily dependent on
+          rain-fed agriculture, Uganda’s food security and livelihoods are
+          particularly vulnerable to meteorological droughts. These
+          droughts, characterized by reduced rainfall, diminished soil
+          moisture, and higher evapotranspiration rates, severely affect
+          water supplies and agricultural productivity. Notable drought
+          events have recurred over the decades, with severe impacts in
+          years such as 1967, 1987, 2005, 2017, and more recently in 2021
+          and 2023. Given Uganda’s high vulnerability, low coping
+          mechanisms, and the increasing frequency and intensity of
+          droughts, this tool provides timely data and early warnings,
+          allowing the government, farmers, and communities to make
+          informed decisions, plan better responses, and mitigate the
+          adverse impacts of drought. Hosting it at NECOC ensures its
+          integration into Uganda’s national disaster management and
+          response efforts, enhancing coordination and preparedness across
+          different sectors. This tool is developed by building on the
+          implementation of the combined drought index used in Somalia by
+          FAO. For more information....
+        </p>
+
+        {/* Download Button */}
+        <button
+          onClick={() => handleDownload("Introduction")}
+          className="mt-4 flex items-center justify-center gap-2 bg-[#F1F1F1] text-[#308DE0] py-2 px-4 rounded-lg hover:bg-[#308DE0] hover:text-white transition-all text-sm"
         >
-          {activeTab === "introduction" ? (
-            <>
-              <p className="">
-                The Uganda National Online Drought Monitoring Tool (UNODMT)
-                hosted by the National Emergency Coordination and Operations
-                Centre (NECOC) within the Office of the Prime Minister (OPM) in
-                Uganda, has been developed by the Food and Agriculture Uganda
-                office. This is in response to the country’s increasing
-                vulnerability to drought and other natural hazards. Over the
-                past decade, Uganda faces a growing number of hazards each year,
-                with the INFORM Risk Index ranking the country 12th out of 191
-                globally in 2024, showing a worsening situation compared to the
-                previous year. As an agrarian nation heavily dependent on
-                rain-fed agriculture, Uganda’s food security and livelihoods are
-                particularly vulnerable to meteorological droughts. These
-                droughts, characterized by reduced rainfall, diminished soil
-                moisture, and higher evapotranspiration rates, severely affect
-                water supplies and agricultural productivity. Notable drought
-                events have recurred over the decades, with severe impacts in
-                years such as 1967, 1987, 2005, 2017, and more recently in 2021
-                and 2023. Given Uganda’s high vulnerability, low coping
-                mechanisms, and the increasing frequency and intensity of
-                droughts, this tool provides timely data and early warnings,
-                allowing the government, farmers, and communities to make
-                informed decisions, plan better responses, and mitigate the
-                adverse impacts of drought. Hosting it at NECOC ensures its
-                integration into Uganda’s national disaster management and
-                response efforts, enhancing coordination and preparedness across
-                different sectors. This tool is developed by building on the
-                implementation of the combined drought index used in Somalia by
-                FAO. For more information....
-              </p>
+          <span>Click to Download Introduction</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+      </>
+    ) : (
+      <>
+        <div className="prose max-w-none space-y-4 pl-4">
+          <h2 className="text-2xl font-semibold ">
+            Description of the Drought Index
+          </h2>
+          <p className="">
+            Drought is conceived in this study as a combination of the
+            following: a precipitation component, which considers rainfall
+            deficits and dryness persistence; a vegetation component,
+            which is used as a proxy for soil moisture deficit and which
+            considers NDVI deficits and deficit persistence; and a
+            temperature component, which considers temperature excesses
+            and persistence of high temperatures. The drought index
+            calculated using the precipitation component is referred to in
+            the study as the <i>Precipitation Drought Index (PDI)</i>,
+            while the index based on temperature is named the{" "}
+            <i>Temperature Drought Index (TDI)</i>
+            and that based on the vegetation component is named the{" "}
+            <i>Vegetation Drought Index (VDI)</i>. The drought index that
+            combines the three drought components is named the{" "}
+            <i>Combined Drought Index (CDI)</i>. Based on the
+            considerations in the preceding text, the CDI was developed by
+            Balint et al. (2011). The new index is a statistical index
+            comparing the present hydrometeorological conditions with the
+            long-term average characteristics in the same interest period
+            within the year.
+          </p>
 
-              <button
-                onClick={() => handleDownload("Introduction")}
-                className="mt-4 flex items-center justify-center gap-2 bg-[#F1F1F1] text-[#308DE0] py-2 px-4 rounded-lg hover:bg-[#308DE0] hover:text-white transition-all"
-              >
-                <span>Click to Download Introduction</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </>
-          ) : (
-            <>
-              <div className="prose max-w-none space-y-4 pl-4">
-                <h2 className="text-2xl font-semibold ">
-                  Description of the Drought Index
-                </h2>
-                <p className="">
-                  Drought is conceived in this study as a combination of the
-                  following: a precipitation component, which considers rainfall
-                  deficits and dryness persistence; a vegetation component,
-                  which is used as a proxy for soil moisture deficit and which
-                  considers NDVI deficits and deficit persistence; and a
-                  temperature component, which considers temperature excesses
-                  and persistence of high temperatures. The drought index
-                  calculated using the precipitation component is referred to in
-                  the study as the <i>Precipitation Drought Index (PDI)</i>,
-                  while the index based on temperature is named the{" "}
-                  <i>Temperature Drought Index (TDI)</i>
-                  and that based on the vegetation component is named the{" "}
-                  <i>Vegetation Drought Index (VDI)</i>. The drought index that
-                  combines the three drought components is named the{" "}
-                  <i>Combined Drought Index (CDI)</i>. Based on the
-                  considerations in the preceding text, the CDI was developed by
-                  Balint et al. (2011). The new index is a statistical index
-                  comparing the present hydrometeorological conditions with the
-                  long-term average characteristics in the same interest period
-                  within the year.
-                </p>
-
-                <h2 className="text-2xl font-semibold ">
-                  1.1.1 Calculation of the Precipitation, the Temperature and
-                  the Soil Moisture/Vegetation Drought Indices (PDI, TDI and
-                  MDI/VDI)
-                </h2>
-                <p className="">
-                  In the present approach, drought is conceived as a combination
-                  of the following components:
-                </p>
-                <ul className="list-disc ml-8 space-y-2 ">
-                  <li>
-                    a precipitation component that considers (1) rainfall
-                    deficits and (2) dryness persistence;
-                  </li>
-                  <li>
-                    a temperature component that considers (3) temperature
-                    excesses and (4) persistence of high temperatures;
-                  </li>
-                  <li>
-                    a soil moisture component that considers (5) soil moisture
-                    deficit and (6) persistence of dry soil conditions – because
-                    of limitations in soil moisture observations, this is
-                    approximated by NDVI deficits and deficit persistence.
-                  </li>
-                </ul>
-              </div>
-
-              <button
-                onClick={() => handleDownload("Methodology")}
-                className="mt-4 flex items-center justify-center gap-2 bg-[#F1F1F1] text-[#308DE0] py-2 px-4 rounded-lg hover:bg-[#308DE0] hover:text-white transition-all"
-              >
-                <span>Click to Download Methodology</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </>
-          )}
+          <h2 className="text-2xl font-semibold ">
+            1.1.1 Calculation of the Precipitation, the Temperature and
+            the Soil Moisture/Vegetation Drought Indices (PDI, TDI and
+            MDI/VDI)
+          </h2>
+          <p className="">
+            In the present approach, drought is conceived as a combination
+            of the following components:
+          </p>
+          <ul className="list-disc ml-8 space-y-2 ">
+            <li>
+              a precipitation component that considers (1) rainfall
+              deficits and (2) dryness persistence;
+            </li>
+            <li>
+              a temperature component that considers (3) temperature
+              excesses and (4) persistence of high temperatures;
+            </li>
+            <li>
+              a soil moisture component that considers (5) soil moisture
+              deficit and (6) persistence of dry soil conditions – because
+              of limitations in soil moisture observations, this is
+              approximated by NDVI deficits and deficit persistence.
+            </li>
+          </ul>
         </div>
 
-        <div className="mt-auto overflow-hidden whitespace-nowrap">
-          <div className="animate-marquee text-sm font-bold">
-            🌍 Stay informed! Explore the latest drought monitoring updates. 🌍
-          </div>
-        </div>
-      </div>
+        {/* Download Button */}
+        <button
+          onClick={() => handleDownload("Methodology")}
+          className="mt-4 flex items-center justify-center gap-2 bg-[#F1F1F1] text-[#308DE0] py-2 px-4 rounded-lg hover:bg-[#308DE0] hover:text-white transition-all text-sm"
+        >
+          <span>Click to Download Methodology</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+      </>
+    )}
+  </div>
+
+  {/* Footer Marquee */}
+  <div className="mt-auto overflow-hidden whitespace-nowrap">
+    <div className="animate-marquee text-sm font-bold">
+      🌍 Stay informed! Explore the latest drought monitoring updates. 🌍
+    </div>
+  </div>
+</div>
 
       {/* Main Content */}
       <div className=" flex-1 ml-[32%] mr-[16.67%]">
