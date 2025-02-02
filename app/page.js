@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function Home() {
   const [activeTab, setActiveTab] = useState("introduction");
   const [progressYear, setProgressYear] = useState(2025);
-  const [selectedDistrict, setSelectedDistrict] = useState("Acholi");
+  const [selectedDistrict, setSelectedDistrict] = useState("All");
 
   const handleYearChange = (year) => {
     setProgressYear(year);
@@ -108,12 +108,17 @@ export default function Home() {
           FAO. For more information....
         </p>
 
-        {/* Download Button */}
+       
+        
+      </>
+    ) : (
+      <>
+        <div className="prose max-w-none space-y-4 pl-4">
         <button
-          onClick={() => handleDownload("Introduction")}
+          onClick={() => handleDownload("Methodology")}
           className="mt-4 flex items-center justify-center gap-2 bg-[#F1F1F1] text-[#308DE0] py-2 px-4 rounded-lg hover:bg-[#308DE0] hover:text-white transition-all text-sm"
         >
-          <span>Click to Download Introduction</span>
+          <span>Click to Download Methodology</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -127,10 +132,6 @@ export default function Home() {
             />
           </svg>
         </button>
-      </>
-    ) : (
-      <>
-        <div className="prose max-w-none space-y-4 pl-4">
           <h2 className="text-2xl font-semibold ">
             Description of the Drought Index
           </h2>
@@ -184,25 +185,8 @@ export default function Home() {
           </ul>
         </div>
 
-        {/* Download Button */}
-        <button
-          onClick={() => handleDownload("Methodology")}
-          className="mt-4 flex items-center justify-center gap-2 bg-[#F1F1F1] text-[#308DE0] py-2 px-4 rounded-lg hover:bg-[#308DE0] hover:text-white transition-all text-sm"
-        >
-          <span>Click to Download Methodology</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
+       
+        
       </>
     )}
   </div>
@@ -227,6 +211,7 @@ export default function Home() {
               onChange={handleDistrictChange}
               className="appearance-none bg-white border border-[#308DE0] rounded-lg px-8 py-2 pr-10 text-sm font-semibold text-[#308DE0] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#308DE0]"
             >
+              <option value="All">All</option>
               <option value="Acholi">Acholi</option>
               <option value="Lango">Lango</option>
               <option value="Karamoja">Karamoja</option>
@@ -333,6 +318,25 @@ export default function Home() {
           />
         </div>
 
+        <button
+          onClick={() => handleDownload("Methodology")}
+          className=" flex items-center justify-center gap-1 bg-[#308DE0] text-white py-2 px-4 rounded-lg hover:bg-[#308DE0] hover:text-white transition-all text-sm"
+        >
+          <span>Download Report</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+
         <div className="relative border border-[#308DE0] rounded-xl p-4 h-[calc(100%-200px)] flex flex-col justify-between mt-8">
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#F1F1F1] px-2">
             <h3 className="text-md text-[#308DE0] font-bold">Assessment</h3>
@@ -428,7 +432,7 @@ export default function Home() {
               </div>
 
               <div className="mt-1 text-xs text-gray-600 pl-2 italic">
-                Districts showing improvement over time.
+                Districts showing improvement over time - 3 months
               </div>
             </div>
           </div>
@@ -444,12 +448,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="text-center mt-auto">
-          <p className="text-xs font-bold text-[#308DE0]">
-            Click here to access a{" "}
-            <span className="underline">Full Report</span>
-          </p>
-        </div>
+       
       </div>
     </div>
   );

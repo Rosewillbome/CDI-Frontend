@@ -130,7 +130,7 @@ const DistrictSection = ({
 
       <div className="space-y-6">
         <UgandaMap district={district} />
-        <div className="flex justify-end mb-4">
+        {/* <div className="flex justify-end mb-4">
           <button
             onClick={onMapDownload}
             className="px-4 py-2 text-blue-600 border border-blue-600 rounded hover:bg-blue-50 flex items-center gap-2 transition-colors"
@@ -138,7 +138,7 @@ const DistrictSection = ({
             <Download size={18} />
             Download Map PDF
           </button>
-        </div>
+        </div> */}
         <TimeSeriesChart
           district={district}
           onFullView={() =>
@@ -181,7 +181,7 @@ export default function Home() {
   };
 
   const handleClearFilters = () => {
-    setSelectedIndicator("Combined Drought Index (CDI)");
+    setSelectedIndicator(" CDI");
     setSelectedYear("2025");
     setSelectedMonth("January");
     setLeftDistrict("Acholi District");
@@ -213,14 +213,14 @@ export default function Home() {
               value={selectedIndicator}
               onChange={(e) => setSelectedIndicator(e.target.value)}
             >
-              <option value="Combined Drought Index (CDI)">
-                Combined Drought Index (CDI)
+              <option value="Combined Drought Index(CDI)">
+                CDI
               </option>
               <option value="Temperature Drought Index (TDI)">
-                Temperature Drought Index (TDI)
+                TDI
               </option>
               <option value="Precipitation Drought Index (PDI)">
-                Precipitation Drought Index (PDI)
+                PDI
               </option>
             </select>
           </div>

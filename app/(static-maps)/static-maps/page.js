@@ -34,8 +34,8 @@ function page() {
               className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
             >
               <option value="CDI">CDI</option>
-              <option value="PDI">PDI</option>
-              <option value="TDI">TDI</option>
+              <option value="NDVI">NDVI Anormally</option>
+              <option value="Rainfall">Rainfall</option>
             </select>
             <button
               onClick={() => handleDownloadMap(selectedYear, selectedMonth)}
@@ -80,7 +80,7 @@ function page() {
           ))}
         </div>
 
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <h2 className="text-lg font-semibold mb-4">Severity Types</h2>
           <div className="bg-white rounded-lg shadow-md p-4">
             <div className="space-y-2">
@@ -96,7 +96,7 @@ function page() {
               ))}
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )
