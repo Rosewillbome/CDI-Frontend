@@ -4,8 +4,8 @@ import DashboardNav from "./DashboardNav";
 import Sidebar from "./Sidebar";
 import MapView from "./MapView";
 import TableView from "./TableView";
-import TimeSeries from "./TimeSeries";
-import DetailedView from "./DetailedView";
+
+
 import { usePathname } from "next/navigation";
 
 export default function Home() {
@@ -21,10 +21,7 @@ export default function Home() {
               <MapView />
             ) : pathname === "/dashboard/table-view" ? (
               <TableView />
-            ) : pathname === "/dashboard/time-series" ? (
-              <TimeSeries />
-            ) : pathname === "/dashboard/detailed-view" ? (
-              <DetailedView />
+            
             ) : null}
           </div>
         </div>
