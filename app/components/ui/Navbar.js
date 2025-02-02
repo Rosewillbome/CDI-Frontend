@@ -2,7 +2,14 @@ import React from "react";
 import Navbtn from "./Navbtn";
 import Image from "next/image";
 
+
 function Navbar() {
+  const navItems = [
+    { path: "/", label: "home" },
+    { path: "/dashboard", label: "dashboard" },
+    { path: "/compare-districts", label: "compare districts" },
+    { path: "/static-maps", label: "static maps" },
+  ];
   return (
     <div className="bg-[#F1F1F1] flex justify-between items-center px-6 py-3">
       <div className="flex flex-col items-start">
@@ -13,7 +20,10 @@ function Navbar() {
       </div>
 
       <div className="flex-1 flex justify-center">
-        <Navbtn />
+        {navItems?.map((data,index)=>(
+          <Navbtn label={data?.label} hlink={data?.path} key={index}/>
+        ))}
+        
       </div>
 
       <div className="flex items-center mr-4">
