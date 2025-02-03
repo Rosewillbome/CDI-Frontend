@@ -92,22 +92,22 @@ export default function Home() {
     
     <table className="w-full border-collapse border border-gray-300 mt-4">
         <thead>
-            <tr className="bg-gray-200">
-                <th className="border border-gray-300 px-4 py-2">Color</th>
-                <th className="border border-gray-300 px-4 py-2">Value</th>
-                <th className="border border-gray-300 px-4 py-2">Description</th>
+            <tr className="bg-transparent">
+                <th className="border border-gray-300 px-4 py-2 text-[#308DE0]">Color</th>
+                <th className="border border-gray-300 px-4 py-2text-[#308DE0]">Value</th>
+                <th className="border border-gray-300 px-4 py-2 text-[#308DE0]">Description</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td className="border border-gray-300 px-4 py-2">&lt; 0.4</td>
-                <td className="border border-gray-300 px-4 py-2">Extreme</td>
-                <td className="border border-gray-300 px-4 py-2">Major loss of crops and pasture...</td>
+                <td className="border border-gray-300 px-4 py-2 text-[#308DE0]">&lt; 0.4</td>
+                <td className="border border-gray-300 px-4 py-2 text-[#308DE0]">Extreme</td>
+                <td className="border border-gray-300 px-4 py-2 text-[#308DE0]">Major loss of crops and pasture...</td>
             </tr>
-            <tr className="bg-gray-100">
-                <td className="border border-gray-300 px-4 py-2">0.4 - 0.6</td>
-                <td className="border border-gray-300 px-4 py-2">Severe</td>
-                <td className="border border-gray-300 px-4 py-2">Wider scale of loss of crops...</td>
+            <tr className="bg-transparent">
+                <td className="border border-gray-300 px-4 py-2 text-[#308DE0]">0.4 - 0.6</td>
+                <td className="border border-gray-300 px-4 py-2 text-[#308DE0]">Severe</td>
+                <td className="border border-gray-300 px-4 py-2 text-[#308DE0]">Wider scale of loss of crops...</td>
             </tr>
         </tbody>
     </table>
@@ -303,7 +303,7 @@ export default function Home() {
       onClick={() => handleDownload("Methodology")}
       className="flex items-center justify-center gap-1 bg-[#308DE0] text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl relative"
     >
-      <Sun className="h-5 w-5 text-yellow-400 animate-spin-slow" />
+      <Sun className="h-5 w-5 text-yellow-400 px-2 py-5 animate-spin-slow" />
       <span className="px-2">Download Report</span>
       <Droplet className="h-5 w-5 text-blue-300 animate-bounce" />
       {/* Cloud effect */}
