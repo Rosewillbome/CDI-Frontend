@@ -301,7 +301,7 @@ const MapView = () => {
             <div className="w-2 h-2 bg-white rounded-full" />
             <span>
               Real-time drought monitoring using FAO Combined Drought Index
-              (CDI)
+               (CDI)
             </span>
           </li>
           <li className="flex items-center space-x-2">
