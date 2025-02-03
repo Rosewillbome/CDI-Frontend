@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import { Sun, Droplet } from "lucide-react";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("introduction");
@@ -77,36 +78,39 @@ export default function Home() {
   >
     {activeTab === "introduction" ? (
       <>
-        <p className="">
-          The Uganda National Online Drought Monitoring Tool (UNODMT)
-          hosted by the National Emergency Coordination and Operations
-          Centre (NECOC) within the Office of the Prime Minister (OPM) in
-          Uganda, has been developed by the Food and Agriculture Uganda
-          office. This is in response to the country’s increasing
-          vulnerability to drought and other natural hazards. Over the
-          past decade, Uganda faces a growing number of hazards each year,
-          with the INFORM Risk Index ranking the country 12th out of 191
-          globally in 2024, showing a worsening situation compared to the
-          previous year. As an agrarian nation heavily dependent on
-          rain-fed agriculture, Uganda’s food security and livelihoods are
-          particularly vulnerable to meteorological droughts. These
-          droughts, characterized by reduced rainfall, diminished soil
-          moisture, and higher evapotranspiration rates, severely affect
-          water supplies and agricultural productivity. Notable drought
-          events have recurred over the decades, with severe impacts in
-          years such as 1967, 1987, 2005, 2017, and more recently in 2021
-          and 2023. Given Uganda’s high vulnerability, low coping
-          mechanisms, and the increasing frequency and intensity of
-          droughts, this tool provides timely data and early warnings,
-          allowing the government, farmers, and communities to make
-          informed decisions, plan better responses, and mitigate the
-          adverse impacts of drought. Hosting it at NECOC ensures its
-          integration into Uganda’s national disaster management and
-          response efforts, enhancing coordination and preparedness across
-          different sectors. This tool is developed by building on the
-          implementation of the combined drought index used in Somalia by
-          FAO. For more information....
-        </p>
+        <p className="mb-4">The Uganda National Online Drought Monitoring Tool (UNODMT) hosted by the National Emergency Coordination and Operations Centre (NECOC) within the Office of the Prime Minister (OPM) in Uganda, has been developed by the Food and Agriculture Uganda office.</p>
+    
+    <p className="mb-4">This is in response to the country’s increasing vulnerability to drought and other natural hazards. Over the past decade, Uganda faces a growing number of hazards each year, with the INFORM Risk Index ranking the country 12th out of 191 globally in 2024, showing a worsening situation compared to the previous year.</p>
+    
+    <p className="mb-4">As an agrarian nation heavily dependent on rain-fed agriculture, Uganda’s food security and livelihoods are particularly vulnerable to meteorological droughts...</p>
+    
+    <h2 className="text-xl font-semibold mt-6 mb-2">Calculation of the CDI</h2>
+    <p className="mb-4">Within this tool, drought is conceived as a combination of the following: a precipitation component, a vegetation component, and a temperature component...</p>
+    
+    <h2 className="text-xl font-semibold mt-6 mb-2">How to Interpret the TDI, PDI and CDI values</h2>
+    <p className="mb-4">By definition of CDI Equation, CDI=1.0 represents average weather conditions. If the CDI is greater than 1.0, it represents wetter than average...</p>
+    
+    <table className="w-full border-collapse border border-gray-300 mt-4">
+        <thead>
+            <tr className="bg-gray-200">
+                <th className="border border-gray-300 px-4 py-2">Color</th>
+                <th className="border border-gray-300 px-4 py-2">Value</th>
+                <th className="border border-gray-300 px-4 py-2">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td className="border border-gray-300 px-4 py-2">&lt; 0.4</td>
+                <td className="border border-gray-300 px-4 py-2">Extreme</td>
+                <td className="border border-gray-300 px-4 py-2">Major loss of crops and pasture...</td>
+            </tr>
+            <tr className="bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2">0.4 - 0.6</td>
+                <td className="border border-gray-300 px-4 py-2">Severe</td>
+                <td className="border border-gray-300 px-4 py-2">Wider scale of loss of crops...</td>
+            </tr>
+        </tbody>
+    </table>
 
        
         
@@ -116,9 +120,9 @@ export default function Home() {
         <div className="prose max-w-none space-y-4 pl-4">
         <button
           onClick={() => handleDownload("Methodology")}
-          className="mt-4 flex items-center justify-center gap-2 bg-[#F1F1F1] text-[#308DE0] py-2 px-4 rounded-lg hover:bg-[#308DE0] hover:text-white transition-all text-sm"
+          className="mt-4 flex items-center justify-center gap-2 bg-[#F1F1F1] text-[#308DE0] py-2 px-4 rounded-2xl hover:bg-[#308DE0] hover:text-white transition-all text-sm"
         >
-          <span>Click to Download Methodology</span>
+          <span>Download Methodology</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -319,23 +323,15 @@ export default function Home() {
         </div>
 
         <button
-          onClick={() => handleDownload("Methodology")}
-          className=" flex items-center justify-center gap-1 bg-[#308DE0] text-white py-2 px-4 rounded-lg hover:bg-[#308DE0] hover:text-white transition-all text-sm"
-        >
-          <span>Download Report</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
+      onClick={() => handleDownload("Methodology")}
+      className="flex items-center justify-center gap-1 bg-[#308DE0] text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl relative"
+    >
+      <Sun className="h-5 w-5 text-yellow-400 animate-spin-slow" />
+      <span className="px-2">Download Report</span>
+      <Droplet className="h-5 w-5 text-blue-300 animate-bounce" />
+      {/* Cloud effect */}
+      <div className="absolute inset-0 bg-[#308DE0] opacity-20 blur-lg rounded-full"></div>
+    </button>
 
         <div className="relative border border-[#308DE0] rounded-xl p-4 h-[calc(100%-200px)] flex flex-col justify-between mt-8">
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#F1F1F1] px-2">
