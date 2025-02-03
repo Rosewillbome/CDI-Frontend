@@ -1,22 +1,41 @@
+"use client";
 import React, { useState, useRef, useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { DROUGHT_SEVERITY_LEVELS } from "../../utils/drought_levels";
 import { FiDownload, FiInfo } from "react-icons/fi";
+import { useSideberStore } from "../../store/useSideberStore";
 
 // Define available years and months (the slider will cover 2001-2025)
 const years = Array.from({ length: 25 }, (_, i) => 2001 + i);
 const months = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const MapView = () => {
   // Set default to June 2024 and default raster type to "PDI"
-  const [selectedYear, setSelectedYear] = useState(2024);
-  const [selectedMonth, setSelectedMonth] = useState(5); // 0-indexed (5 = June)
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedRasterType, setSelectedRasterType] = useState("PDI");
+  let {
+    indicator,
+    timerange,
+    month,
+    district,
+    
+  } = useSideberStore((state) => state);
+  const [selectedYear, setSelectedYear] = useState(timerange);
+  const [selectedMonth, setSelectedMonth] = useState(month); // 0-indexed (5 = June)
+  const [selectedDistrict, setSelectedDistrict] = useState(district); 
+  const [selectedRasterType, setSelectedRasterType] = useState(indicator);
 
   // Refs to store the map container and Leaflet instances
   const mapRef = useRef(null);
@@ -35,12 +54,18 @@ const MapView = () => {
 
     // Define base layers
     baseMapsRef.current = {
-      "OpenStreetMap": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap contributors",
-      }),
-      "OpenTopoMap": L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenTopoMap contributors",
-      }),
+      OpenStreetMap: L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution: "© OpenStreetMap contributors",
+        }
+      ),
+      OpenTopoMap: L.tileLayer(
+        "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+        {
+          attribution: "© OpenTopoMap contributors",
+        }
+      ),
       "Esri World Imagery": L.tileLayer(
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
         { attribution: "© Esri" }
@@ -55,37 +80,45 @@ const MapView = () => {
     });
 
     // Create the Districts layer (always visible) using the workspace "cdi"
-    districtLayerRef.current = L.tileLayer.wms(geoServerUrl, {
-      layers: "cdi:ugandadistrict",
-      format: "image/png",
-      transparent: true,
-      attribution: "GeoServer",
-    }).addTo(mapInstance.current);
+    districtLayerRef.current = L.tileLayer
+      .wms(geoServerUrl, {
+        layers: "cdi:ugandadistrict",
+        format: "image/png",
+        transparent: true,
+        attribution: "GeoServer",
+      })
+      .addTo(mapInstance.current);
     districtLayerRef.current.bringToFront();
 
     // Create the initial raster layer based on default selections
-    const monthLower = months[selectedMonth].toLowerCase();
-    const initialWmsLayerName = "cdi:Raw_" + selectedRasterType + "_" + monthLower + "_" + selectedYear;
-    rasterLayerRef.current = L.tileLayer.wms(geoServerUrl, {
-      layers: initialWmsLayerName,
-      format: "image/png",
-      transparent: true,
-      opacity: 1.0,
-      attribution: "GeoServer",
-    }).addTo(mapInstance.current);
+    const monthLower = selectedMonth.toLowerCase();
+    const initialWmsLayerName =
+      "cdi:Raw_" + indicator + "_" + month + "_" + timerange;
+    rasterLayerRef.current = L.tileLayer
+      .wms(geoServerUrl, {
+        layers: initialWmsLayerName,
+        format: "image/png",
+        transparent: true,
+        opacity: 1.0,
+        attribution: "GeoServer",
+      })
+      .addTo(mapInstance.current);
 
     // Build the initial overlay name (e.g., "PDI June 2024")
-    const displayName = selectedRasterType + " " + months[selectedMonth] + " " + selectedYear;
+    const displayName =
+    indicator + " " + month + " " + timerange;
 
     // Create the layer control including base layers and overlays (raster and districts)
-    layerControlRef.current = L.control.layers(
-      baseMapsRef.current,
-      {
-        [displayName]: rasterLayerRef.current,
-        Districts: districtLayerRef.current,
-      },
-      { collapsed: false }
-    ).addTo(mapInstance.current);
+    layerControlRef.current = L.control
+      .layers(
+        baseMapsRef.current,
+        {
+          [displayName]: rasterLayerRef.current,
+          Districts: districtLayerRef.current,
+        },
+        { collapsed: false }
+      )
+      .addTo(mapInstance.current);
   }, []); // Run only once on mount
 
   // Update the raster layer (and layer control) whenever time or raster type changes.
@@ -98,18 +131,22 @@ const MapView = () => {
     }
 
     // Construct the new WMS layer name and display name
-    const monthLower = months[selectedMonth].toLowerCase();
-    const newWmsLayerName = "cdi:Raw_" + selectedRasterType + "_" + monthLower + "_" + selectedYear;
-    const newDisplayName = selectedRasterType + " " + months[selectedMonth] + " " + selectedYear;
+    const monthLower = selectedMonth.toLowerCase();
+    const newWmsLayerName =
+      "cdi:Raw_" + indicator + "_" + month + "_" + timerange;
+    const newDisplayName =
+    indicator + " " + month + " " + timerange;
 
     // Create and add the updated raster layer
-    rasterLayerRef.current = L.tileLayer.wms(geoServerUrl, {
-      layers: newWmsLayerName,
-      format: "image/png",
-      transparent: true,
-      opacity: 0.7,
-      attribution: "GeoServer",
-    }).addTo(mapInstance.current);
+    rasterLayerRef.current = L.tileLayer
+      .wms(geoServerUrl, {
+        layers: newWmsLayerName,
+        format: "image/png",
+        transparent: true,
+        opacity: 0.7,
+        attribution: "GeoServer",
+      })
+      .addTo(mapInstance.current);
 
     // Make sure the district layer stays on top
     if (districtLayerRef.current) {
@@ -120,15 +157,17 @@ const MapView = () => {
     if (layerControlRef.current) {
       mapInstance.current.removeControl(layerControlRef.current);
     }
-    layerControlRef.current = L.control.layers(
-      baseMapsRef.current,
-      {
-        [newDisplayName]: rasterLayerRef.current,
-        Districts: districtLayerRef.current,
-      },
-      { collapsed: false }
-    ).addTo(mapInstance.current);
-  }, [selectedYear, selectedMonth, selectedRasterType]);
+    layerControlRef.current = L.control
+      .layers(
+        baseMapsRef.current,
+        {
+          [newDisplayName]: rasterLayerRef.current,
+          Districts: districtLayerRef.current,
+        },
+        { collapsed: false }
+      )
+      .addTo(mapInstance.current);
+  }, [timerange, month, indicator]);
 
   // Handler for the slider (time selector)
   const handleSliderChange = (event) => {
@@ -141,16 +180,18 @@ const MapView = () => {
   };
 
   // Handler for raster type change (PDI/TDI)
-  const handleRasterTypeChange = (event) => {
-    setSelectedRasterType(event.target.value);
-  };
+  // const handleRasterTypeChange = (event) => {
+  //   setSelectedRasterType(event.target.value);
+  // };
 
   return (
     <div className="bg-gray-50 flex flex-col h-full p-6 space-y-6">
       {/* Header Section */}
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center space-x-3">
-          <h1 className="text-3xl font-bold text-gray-800">Combined Drought Index (CDI)</h1>
+          <h1 className="text-3xl font-bold text-gray-800">
+            Combined Drought Index (CDI)
+          </h1>
         </div>
         <h2 className="text-xl text-gray-600 font-medium">
           {selectedDistrict || "Acholi District"}
@@ -170,7 +211,11 @@ const MapView = () => {
             </button>
           </div>
           {/* Leaflet map container */}
-          <div ref={mapRef} id="leaflet-map" className="h-full w-full rounded-lg" />
+          <div
+            ref={mapRef}
+            id="leaflet-map"
+            className="h-full w-full rounded-lg"
+          />
 
           {/* Legend */}
           <div className="absolute bottom-4 right-4 bg-white shadow-lg p-2 text-sm">
@@ -183,7 +228,9 @@ const MapView = () => {
                   style={{ backgroundColor: level.color }}
                 >
                   <span className="text-xs ">{level.label}</span>
-                  <span className="text-[10px] text-gray-600">({level.range})</span>
+                  <span className="text-[10px] text-gray-600">
+                    ({level.range})
+                  </span>
                 </div>
               ))}
             </div>
@@ -228,8 +275,11 @@ const MapView = () => {
       </div>
 
       {/* Raster Type Selector */}
-      <div className="flex items-center space-x-3">
-        <label className="text-lg font-semibold text-gray-700" htmlFor="rasterTypeSelect">
+      {/* <div className="flex items-center space-x-3">
+        <label
+          className="text-lg font-semibold text-gray-700"
+          htmlFor="rasterTypeSelect"
+        >
           Raster Type:
         </label>
         <select
@@ -241,7 +291,7 @@ const MapView = () => {
           <option value="PDI">PDI</option>
           <option value="TDI">TDI</option>
         </select>
-      </div>
+      </div> */}
 
       {/* Key Note Section */}
       <div className="w-[60%] bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl shadow-lg p-6">
@@ -250,19 +300,22 @@ const MapView = () => {
           <li className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-white rounded-full" />
             <span>
-              Real-time drought monitoring using FAO Combined Drought Index (CDI)
+              Real-time drought monitoring using FAO Combined Drought Index
+              (CDI)
             </span>
           </li>
           <li className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-white rounded-full" />
             <span>
-              Integrated analysis of precipitation, soil moisture, and vegetation health
+              Integrated analysis of precipitation, soil moisture, and
+              vegetation health
             </span>
           </li>
           <li className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-white rounded-full" />
             <span>
-              Supports Uganda's climate resilience and sustainable resource management
+              Supports Uganda's climate resilience and sustainable resource
+              management
             </span>
           </li>
         </ul>
