@@ -1,8 +1,22 @@
-'use client'
-import React from 'react';
-import { Calendar, Filter, Clock, MapPin } from 'lucide-react';
+"use client";
+import React from "react";
+import { Calendar, Filter, Clock, MapPin } from "lucide-react";
+import { useSideberStore } from "../../store/useSideberStore";
+import { showYears, months } from "../../utils/selectYear";
 
 const Sidebar = () => {
+  let {
+    indicator,
+    timerange,
+    month,
+    district,
+    setIndicator,
+    setTimerange,
+    setMonth,
+    setDistrict,
+  } = useSideberStore((state) => state);
+  console.log("indicator", indicator);
+  console.log("timerange", timerange);
   return (
     <div className="w-64 min-h-screen bg-[#308DE0] border-r p-6 shadow-xl">
       <div className="space-y-8">
@@ -27,7 +41,11 @@ const Sidebar = () => {
               </div>
               <label className="text-sm font-medium">Indicators</label>
             </div>
-            <select className="w-full px-3 py-2 border border-white rounded-lg text-gray-700 ">
+            <select
+              value={indicator}
+              onChange={(e) => setIndicator(e.target.value)}
+              className="w-full px-3 py-2 border border-white rounded-lg text-gray-700 "
+            >
               <option className="bg-[#2c5d8a]">CDI</option>
               <option className="bg-[#2c5d8a]">PDI</option>
               <option className="bg-[#2c5d8a]">TDI</option>
@@ -45,15 +63,38 @@ const Sidebar = () => {
             <div className="space-y-4">
               <div>
                 <label className="block text-xs text-white/70 mb-1">Year</label>
-                <button className="w-full flex items-center justify-between px-4 py-2.5 border border-white/20 rounded-lg bg-white/5 text-white hover:bg-white/10 transition-all">
-                  <span>2025</span>
+                <div className="w-full flex items-center justify-between px-4 py-2.5 border border-white/20 rounded-lg bg-white/5 text-white hover:bg-white/10 transition-all">
+                  <select
+                    value={timerange}
+                    onChange={(e) => setTimerange(e.target.value)}
+                    className="w-full px-3 py-2 border border-white rounded-lg text-gray-700 "
+                  >
+                    {showYears()?.map((year, index) => (
+                      <option key={index} className="bg-[#2c5d8a]">
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+
                   <Calendar className="h-4 w-4 text-white/60" />
-                </button>
+                </div>
               </div>
               <div>
-                <label className="block text-xs text-white/70 mb-1">Month</label>
+                <label className="block text-xs text-white/70 mb-1">
+                  Month
+                </label>
                 <button className="w-full flex items-center justify-between px-4 py-2.5 border border-white/20 rounded-lg bg-white/5 text-white hover:bg-white/10 transition-all">
-                  <span>January</span>
+                  <select
+                    value={month}
+                    onChange={(e) => setMonth(e.target.value)}
+                    className="w-full px-3 py-2 border border-white rounded-lg text-gray-700 "
+                  >
+                    {months?.map((month, index) => (
+                      <option key={index} className="bg-[#2c5d8a]">
+                        {month}
+                      </option>
+                    ))}
+                  </select>
                   <Calendar className="h-4 w-4 text-white/60" />
                 </button>
               </div>
@@ -68,7 +109,11 @@ const Sidebar = () => {
               </div>
               <label className="text-sm font-medium">District</label>
             </div>
-            <select className="w-full px-3 py-2 border border-white rounded-lg  text-gray-700">
+            <select
+              value={district}
+              onChange={(e) => setDistrict(e.target.value)}
+              className="w-full px-3 py-2 border border-white rounded-lg  text-gray-700"
+            >
               <option className="bg-[#2c5d8a]">Acholi</option>
               <option className="bg-[#2c5d8a]">Lango</option>
               <option className="bg-[#2c5d8a]">West Nile</option>
