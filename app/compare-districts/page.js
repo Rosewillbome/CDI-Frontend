@@ -5,7 +5,7 @@ import { Info, Download, Calendar, Filter, ArrowUpRight } from "lucide-react";
 
 const UgandaMap = ({ district }) => {
   return (
-    <div className="h-64 bg-gray-100 rounded-lg overflow-hidden mb-6">
+    <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 mb-6">
       <div className="w-full h-full flex items-center justify-center text-gray-500">
         Uganda Map View - Highlighting {district}
       </div>
@@ -17,12 +17,12 @@ const TimeSeriesChart = ({ district, onFullView }) => {
   return (
     <div className="mb-6 relative">
       <h3 className="text-lg font-semibold mb-4">Time Series Analysis</h3>
-      <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
+      <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-center text-gray-500">
         Time Series Chart for {district}
       </div>
       <button
         onClick={onFullView}
-        className="absolute top-2 right-2 px-3 py-1 bg-[#308DE0] text-white text-sm rounded hover:bg-blue-700 flex items-center gap-1"
+        className="absolute top-2 right-2 px-3 py-1.5 bg-[#308DE0] text-white text-sm rounded-lg hover:bg-blue-700 flex items-center gap-1 shadow-md"
       >
         Full View <ArrowUpRight size={16} />
       </button>
@@ -36,12 +36,12 @@ const TDIChart = ({ district, onFullView }) => {
       <h3 className="text-lg font-semibold mb-4">
         Temperature Drought Index (TDI)
       </h3>
-      <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
+      <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-center text-gray-500">
         TDI Analysis for {district}
       </div>
       <button
         onClick={onFullView}
-        className="absolute top-2 right-2 px-3 py-1 bg-[#308DE0] text-white text-sm rounded hover:bg-blue-700 flex items-center gap-1"
+        className="absolute top-2 right-2 px-3 py-1.5 bg-[#308DE0] text-white text-sm rounded-lg hover:bg-blue-700 flex items-center gap-1 shadow-md"
       >
         Full View <ArrowUpRight size={16} />
       </button>
@@ -52,12 +52,12 @@ const TDIChart = ({ district, onFullView }) => {
 const FullScreenView = ({ title, children, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center">
-      <div className="bg-white w-11/12 lg:w-3/4 h-5/6 rounded-lg overflow-hidden shadow-lg">
+      <div className="bg-white w-11/12 lg:w-3/4 h-5/6 rounded-xl overflow-hidden shadow-2xl">
         <div className="p-4 flex justify-between items-center bg-[#308DE0] text-white">
-          <h2 className="text-lg font-semibold">{title}</h2>
+          <h2 className="text-xl font-semibold">{title}</h2>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-red-600 rounded hover:bg-red-700 transition-colors"
+            className="px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
           >
             Close Full View
           </button>
@@ -82,7 +82,7 @@ const DistrictSection = ({
   const handleFullViewClose = () => setFullViewContent(null);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white rounded-xl shadow-lg p-6">
       {fullViewContent && (
         <FullScreenView title="Full View" onClose={handleFullViewClose}>
           {fullViewContent}
@@ -90,7 +90,7 @@ const DistrictSection = ({
       )}
       <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold text-red-600">
+          <h2 className="text-lg r font-semibold text-[#308DE0]">
             Compare this District with another
           </h2>
           <Info size={18} className="text-gray-500 cursor-help" />
@@ -99,7 +99,7 @@ const DistrictSection = ({
           <select
             value={selectedYear}
             onChange={(e) => onYearChange(e.target.value)}
-            className="p-2 border rounded-md"
+            className="p-2 border rounded-md bg-white focus:ring-2 focus:ring-[#308DE0] focus:border-[#308DE0] transition-colors"
           >
             <option value="2025">2025</option>
             <option value="2024">2024</option>
@@ -108,7 +108,7 @@ const DistrictSection = ({
           <select
             value={selectedMonth}
             onChange={(e) => onMonthChange(e.target.value)}
-            className="p-2 border rounded-md"
+            className="p-2 border rounded-md bg-white focus:ring-2 focus:ring-[#308DE0] focus:border-[#308DE0] transition-colors"
           >
             <option value="January">January</option>
             <option value="February">February</option>
@@ -117,7 +117,7 @@ const DistrictSection = ({
           <select
             value={district}
             onChange={(e) => setDistrict(e.target.value)}
-            className="p-2 border rounded-md"
+            className="p-2 border rounded-md bg-white focus:ring-2 focus:ring-[#308DE0] focus:border-[#308DE0] transition-colors"
           >
             <option value="Acholi District">Acholi District</option>
             <option value="Tamawambo District">Tamawambo District</option>
@@ -130,15 +130,7 @@ const DistrictSection = ({
 
       <div className="space-y-6">
         <UgandaMap district={district} />
-        {/* <div className="flex justify-end mb-4">
-          <button
-            onClick={onMapDownload}
-            className="px-4 py-2 text-blue-600 border border-blue-600 rounded hover:bg-blue-50 flex items-center gap-2 transition-colors"
-          >
-            <Download size={18} />
-            Download Map PDF
-          </button>
-        </div> */}
+        
         <TimeSeriesChart
           district={district}
           onFullView={() =>
@@ -163,6 +155,7 @@ const DistrictSection = ({
     </div>
   );
 };
+
 export default function Home() {
   const [selectedIndicator, setSelectedIndicator] = useState(
     "Combined Drought Index (CDI)"
@@ -181,7 +174,7 @@ export default function Home() {
   };
 
   const handleClearFilters = () => {
-    setSelectedIndicator(" CDI");
+    setSelectedIndicator("Combined Drought Index (CDI)");
     setSelectedYear("2025");
     setSelectedMonth("January");
     setLeftDistrict("Acholi District");
@@ -189,64 +182,62 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
-      <div className="lg:w-72 bg-[#308DE0] text-white">
-        <div className="p-6 space-y-6">
-          <div>
-            <div className="mb-8">
-              <h2 className="text-white flex items-center gap-2 text-lg font-semibold">
-                <Filter className="h-5 w-5 text-white/80" />
-                Dashboard Filters
-              </h2>
-              <p className="text-sm text-white/70 mt-2">
-                Refine your analytics view
-              </p>
-            </div>
+    <div className="min-h-screen bg-gray-100">
+      {/* Top Border */}
+      <div className="border-t-2 border-[#308DE0]"></div>
 
-            <label className="flex gap-2 text-sm items-center font-medium mb-3">
-              {" "}
-              <Filter className="h-5 w-5 text-white/80" />
-              Filter Indicators
-            </label>
-            <select
-              className="w-full p-3  border border-white rounded-md text-gray-700 "
-              value={selectedIndicator}
-              onChange={(e) => setSelectedIndicator(e.target.value)}
-            >
-              <option value="Combined Drought Index(CDI)">
-                CDI
-              </option>
-              <option value="Temperature Drought Index (TDI)">
-                TDI
-              </option>
-              <option value="Precipitation Drought Index (PDI)">
-                PDI
-              </option>
-            </select>
+      <div className="p-8">
+        {/* Control Panel */}
+        <div className="max-w-7xl mx-auto mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <div className="flex justify-center w-full">
+              <h1 className="text-3xl font-bold text-black text-center">
+                {selectedIndicator}
+              </h1>
+            </div>
           </div>
 
-          <button
-            onClick={handleDownloadAllPdf}
-            className="w-full px-4 py-3 bg-white text-[#4A8BD0] rounded-md hover:bg-white/90 transition-colors flex items-center justify-center gap-2 font-medium"
-          >
-            <Download size={18} />
-            Download All in PDF
-          </button>
+          <div className=" p-6 flex flex-col md:flex-row items-center justify-center gap-4">
+            <div className="flex items-center gap-2 w-full md:w-auto">
+              <Filter className="h-5 w-5 text-[#308DE0]" />
+              Filter Indicator
+              <select
+                className="p-2 border rounded-md bg-white focus:ring-2 focus:ring-[#308DE0] focus:border-[#308DE0] transition-colors flex-1"
+                value={selectedIndicator}
+                onChange={(e) => setSelectedIndicator(e.target.value)}
+              >
+                <option value="Combined Drought Index (CDI)">CDI</option>
+                <option value="Temperature Drought Index (TDI)">TDI</option>
+                <option value="Precipitation Drought Index (PDI)">PDI</option>
+              </select>
+            </div>
 
-          <button
-            onClick={handleClearFilters}
-            className="w-full px-4 py-3 bg-transparent border border-white text-white rounded-md hover:bg-white/10 transition-colors"
-          >
-            Clear All Filters
-          </button>
+            <button
+              onClick={handleClearFilters}
+              className="px-4 py-2 bg-transparent border-2 border-[#308DE0] text-[#308DE0] rounded-lg hover:bg-[#308DE0]/10 transition-colors w-full md:w-auto"
+            >
+              Clear All Filters
+            </button>
+            <div className="flex items-center gap-4 w-full md:w-auto">
+              <button
+                onClick={handleDownloadAllPdf}
+                className="px-4 py-2 bg-[#308DE0] text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors ml-auto"
+              >
+                <Download size={18} />
+                Download Comparison
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div className="flex-1 p-8">
-        <h1 className="text-2xl font-bold text-center mb-8 text-[#4A8BD0]">
-          {selectedIndicator}
-        </h1>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="mb-6 text-center">
+          <h2 className="text-xl font-semibold text-[#e03030]">
+            Comparing: {leftDistrict} vs {rightDistrict}
+          </h2>
+        </div>
+
+        {/* Comparison Sections */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
           <DistrictSection
             district={leftDistrict}
             setDistrict={setLeftDistrict}
