@@ -2,9 +2,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { DROUGHT_SEVERITY_LEVELS } from "../../utils/drought_levels";
+import { DROUGHT_SEVERITY_LEVELS } from "../utils/drought_levels";
 import { FiDownload, FiInfo } from "react-icons/fi";
-import { useSideberStore } from "../../store/useSideberStore";
+import { useSideberStore } from "../store/useSideberStore";
 
 // Define available years and months (the slider will cover 2001-2025)
 const years = Array.from({ length: 25 }, (_, i) => 2001 + i);

@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "app/dashboard/[views]/DashboardNav.js", "app/dashboard/[views]/MapView.js", "app/dashboard/[views]/DetailedView.jsx", "app/dashboard/[views]/TimeSeries.jsx", "app/dashboard/[views]/Sidebar.jsx", "app/dashboard/[views]/TableView.jsx"  ],
+, "app/dashboard/DashboardNav.js", "app/dashboard/MapView.js", "app/dashboard/[views]/DetailedView.jsx", "app/dashboard/[views]/TimeSeries.jsx", "app/dashboard/Sidebar.jsx", "app/dashboard/TableView.jsx"  ],
   "exclude": [
     "node_modules"
   ]
