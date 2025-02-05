@@ -136,57 +136,34 @@ export default function Home() {
             />
           </svg>
         </button>
-          <h2 className="text-2xl font-semibold ">
-            Description of the Drought Index
-          </h2>
-          <p className="">
-            Drought is conceived in this study as a combination of the
-            following: a precipitation component, which considers rainfall
-            deficits and dryness persistence; a vegetation component,
-            which is used as a proxy for soil moisture deficit and which
-            considers NDVI deficits and deficit persistence; and a
-            temperature component, which considers temperature excesses
-            and persistence of high temperatures. The drought index
-            calculated using the precipitation component is referred to in
-            the study as the <i>Precipitation Drought Index (PDI)</i>,
-            while the index based on temperature is named the{" "}
-            <i>Temperature Drought Index (TDI)</i>
-            and that based on the vegetation component is named the{" "}
-            <i>Vegetation Drought Index (VDI)</i>. The drought index that
-            combines the three drought components is named the{" "}
-            <i>Combined Drought Index (CDI)</i>. Based on the
-            considerations in the preceding text, the CDI was developed by
-            Balint et al. (2011). The new index is a statistical index
-            comparing the present hydrometeorological conditions with the
-            long-term average characteristics in the same interest period
-            within the year.
-          </p>
+        <h2 className="text-xl font-semibold mt-6 mb-2">Calculation of the CDI</h2>
+    <p className="mb-4">Within this tool, drought is conceived as a combination of the following: a precipitation component, a vegetation component, and a temperature component...</p>
+    
+    <h2 className="text-xl font-semibold mt-6 mb-2">How to Interpret the TDI, PDI and CDI values</h2>
+    <p className="mb-4">By definition of CDI Equation, CDI=1.0 represents average weather conditions. If the CDI is greater than 1.0, it represents wetter than average...</p>
+    
+    <table className="w-full border-collapse border border-gray-300 mt-4">
+        <thead>
+            <tr className="bg-gray-200">
+                <th className="border border-gray-300 px-4 py-2">Color</th>
+                <th className="border border-gray-300 px-4 py-2">Value</th>
+                <th className="border border-gray-300 px-4 py-2">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td className="border border-gray-300 px-4 py-2">&lt; 0.4</td>
+                <td className="border border-gray-300 px-4 py-2">Extreme</td>
+                <td className="border border-gray-300 px-4 py-2">Major loss of crops and pasture...</td>
+            </tr>
+            <tr className="bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2">0.4 - 0.6</td>
+                <td className="border border-gray-300 px-4 py-2">Severe</td>
+                <td className="border border-gray-300 px-4 py-2">Wider scale of loss of crops...</td>
+            </tr>
+        </tbody>
+    </table>
 
-          <h2 className="text-2xl font-semibold ">
-            1.1.1 Calculation of the Precipitation, the Temperature and
-            the Soil Moisture/Vegetation Drought Indices (PDI, TDI and
-            MDI/VDI)
-          </h2>
-          <p className="">
-            In the present approach, drought is conceived as a combination
-            of the following components:
-          </p>
-          <ul className="list-disc ml-8 space-y-2 ">
-            <li>
-              a precipitation component that considers (1) rainfall
-              deficits and (2) dryness persistence;
-            </li>
-            <li>
-              a temperature component that considers (3) temperature
-              excesses and (4) persistence of high temperatures;
-            </li>
-            <li>
-              a soil moisture component that considers (5) soil moisture
-              deficit and (6) persistence of dry soil conditions – because
-              of limitations in soil moisture observations, this is
-              approximated by NDVI deficits and deficit persistence.
-            </li>
-          </ul>
         </div>
 
        
