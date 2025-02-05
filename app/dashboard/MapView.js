@@ -25,16 +25,12 @@ const months = [
 
 const MapView = () => {
   // Set default to June 2024 and default raster type to "PDI"
-  let {
-    indicator,
-    timerange,
-    month,
-    district,
-    
-  } = useSideberStore((state) => state);
+  let { indicator, timerange, month, district } = useSideberStore(
+    (state) => state
+  );
   const [selectedYear, setSelectedYear] = useState(timerange);
   const [selectedMonth, setSelectedMonth] = useState(month); // 0-indexed (5 = June)
-  const [selectedDistrict, setSelectedDistrict] = useState(district); 
+  const [selectedDistrict, setSelectedDistrict] = useState(district);
   const [selectedRasterType, setSelectedRasterType] = useState(indicator);
 
   // Refs to store the map container and Leaflet instances
@@ -73,11 +69,13 @@ const MapView = () => {
     };
 
     // Create the map instance, setting the initial base layer
-    mapInstance.current = L.map(mapRef.current, {
-      center: [1.2, 34.5],
-      zoom: 6,
-      layers: [baseMapsRef.current["OpenStreetMap"]],
-    });
+   
+      mapInstance.current = L.map(mapRef.current, {
+        center: [1.2, 34.5],
+        zoom: 6,
+        layers: [baseMapsRef.current["OpenStreetMap"]],
+      });
+    
 
     // Create the Districts layer (always visible) using the workspace "cdi"
     districtLayerRef.current = L.tileLayer
@@ -105,8 +103,7 @@ const MapView = () => {
       .addTo(mapInstance.current);
 
     // Build the initial overlay name (e.g., "PDI June 2024")
-    const displayName =
-    indicator + " " + month + " " + timerange;
+    const displayName = indicator + " " + month + " " + timerange;
 
     // Create the layer control including base layers and overlays (raster and districts)
     layerControlRef.current = L.control
@@ -134,8 +131,7 @@ const MapView = () => {
     const monthLower = selectedMonth.toLowerCase();
     const newWmsLayerName =
       "cdi:Raw_" + indicator + "_" + month + "_" + timerange;
-    const newDisplayName =
-    indicator + " " + month + " " + timerange;
+    const newDisplayName = indicator + " " + month + " " + timerange;
 
     // Create and add the updated raster layer
     rasterLayerRef.current = L.tileLayer
@@ -301,7 +297,7 @@ const MapView = () => {
             <div className="w-2 h-2 bg-white rounded-full" />
             <span>
               Real-time drought monitoring using FAO Combined Drought Index
-               (CDI)
+              (CDI)
             </span>
           </li>
           <li className="flex items-center space-x-2">
