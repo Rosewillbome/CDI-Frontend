@@ -5,6 +5,7 @@ import DashboardNav from "./DashboardNav";
 import Sidebar from "./Sidebar";
 // import MapView from "./MapView";
 import TableView from "./TableView";
+import dynamic from 'next/dynamic';
 const MapView = dynamic(() => import('./MapView'), {
   loading: () => <p>Loading Map...</p>,
   ssr: false,
