@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { Calendar, Filter, Clock, MapPin } from "lucide-react";
-import { useSideberStore } from "../../store/useSideberStore";
-import { showYears, months } from "../../utils/selectYear";
+import { useSideberStore } from "../store/useSideberStore";
+import { showYears, months } from "../utils/selectYear";
 
 const Sidebar = () => {
   let {
