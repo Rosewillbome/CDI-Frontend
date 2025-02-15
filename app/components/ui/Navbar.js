@@ -14,10 +14,10 @@ function Navbar() {
     <div className="bg-gray-100 shadow-md flex justify-between items-center px-8 py-4">
       {/* Left Section - Title */}
       <div className="flex flex-col items-start">
-        <h2 className="text-lg text-blue-600 font-light tracking-wide uppercase">
+        <h2 className="text-lg text-[#308DE0] font-light tracking-wide uppercase">
           Uganda National Drought
         </h2>
-        <h1 className="text-2xl md:text-3xl text-blue-700 font-semibold uppercase ">
+        <h1 className="text-2xl md:text-3xl text-[#308DE0] font-semibold uppercase ">
           Monitoring Tool
         </h1>
       </div>
