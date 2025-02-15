@@ -227,7 +227,7 @@ export default function Home() {
           </div>
 
           <div className=" p-6 flex flex-col md:flex-row items-center justify-center gap-4">
-            <div className="flex items-center gap-2 w-full md:w-auto">
+            {/* <div className="flex items-center gap-2 w-full md:w-auto">
               <Filter className="h-5 w-5 text-[#308DE0]" />
               Filter Indicator
               <select
@@ -239,14 +239,14 @@ export default function Home() {
                 <option value="Temperature Drought Index (TDI)">TDI</option>
                 <option value="Precipitation Drought Index (PDI)">PDI</option>
               </select>
-            </div>
+            </div> */}
 
-            <button
+            {/* <button
               onClick={handleClearFilters}
               className="px-4 py-2 bg-transparent border-2 border-[#308DE0] text-[#308DE0] rounded-lg hover:bg-[#308DE0]/10 transition-colors w-full md:w-auto"
             >
               Clear All Filters
-            </button>
+            </button> */}
             <div className="flex items-center gap-4 w-full md:w-auto">
               <button
                 onClick={handleDownloadAllPdf}

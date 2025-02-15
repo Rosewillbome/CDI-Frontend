@@ -1,7 +1,7 @@
-"use client";
 import React, { useState, useRef, useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import leafletImage from "leaflet-image";
 import { DROUGHT_SEVERITY_LEVELS } from "../utils/drought_levels";
 import { FiDownload, FiInfo } from "react-icons/fi";
 import { useSideberStore } from "../store/useSideberStore";
@@ -46,7 +46,7 @@ const MapView = () => {
 
   // Initialize the Leaflet map (runs only once after mounting)
   useEffect(() => {
-    if (!mapRef.current) return;
+    if (!mapRef.current || mapInstance.current) return; // Ensure map is not already initialized
 
     // Define base layers
     baseMapsRef.current = {
@@ -69,13 +69,11 @@ const MapView = () => {
     };
 
     // Create the map instance, setting the initial base layer
-   
-      mapInstance.current = L.map(mapRef.current, {
-        center: [1.2, 34.5],
-        zoom: 6,
-        layers: [baseMapsRef.current["OpenStreetMap"]],
-      });
-    
+    mapInstance.current = L.map(mapRef.current, {
+      center: [1.2, 34.5],
+      zoom: 6,
+      layers: [baseMapsRef.current["OpenStreetMap"]],
+    });
 
     // Create the Districts layer (always visible) using the workspace "cdi"
     districtLayerRef.current = L.tileLayer
@@ -175,13 +173,37 @@ const MapView = () => {
     setSelectedMonth(month);
   };
 
+  // Handler for downloading the map as an image
+  const handleDownloadMap = () => {
+    if (!mapInstance.current) return;
+
+    // Use leaflet-image to capture the map as a canvas
+    leafletImage(mapInstance.current, (err, canvas) => {
+      if (err) {
+        console.error("Error capturing map:", err);
+        return;
+      }
+
+      // Convert the canvas to a data URL
+      const image = canvas.toDataURL("image/png");
+
+      // Create a temporary link element to trigger the download
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = `map_${selectedRasterType}_${months[selectedMonth]}_${selectedYear}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  };
+
   return (
     <div className="bg-gray-50 flex flex-col h-full p-6 space-y-6">
       {/* Header Section */}
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center space-x-3">
           <h1 className="text-3xl font-bold text-gray-800">
-            Combined Drought Index (CDI)
+            Combined Drought Index (CDI) - {selectedRasterType} {months[selectedMonth]} {selectedYear}
           </h1>
         </div>
         <h2 className="text-xl text-gray-600 font-medium">
@@ -193,16 +215,8 @@ const MapView = () => {
       <div className="flex h-[60vh] mb-4 gap-6">
         {/* Map Section */}
         <div className="w-[60%] bg-white rounded-xl shadow-lg p-4 relative">
-          <div className="absolute top-4 right-4 flex space-x-2 z-10">
-            <button
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip"
-              data-tooltip="Download Map"
-            >
-              <FiDownload className="text-gray-600" size={20} />
-            </button>
-          </div>
-          {/* Legend */}
-          <div className="absolute top-4 left-4 bg-white shadow-lg p-2 text-sm z-10">
+          {/* Legend at the bottom-right corner */}
+          <div className="absolute bottom-4 right-4 z-[1000] bg-white shadow-lg p-2 text-sm rounded-lg">
             <h3 className="font-semibold mb-2">Legend</h3>
             <div className="space-y-1">
               {DROUGHT_SEVERITY_LEVELS.map((level) => (
@@ -211,7 +225,7 @@ const MapView = () => {
                   className="flex items-center space-x-2 p-1"
                   style={{ backgroundColor: level.color }}
                 >
-                  <span className="text-xs ">{level.label}</span>
+                  <span className="text-xs">{level.label}</span>
                   <span className="text-[10px] text-gray-600">
                     ({level.range})
                   </span>
@@ -219,6 +233,18 @@ const MapView = () => {
               ))}
             </div>
           </div>
+
+          {/* Download Button at the bottom-left corner */}
+          <div className="absolute bottom-4 left-4 z-[1000]">
+            <button
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip"
+              data-tooltip="Download Map"
+              onClick={handleDownloadMap}
+            >
+              <FiDownload className="text-gray-600" size={20} />
+            </button>
+          </div>
+
           {/* Leaflet map container */}
           <div
             ref={mapRef}
