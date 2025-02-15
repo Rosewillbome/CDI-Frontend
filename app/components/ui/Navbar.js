@@ -7,7 +7,7 @@ function Navbar() {
   const navItems = [
     { path: "/", label: "Overview" },
     { path: "/dashboard", label: "Dashboard" },
-    { path: "/compare-districts", label: "District Comparison" },
+    { path: "/compare-districts", label: "Comparison" },
     { path: "/static-maps", label: "Maps" },
   ];
   return (
