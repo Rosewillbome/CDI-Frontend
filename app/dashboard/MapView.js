@@ -286,7 +286,7 @@ const MapView = () => {
             <div className="w-2 h-2 bg-white rounded-full" />
             <span>
               Supports Uganda's climate resilience and sustainable resource
-              management
+              management.
             </span>
           </li>
         </ul>
