@@ -203,11 +203,11 @@ const MapView = () => {
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center space-x-3">
           <h1 className="text-3xl font-bold text-gray-800">
-            Combined Drought Index (CDI) - {selectedRasterType} {months[selectedMonth]} {selectedYear}
+            Combined Drought Index (CDI)
           </h1>
         </div>
         <h2 className="text-xl text-gray-600 font-medium">
-          {selectedDistrict || "Acholi District"}
+          {selectedDistrict || "All"}
         </h2>
       </div>
 
