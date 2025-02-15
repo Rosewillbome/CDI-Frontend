@@ -79,41 +79,38 @@ function Page() {
                     </div>
                 </div>
 
-                {/* Add scrolling for more years */}
-                <div className="overflow-x-auto">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-                        {years.map((year) => (
-                            <div key={year} className="space-y-8">
-                                <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                                    <div className="p-4 bg-[#4A8BD0] text-white">
-                                        <h3 className="text-lg font-semibold">{year}</h3>
-                                    </div>
-                                    <div className="p-4">
-                                        {/* Show all 12 months */}
-                                        {months.map((month) => (
-                                            <div key={`${year}-${month}`} className="mb-4 last:mb-0">
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <span className="text-sm font-medium">{month}</span>
-                                                    <button
-                                                        onClick={() => handleDownloadMap(year, month)}
-                                                        className="text-[#4A8BD0] hover:text-[#3870a8]"
-                                                    >
-                                                        <Download className="h-4 w-4" />
-                                                    </button>
-                                                </div>
-                                                <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[200px]">
-                                                    {/* Placeholder for map */}
-                                                    <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                                                        Map Preview
-                                                    </div>
+                {/* Vertical layout for years */}
+                <div className="space-y-8">
+                    {years.map((year) => (
+                        <div key={year} className="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div className="p-4 bg-[#4A8BD0] text-white">
+                                <h3 className="text-lg font-semibold">{year}</h3>
+                            </div>
+                            <div className="p-4 overflow-x-auto">
+                                <div className="flex space-x-4">
+                                    {months.map((month) => (
+                                        <div key={`${year}-${month}`} className="flex-none w-[300px]">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <span className="text-sm font-medium">{month}</span>
+                                                <button
+                                                    onClick={() => handleDownloadMap(year, month)}
+                                                    className="text-[#4A8BD0] hover:text-[#3870a8]"
+                                                >
+                                                    <Download className="h-4 w-4" />
+                                                </button>
+                                            </div>
+                                            <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
+                                                {/* Placeholder for map */}
+                                                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                                                    Map Preview
                                                 </div>
                                             </div>
-                                        ))}
-                                    </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
