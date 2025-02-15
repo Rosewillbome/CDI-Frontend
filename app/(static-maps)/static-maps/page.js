@@ -5,8 +5,9 @@ import { DROUGHT_SEVERITY_LEVELS } from '../../utils/drought_levels';
 
 function Page() {
     const [selectedIndicator, setSelectedIndicator] = useState('CDI');
-    const [yearRange, setYearRange] = useState({ start: 2001, end: new Date().getFullYear() });
-    const [selectedYear, setSelectedYear] = useState(2001);
+    const currentYear = new Date().getFullYear();
+    const [yearRange, setYearRange] = useState({ start: currentYear - 4, end: currentYear }); // Default: Last 5 years
+    const [selectedYear, setSelectedYear] = useState(currentYear);
     const [selectedMonth, setSelectedMonth] = useState('January');
 
     const months = [
@@ -23,10 +24,18 @@ function Page() {
         console.log(`Downloading map for ${month} ${year}`);
     };
 
+    const handleDownloadAllMaps = () => {
+        console.log('Downloading all maps');
+        // Implement the logic to download all maps
+    };
+
     const handleYearRangeChange = (e) => {
         const { name, value } = e.target;
         setYearRange(prev => ({ ...prev, [name]: parseInt(value) }));
     };
+
+    const isSingleYear = yearRange.start === yearRange.end;
+    const isMoreThanFiveYears = years.length > 5;
 
     return (
         <div className="min-h-screen bg-white">
@@ -44,7 +53,7 @@ function Page() {
                             <option value="Rainfall">Rainfall</option>
                         </select>
                         <button
-                            onClick={() => handleDownloadMap(selectedYear, selectedMonth)}
+                            onClick={handleDownloadAllMaps}
                             className="flex items-center space-x-2 bg-[#4A8BD0] text-white px-4 py-2 rounded-md hover:bg-[#3870a8] transition-colors"
                         >
                             <Download className="h-5 w-5" />
@@ -62,7 +71,7 @@ function Page() {
                             onChange={handleYearRangeChange}
                             className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
                         >
-                            {Array.from({ length: new Date().getFullYear() - 2001 + 1 }, (_, i) => 2001 + i).map(year => (
+                            {Array.from({ length: currentYear - 2001 + 1 }, (_, i) => 2001 + i).map(year => (
                                 <option key={year} value={year}>{year}</option>
                             ))}
                         </select>
@@ -72,46 +81,60 @@ function Page() {
                             onChange={handleYearRangeChange}
                             className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
                         >
-                            {Array.from({ length: new Date().getFullYear() - 2001 + 1 }, (_, i) => 2001 + i).map(year => (
+                            {Array.from({ length: currentYear - 2001 + 1 }, (_, i) => 2001 + i).map(year => (
                                 <option key={year} value={year}>{year}</option>
                             ))}
                         </select>
                     </div>
                 </div>
 
-                {/* Vertical layout for years */}
-                <div className="space-y-8">
-                    {years.map((year) => (
-                        <div key={year} className="bg-white  shadow-md overflow-hidden">
-                            <div className="p-4 bg-[#308DE0] text-white">
-                                <h3 className="text-lg font-semibold">{year}</h3>
-                            </div>
-                            <div className="p-4 overflow-x-auto">
-                                <div className="flex space-x-4">
-                                    {months.map((month) => (
-                                        <div key={`${year}-${month}`} className="flex-none w-[300px]">
-                                            <div className="flex justify-between items-center mb-2">
-                                                <span className="text-sm font-medium">{month}</span>
-                                                <button
-                                                    onClick={() => handleDownloadMap(year, month)}
-                                                    className="text-[#4A8BD0] hover:text-[#3870a8]"
-                                                >
-                                                    <Download className="h-4 w-4" />
-                                                </button>
-                                            </div>
-                                            <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
-                                                {/* Placeholder for map */}
-                                                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                                                    Map Preview
-                                                </div>
-                                            </div>
+                {isMoreThanFiveYears ? (
+                    <div className="text-center py-8">
+                        <p className="text-lg font-semibold mb-4">You have selected more than five years. Please download all maps.</p>
+                        <button
+                            onClick={handleDownloadAllMaps}
+                            className="flex items-center space-x-2 bg-[#4A8BD0] text-white px-4 py-2 rounded-md hover:bg-[#3870a8] transition-colors mx-auto"
+                        >
+                            <Download className="h-5 w-5" />
+                            <span>Download All Maps</span>
+                        </button>
+                    </div>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <div className={`${isSingleYear ? 'w-full' : 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8'}`}>
+                            {years.map((year) => (
+                                <div key={year} className={`${isSingleYear ? 'w-full' : 'space-y-8'}`}>
+                                    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                                        <div className="p-4 bg-[#4A8BD0] text-white">
+                                            <h3 className="text-lg font-semibold">{year}</h3>
                                         </div>
-                                    ))}
+                                        <div className={`p-4 ${isSingleYear ? 'grid grid-cols-6 gap-6' : ''}`}>
+                                            {months.map((month) => (
+                                                <div key={`${year}-${month}`} className={`${isSingleYear ? 'col-span-1' : 'mb-4 last:mb-0'}`}>
+                                                    <div className="flex justify-between items-center mb-2">
+                                                        <span className="text-sm font-medium">{month}</span>
+                                                        <button
+                                                            onClick={() => handleDownloadMap(year, month)}
+                                                            className="text-[#4A8BD0] hover:text-[#3870a8]"
+                                                        >
+                                                            <Download className="h-4 w-4" />
+                                                        </button>
+                                                    </div>
+                                                    <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[200px]">
+                                                        {/* Placeholder for map */}
+                                                        <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                                                            Map Preview
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    </div>
+                )}
             </div>
         </div>
     );
