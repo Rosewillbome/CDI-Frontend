@@ -48,6 +48,24 @@ const TDIChart = ({ district, onFullView }) => {
     </div>
   );
 };
+const PDIChart = ({ district, onFullView }) => {
+  return (
+    <div className="mb-6 relative">
+      <h3 className="text-lg font-semibold mb-4">
+        Precipitation Drought Index (TDI)
+      </h3>
+      <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-center text-gray-500">
+        PDI Analysis for {district}
+      </div>
+      <button
+        onClick={onFullView}
+        className="absolute top-2 right-2 px-3 py-1.5 bg-[#308DE0] text-white text-sm rounded-lg hover:bg-blue-700 flex items-center gap-1 shadow-md"
+      >
+        Full View <ArrowUpRight size={16} />
+      </button>
+    </div>
+  );
+};
 
 const FullScreenView = ({ title, children, onClose }) => {
   return (
@@ -119,6 +137,7 @@ const DistrictSection = ({
             onChange={(e) => setDistrict(e.target.value)}
             className="p-2 border rounded-md bg-white focus:ring-2 focus:ring-[#308DE0] focus:border-[#308DE0] transition-colors"
           >
+            <option value="All">All</option>
             <option value="Acholi District">Acholi District</option>
             <option value="Tamawambo District">Tamawambo District</option>
             <option value="Kampala District">Kampala District</option>
@@ -147,6 +166,16 @@ const DistrictSection = ({
             setFullViewContent(
               <div className="h-full flex items-center justify-center bg-gray-100">
                 Full Screen TDI Chart for {district}
+              </div>
+            )
+          }
+        />
+        <PDIChart
+          district={district}
+          onFullView={() =>
+            setFullViewContent(
+              <div className="h-full flex items-center justify-center bg-gray-100">
+                Full Screen PDI Chart for {district}
               </div>
             )
           }
