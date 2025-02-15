@@ -175,11 +175,6 @@ const MapView = () => {
     setSelectedMonth(month);
   };
 
-  // Handler for raster type change (PDI/TDI)
-  // const handleRasterTypeChange = (event) => {
-  //   setSelectedRasterType(event.target.value);
-  // };
-
   return (
     <div className="bg-gray-50 flex flex-col h-full p-6 space-y-6">
       {/* Header Section */}
@@ -198,7 +193,7 @@ const MapView = () => {
       <div className="flex h-[60vh] mb-4 gap-6">
         {/* Map Section */}
         <div className="w-[60%] bg-white rounded-xl shadow-lg p-4 relative">
-          <div className="absolute top-4 right-4 flex space-x-2">
+          <div className="absolute top-4 right-4 flex space-x-2 z-10">
             <button
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip"
               data-tooltip="Download Map"
@@ -206,15 +201,8 @@ const MapView = () => {
               <FiDownload className="text-gray-600" size={20} />
             </button>
           </div>
-          {/* Leaflet map container */}
-          <div
-            ref={mapRef}
-            id="leaflet-map"
-            className="h-full w-full rounded-lg"
-          />
-
           {/* Legend */}
-          <div className="absolute bottom-4 right-4 bg-white shadow-lg p-2 text-sm">
+          <div className="absolute top-4 left-4 bg-white shadow-lg p-2 text-sm z-10">
             <h3 className="font-semibold mb-2">Legend</h3>
             <div className="space-y-1">
               {DROUGHT_SEVERITY_LEVELS.map((level) => (
@@ -231,6 +219,12 @@ const MapView = () => {
               ))}
             </div>
           </div>
+          {/* Leaflet map container */}
+          <div
+            ref={mapRef}
+            id="leaflet-map"
+            className="h-full w-full rounded-lg"
+          />
         </div>
 
         {/* Chart Section */}
@@ -269,25 +263,6 @@ const MapView = () => {
           className="w-full range-slider"
         />
       </div>
-
-      {/* Raster Type Selector */}
-      {/* <div className="flex items-center space-x-3">
-        <label
-          className="text-lg font-semibold text-gray-700"
-          htmlFor="rasterTypeSelect"
-        >
-          Raster Type:
-        </label>
-        <select
-          id="rasterTypeSelect"
-          value={selectedRasterType}
-          onChange={handleRasterTypeChange}
-          className="p-2 rounded border"
-        >
-          <option value="PDI">PDI</option>
-          <option value="TDI">TDI</option>
-        </select>
-      </div> */}
 
       {/* Key Note Section */}
       <div className="w-[60%] bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl shadow-lg p-6">
