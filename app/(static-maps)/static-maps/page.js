@@ -82,8 +82,8 @@ function Page() {
                 {/* Vertical layout for years */}
                 <div className="space-y-8">
                     {years.map((year) => (
-                        <div key={year} className="bg-white rounded-lg shadow-md overflow-hidden">
-                            <div className="p-4 bg-[#4A8BD0] text-white">
+                        <div key={year} className="bg-white  shadow-md overflow-hidden">
+                            <div className="p-4 bg-[#308DE0] text-white">
                                 <h3 className="text-lg font-semibold">{year}</h3>
                             </div>
                             <div className="p-4 overflow-x-auto">
