@@ -48,6 +48,24 @@ const TDIChart = ({ district, onFullView }) => {
     </div>
   );
 };
+const PDIChart = ({ district, onFullView }) => {
+  return (
+    <div className="mb-6 relative">
+      <h3 className="text-lg font-semibold mb-4">
+        Precipitation Drought Index (TDI)
+      </h3>
+      <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-center text-gray-500">
+        PDI Analysis for {district}
+      </div>
+      <button
+        onClick={onFullView}
+        className="absolute top-2 right-2 px-3 py-1.5 bg-[#308DE0] text-white text-sm rounded-lg hover:bg-blue-700 flex items-center gap-1 shadow-md"
+      >
+        Full View <ArrowUpRight size={16} />
+      </button>
+    </div>
+  );
+};
 
 const FullScreenView = ({ title, children, onClose }) => {
   return (
@@ -119,6 +137,7 @@ const DistrictSection = ({
             onChange={(e) => setDistrict(e.target.value)}
             className="p-2 border rounded-md bg-white focus:ring-2 focus:ring-[#308DE0] focus:border-[#308DE0] transition-colors"
           >
+            <option value="All">All</option>
             <option value="Acholi District">Acholi District</option>
             <option value="Tamawambo District">Tamawambo District</option>
             <option value="Kampala District">Kampala District</option>
@@ -147,6 +166,16 @@ const DistrictSection = ({
             setFullViewContent(
               <div className="h-full flex items-center justify-center bg-gray-100">
                 Full Screen TDI Chart for {district}
+              </div>
+            )
+          }
+        />
+        <PDIChart
+          district={district}
+          onFullView={() =>
+            setFullViewContent(
+              <div className="h-full flex items-center justify-center bg-gray-100">
+                Full Screen PDI Chart for {district}
               </div>
             )
           }
@@ -198,7 +227,7 @@ export default function Home() {
           </div>
 
           <div className=" p-6 flex flex-col md:flex-row items-center justify-center gap-4">
-            <div className="flex items-center gap-2 w-full md:w-auto">
+            {/* <div className="flex items-center gap-2 w-full md:w-auto">
               <Filter className="h-5 w-5 text-[#308DE0]" />
               Filter Indicator
               <select
@@ -210,14 +239,14 @@ export default function Home() {
                 <option value="Temperature Drought Index (TDI)">TDI</option>
                 <option value="Precipitation Drought Index (PDI)">PDI</option>
               </select>
-            </div>
+            </div> */}
 
-            <button
+            {/* <button
               onClick={handleClearFilters}
               className="px-4 py-2 bg-transparent border-2 border-[#308DE0] text-[#308DE0] rounded-lg hover:bg-[#308DE0]/10 transition-colors w-full md:w-auto"
             >
               Clear All Filters
-            </button>
+            </button> */}
             <div className="flex items-center gap-4 w-full md:w-auto">
               <button
                 onClick={handleDownloadAllPdf}
