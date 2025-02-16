@@ -19,6 +19,12 @@ const UgandaMap = () => {
       });
   }, []);
 
+  const geoJsonStyle = () => ({
+    color: 'gray',
+    weight: 2,
+    fillOpacity: 0.3
+  });
+
   const onEachFeature = (feature, layer) => {
     layer.on({
       mouseover: (event) => {
@@ -32,12 +38,8 @@ const UgandaMap = () => {
       },
       mouseout: (event) => {
         const layer = event.target;
-        layer.setStyle({
-          weight: 2,
-          color: 'gray',
-          fillOpacity: 0.3
-        });
-        layer.unbindTooltip();
+        layer.setStyle(geoJsonStyle());
+        layer.closeTooltip();
       }
     });
   };
@@ -60,8 +62,8 @@ const UgandaMap = () => {
           <div className="spinner"></div>
         </div>
       )}
-      <MapContainer center={[1.3733, 32.2903]} zoom={7} style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
-        {geoData && <GeoJSON data={geoData} style={{ color: 'gray', weight: 2 }} onEachFeature={onEachFeature} />}
+      <MapContainer center={[1.3733, 32.2903]} zoom={7} style={{ height: '100%', width: '100%', background:'transparent' }}>
+        {geoData && <GeoJSON data={geoData} style={geoJsonStyle} onEachFeature={onEachFeature} />}
       </MapContainer>
     </div>
   );
