@@ -19,51 +19,53 @@ const UgandaMap = () => {
       });
   }, []);
 
-  const geoJsonStyle = () => ({
-    color: 'gray',
-    weight: 2,
-    fillOpacity: 0.3
-  });
+  const defaultStyle = {
+    color: 'black', 
+    weight: 1.5,
+    fillColor: '#72B3E0', 
+    fillOpacity: 0.6,
+  };
+
+  const highlightStyle = {
+    color: 'blue',
+    weight: 3,
+    fillColor: '#651D32', 
+    fillOpacity: 0.8,
+  };
 
   const onEachFeature = (feature, layer) => {
     layer.on({
       mouseover: (event) => {
         const layer = event.target;
-        layer.setStyle({
-          weight: 4,
-          color: 'blue',
-          fillOpacity: 0.5
-        });
-        layer.bindTooltip(feature.properties.name, { permanent: false }).openTooltip();
+        layer.setStyle(highlightStyle);
+        layer.bringToFront();
+        layer.bindTooltip(
+          `<b>${feature.properties.name}</b>`,
+          { permanent: false, direction: 'top', opacity: 0.9 }
+        ).openTooltip();
       },
       mouseout: (event) => {
         const layer = event.target;
-        layer.setStyle(geoJsonStyle());
+        layer.setStyle(defaultStyle);
         layer.closeTooltip();
       }
     });
   };
 
   return (
-    <div style={{ position: 'relative', height: '60vh', width: '100%' }}>
-      {loading && (
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          zIndex: 9999
-        }}>
-          <div className="spinner"></div>
-        </div>
-      )}
-      <MapContainer center={[1.3733, 32.2903]} zoom={7} style={{ height: '100%', width: '100%', background:'transparent' }}>
-        {geoData && <GeoJSON data={geoData} style={geoJsonStyle} onEachFeature={onEachFeature} />}
+    <div style={{ position: 'relative', height: '60vh', width: '100%', background: '#f0f0f0' }}>
+      <MapContainer 
+        center={[1.3733, 32.2903]} 
+        zoom={7} 
+        style={{ height: '100%', width: '100%', background:'transparent'}}
+      >
+        {geoData && (
+          <GeoJSON 
+            data={geoData} 
+            style={() => defaultStyle} 
+            onEachFeature={onEachFeature} 
+          />
+        )}
       </MapContainer>
     </div>
   );
