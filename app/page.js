@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Sun, Droplet, Menu, ChevronLeft } from "lucide-react";
+import UgandaMap from './components/map/UgandaMap';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("introduction");
@@ -317,17 +318,18 @@ export default function Home() {
 
         <div className="mt-8">
           <div className="flex justify-center">
-            <h2 className="text-xl font-semibold text-[#308DE0]">
+            <h2 className="text-xl font-semibold text-[#308DE0] mb-6">
               {getActiveTabTitle()}
             </h2>
           </div>
 
           {/* Map Placeholder and Legend */}
-          <div className="relative h-[600px]">
+          <div className="relative h-[500px]">
             {/* Map Placeholder */}
-            <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
-              <span className="text-gray-500">Map Placeholder</span>
+            <div className="w-full h-full  rounded-lg flex items-center justify-center">
+              <UgandaMap/>
             </div>
+            
 
             {/* Legend */}
             <div className="absolute bottom-4 right-4 bg-white p-1 shadow-md">

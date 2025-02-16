@@ -207,7 +207,7 @@ const MapView = () => {
           </h1>
         </div>
         <h2 className="text-xl text-gray-600 font-medium">
-          {selectedDistrict || "All"}
+          {selectedDistrict || ""}
         </h2>
       </div>
 
