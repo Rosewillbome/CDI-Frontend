@@ -65,7 +65,7 @@ const UgandaMap = () => {
         <MapContainer
           center={[1.3733, 32.2903]}
           zoom={7}
-          style={{ height: '100%', width: '100%' }}
+          style={{ height: '100%', width: '100%', background:'transparent' }}
         >
           {geoData && <GeoJSON data={geoData} style={() => defaultStyle} onEachFeature={onEachFeature} />}
         </MapContainer>
