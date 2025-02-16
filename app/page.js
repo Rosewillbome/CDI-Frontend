@@ -98,17 +98,18 @@ export default function Home() {
                 </p>
 
                 <p className="mb-4">
-                  This is in response to the country’s increasing vulnerability to
-                  drought and other natural hazards. Over the past decade, Uganda
-                  faces a growing number of hazards each year, with the INFORM Risk
-                  Index ranking the country 12th out of 191 globally in 2024,
-                  showing a worsening situation compared to the previous year.
+                  This is in response to the country’s increasing vulnerability
+                  to drought and other natural hazards. Over the past decade,
+                  Uganda faces a growing number of hazards each year, with the
+                  INFORM Risk Index ranking the country 12th out of 191 globally
+                  in 2024, showing a worsening situation compared to the
+                  previous year.
                 </p>
 
                 <p className="mb-4">
-                  As an agrarian nation heavily dependent on rain-fed agriculture,
-                  Uganda’s food security and livelihoods are particularly vulnerable
-                  to meteorological droughts...
+                  As an agrarian nation heavily dependent on rain-fed
+                  agriculture, Uganda’s food security and livelihoods are
+                  particularly vulnerable to meteorological droughts...
                 </p>
 
                 <h2 className="text-xl font-semibold mt-6 mb-2">
@@ -116,17 +117,17 @@ export default function Home() {
                 </h2>
                 <p className="mb-4">
                   Within this tool, drought is conceived as a combination of the
-                  following: a precipitation component, a vegetation component, and
-                  a temperature component...
+                  following: a precipitation component, a vegetation component,
+                  and a temperature component...
                 </p>
 
                 <h2 className="text-xl font-semibold mt-6 mb-2">
                   How to Interpret the TDI, PDI and CDI values
                 </h2>
                 <p className="mb-4">
-                  By definition of CDI Equation, CDI=1.0 represents average weather
-                  conditions. If the CDI is greater than 1.0, it represents wetter than
-                  average...
+                  By definition of CDI Equation, CDI=1.0 represents average
+                  weather conditions. If the CDI is greater than 1.0, it
+                  represents wetter than average...
                 </p>
 
                 <table className="w-full border-collapse border border-gray-300 mt-4">
@@ -194,18 +195,18 @@ export default function Home() {
                     Calculation of the CDI
                   </h2>
                   <p className="mb-4">
-                    Within this tool, drought is conceived as a combination of the
-                    following: a precipitation component, a vegetation component, and
-                    a temperature component...
+                    Within this tool, drought is conceived as a combination of
+                    the following: a precipitation component, a vegetation
+                    component, and a temperature component...
                   </p>
 
                   <h2 className="text-xl font-semibold mt-6 mb-2">
                     How to Interpret the TDI, PDI and CDI values
                   </h2>
                   <p className="mb-4">
-                    By definition of CDI Equation, CDI=1.0 represents average weather
-                    conditions. If the CDI is greater than 1.0, it represents wetter than
-                    average...
+                    By definition of CDI Equation, CDI=1.0 represents average
+                    weather conditions. If the CDI is greater than 1.0, it
+                    represents wetter than average...
                   </p>
 
                   <table className="w-full border-collapse border border-gray-300 mt-4">
@@ -255,7 +256,8 @@ export default function Home() {
           {/* Footer Marquee */}
           <div className="mt-auto overflow-hidden whitespace-nowrap">
             <div className="animate-marquee text-sm font-bold">
-              🌍 Stay informed! Explore the latest drought monitoring updates. 🌍
+              🌍 Stay informed! Explore the latest drought monitoring updates.
+              🌍
             </div>
           </div>
         </div>
@@ -329,9 +331,7 @@ export default function Home() {
 
             {/* Legend */}
             <div className="absolute bottom-4 right-4 bg-white p-1 shadow-md">
-              <h3 className="text-sm text-black font-semibold mb-2">
-                Legend
-              </h3>
+              <h3 className="text-sm text-black font-semibold mb-2">Legend</h3>
               <div className="flex flex-col gap-1">
                 <div
                   className="px-2 py-1 text-sm text-gray-500"
@@ -366,7 +366,7 @@ export default function Home() {
               <div
                 className="bg-[#308DE0] h-3 rounded-full"
                 style={{
-                  width: `${((2025 - progressYear) / (2025 - 2001)) * 100}%`,
+                  width: `${((progressYear - 2001) / (2025 - 2001)) * 100}%`,
                 }}
               ></div>
             </div>

@@ -15,9 +15,10 @@ function Page() {
         'July', 'August', 'September', 'October', 'November', 'December'
     ];
 
+    // Generate years array and sort it based on the year range
     const years = Array.from(
-        { length: yearRange.end - yearRange.start + 1 },
-        (_, i) => yearRange.start + i
+        { length: Math.abs(yearRange.end - yearRange.start) + 1 },
+        (_, i) => (yearRange.start < yearRange.end ? yearRange.start + i : yearRange.start - i)
     );
 
     const handleDownloadMap = (year, month) => {
@@ -101,16 +102,16 @@ function Page() {
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
-                        <div className={`${isSingleYear ? 'w-full' : 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8'}`}>
+                        <div className={`${isSingleYear ? 'w-full' : 'flex flex-col space-y-8'}`}>
                             {years.map((year) => (
                                 <div key={year} className={`${isSingleYear ? 'w-full' : 'space-y-8'}`}>
                                     <div className="bg-white rounded-lg shadow-md overflow-hidden">
                                         <div className="p-4 bg-[#4A8BD0] text-white">
                                             <h3 className="text-lg font-semibold">{year}</h3>
                                         </div>
-                                        <div className={`p-4 ${isSingleYear ? 'grid grid-cols-6 gap-6' : ''}`}>
+                                        <div className={`p-4 ${isSingleYear ? 'grid grid-cols-6 gap-6' : 'flex space-x-4 overflow-x-auto'}`}>
                                             {months.map((month) => (
-                                                <div key={`${year}-${month}`} className={`${isSingleYear ? 'col-span-1' : 'mb-4 last:mb-0'}`}>
+                                                <div key={`${year}-${month}`} className={`${isSingleYear ? 'col-span-1' : 'flex-shrink-0 w-48'}`}>
                                                     <div className="flex justify-between items-center mb-2">
                                                         <span className="text-sm font-medium">{month}</span>
                                                         <button

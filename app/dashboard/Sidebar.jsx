@@ -6,6 +6,7 @@ import { showYears, months } from "../utils/selectYear";
 
 const Sidebar = () => {
   let {
+    title,
     indicator,
     timerange,
     month,
@@ -15,6 +16,7 @@ const Sidebar = () => {
     setMonth,
     setDistrict,
   } = useSideberStore((state) => state);
+  console.log("title", title);
   console.log("indicator", indicator);
   console.log("timerange", timerange);
   return (
@@ -114,6 +116,7 @@ const Sidebar = () => {
               onChange={(e) => setDistrict(e.target.value)}
               className="w-full px-3 py-2 border border-white rounded-lg  text-gray-700"
             >
+              <option className="bg-[#2c5d8a]">All</option>
               <option className="bg-[#2c5d8a]">Acholi</option>
               <option className="bg-[#2c5d8a]">Lango</option>
               <option className="bg-[#2c5d8a]">West Nile</option>
