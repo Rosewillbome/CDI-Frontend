@@ -6,7 +6,7 @@ import { showYears, months } from "../utils/selectYear";
 
 const Sidebar = () => {
   let {
-    title,
+    
     indicator,
     timerange,
     month,
@@ -16,7 +16,7 @@ const Sidebar = () => {
     setMonth,
     setDistrict,
   } = useSideberStore((state) => state);
-  console.log("title", title);
+  
   console.log("indicator", indicator);
   console.log("timerange", timerange);
   return (
