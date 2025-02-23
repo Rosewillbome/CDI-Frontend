@@ -1,7 +1,9 @@
-'use client'
-import React, { useState } from 'react';
+'use client';
+import React, { useState, useEffect, useRef } from 'react';
 import { Download } from 'lucide-react';
 import { DROUGHT_SEVERITY_LEVELS } from '../../utils/drought_levels';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 function Page() {
     const [selectedIndicator, setSelectedIndicator] = useState('CDI');
@@ -37,6 +39,44 @@ function Page() {
 
     const isSingleYear = yearRange.start === yearRange.end;
     const isMoreThanFiveYears = years.length > 5;
+    const isLessThanFiveYears = years.length < 5 && !isSingleYear; // Exclude single year case
+
+    // Function to initialize a Leaflet map
+    const initializeMap = (containerId) => {
+        const map = L.map(containerId, {
+            center: [1.3733, 32.2903], // Center on Uganda
+            zoom: 7,
+        });
+
+        // Add base map layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+        }).addTo(map);
+
+        return map;
+    };
+
+    // Use a ref to store map instances
+    const mapRefs = useRef({});
+
+    // Initialize maps for each preview section
+    useEffect(() => {
+        years.forEach((year) => {
+            months.forEach((month) => {
+                const containerId = `map-${year}-${month}`;
+                if (!mapRefs.current[containerId]) {
+                    mapRefs.current[containerId] = initializeMap(containerId);
+                }
+            });
+        });
+
+        // Cleanup function to remove maps when component unmounts
+        return () => {
+            Object.values(mapRefs.current).forEach((map) => {
+                if (map) map.remove();
+            });
+        };
+    }, [years, months]);
 
     return (
         <div className="min-h-screen bg-white">
@@ -100,18 +140,29 @@ function Page() {
                             <span>Download All Maps</span>
                         </button>
                     </div>
+                ) : isLessThanFiveYears ? (
+                    <div className="text-center py-8">
+                        <p className="text-lg font-semibold mb-4">You have selected less than five years. Please select a 5-year range or download all maps.</p>
+                        <button
+                            onClick={handleDownloadAllMaps}
+                            className="flex items-center space-x-2 bg-[#4A8BD0] text-white px-4 py-2 rounded-md hover:bg-[#3870a8] transition-colors mx-auto"
+                        >
+                            <Download className="h-5 w-5" />
+                            <span>Download All Maps</span>
+                        </button>
+                    </div>
                 ) : (
                     <div className="overflow-x-auto">
-                        <div className={`${isSingleYear ? 'w-full' : 'flex flex-col space-y-8'}`}>
+                        <div className={isSingleYear ? 'w-full' : 'grid grid-cols-5 gap-4'}>
                             {years.map((year) => (
-                                <div key={year} className={`${isSingleYear ? 'w-full' : 'space-y-8'}`}>
+                                <div key={year} className={isSingleYear ? 'w-full' : 'space-y-8'}>
                                     <div className="bg-white rounded-lg shadow-md overflow-hidden">
                                         <div className="p-4 bg-[#4A8BD0] text-white">
                                             <h3 className="text-lg font-semibold">{year}</h3>
                                         </div>
-                                        <div className={`p-4 ${isSingleYear ? 'grid grid-cols-6 gap-6' : 'flex space-x-4 overflow-x-auto'}`}>
+                                        <div className={`p-4 ${isSingleYear ? 'grid grid-cols-6 gap-6' : 'flex flex-col space-y-4'}`}>
                                             {months.map((month) => (
-                                                <div key={`${year}-${month}`} className={`${isSingleYear ? 'col-span-1' : 'flex-shrink-0 w-48'}`}>
+                                                <div key={`${year}-${month}`} className={isSingleYear ? 'col-span-1' : 'w-full'}>
                                                     <div className="flex justify-between items-center mb-2">
                                                         <span className="text-sm font-medium">{month}</span>
                                                         <button
@@ -122,10 +173,11 @@ function Page() {
                                                         </button>
                                                     </div>
                                                     <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[200px]">
-                                                        {/* Placeholder for map */}
-                                                        <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                                                            Map Preview
-                                                        </div>
+                                                        {/* Map container */}
+                                                        <div
+                                                            id={`map-${year}-${month}`}
+                                                            className="absolute inset-0 rounded-lg"
+                                                        ></div>
                                                     </div>
                                                 </div>
                                             ))}

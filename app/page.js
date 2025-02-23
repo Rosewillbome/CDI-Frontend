@@ -3,7 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Sun, Droplet, Menu, ChevronLeft } from "lucide-react";
-import UgandaMap from './components/map/UgandaMap';
+import dynamic from "next/dynamic";
+
+// Dynamically import the UgandaMap component
+const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
+  loading: () => <p>Loading Map...</p>,
+  ssr: false,
+});
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("introduction");
@@ -327,10 +333,9 @@ export default function Home() {
           {/* Map Placeholder and Legend */}
           <div className="relative h-[500px]">
             {/* Map Placeholder */}
-            <div className="w-full h-full  rounded-lg flex items-center justify-center">
-              <UgandaMap/>
+            <div className="w-full h-full rounded-lg flex items-center justify-center">
+              <UgandaMap /> {/* Integrated UgandaMap component */}
             </div>
-            
 
             {/* Legend */}
             <div className="absolute bottom-4 right-4 bg-white p-1 shadow-md">
