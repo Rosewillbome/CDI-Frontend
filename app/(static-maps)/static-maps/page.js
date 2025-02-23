@@ -45,7 +45,7 @@ function Page() {
     const initializeMap = (containerId) => {
         const map = L.map(containerId, {
             center: [1.3733, 32.2903], // Center on Uganda
-            zoom: 7, // Adjust zoom level to focus on Uganda
+            zoom: 7,
         });
 
         // Add base map layer
