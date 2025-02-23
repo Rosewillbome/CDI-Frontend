@@ -1,14 +1,61 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Info, Download, Calendar, Filter, ArrowUpRight } from "lucide-react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 const UgandaMap = ({ district }) => {
+  const mapRef = useRef(null);
+  const mapInstance = useRef(null);
+
+  // Initialize the Leaflet map (runs only once after mounting)
+  useEffect(() => {
+    if (!mapRef.current || mapInstance.current) return; // Ensure map is not already initialized
+
+    // Define base layers
+    const baseMaps = {
+      OpenStreetMap: L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution: "© OpenStreetMap contributors",
+        }
+      ),
+      OpenTopoMap: L.tileLayer(
+        "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+        {
+          attribution: "© OpenTopoMap contributors",
+        }
+      ),
+      "Esri World Imagery": L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        { attribution: "© Esri" }
+      ),
+    };
+
+    // Create the map instance, setting the initial base layer
+    mapInstance.current = L.map(mapRef.current, {
+      center: [1.3733, 32.2903], // Center on Uganda
+      zoom: 7, // Adjust zoom level to focus on Uganda
+      layers: [baseMaps["OpenStreetMap"]], // Default base layer
+    });
+
+    // Add a world layer with de-emphasized style
+    const worldLayer = L.tileLayer.wms("http://188.166.39.65:8080/geoserver/wms", {
+      layers: "cdi:world", // Assuming you have a world layer in your GeoServer
+      format: "image/png",
+      transparent: true,
+      opacity: 0.3, // Reduce opacity to de-emphasize
+      attribution: "GeoServer",
+    }).addTo(mapInstance.current);
+  }, []); // Run only once on mount
+
   return (
     <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 mb-6">
-      <div className="w-full h-full flex items-center justify-center text-gray-500">
-        Uganda Map View - Highlighting {district}
-      </div>
+      <div
+        ref={mapRef}
+        className="w-full h-full rounded-xl"
+      />
     </div>
   );
 };
@@ -48,6 +95,7 @@ const TDIChart = ({ district, onFullView }) => {
     </div>
   );
 };
+
 const PDIChart = ({ district, onFullView }) => {
   return (
     <div className="mb-6 relative">
@@ -227,26 +275,6 @@ export default function Home() {
           </div>
 
           <div className=" p-6 flex flex-col md:flex-row items-center justify-center gap-4">
-            {/* <div className="flex items-center gap-2 w-full md:w-auto">
-              <Filter className="h-5 w-5 text-[#308DE0]" />
-              Filter Indicator
-              <select
-                className="p-2 border rounded-md bg-white focus:ring-2 focus:ring-[#308DE0] focus:border-[#308DE0] transition-colors flex-1"
-                value={selectedIndicator}
-                onChange={(e) => setSelectedIndicator(e.target.value)}
-              >
-                <option value="Combined Drought Index (CDI)">CDI</option>
-                <option value="Temperature Drought Index (TDI)">TDI</option>
-                <option value="Precipitation Drought Index (PDI)">PDI</option>
-              </select>
-            </div> */}
-
-            {/* <button
-              onClick={handleClearFilters}
-              className="px-4 py-2 bg-transparent border-2 border-[#308DE0] text-[#308DE0] rounded-lg hover:bg-[#308DE0]/10 transition-colors w-full md:w-auto"
-            >
-              Clear All Filters
-            </button> */}
             <div className="flex items-center gap-4 w-full md:w-auto">
               <button
                 onClick={handleDownloadAllPdf}
