@@ -40,12 +40,13 @@ function Page() {
     const isSingleYear = yearRange.start === yearRange.end;
     const isMoreThanFiveYears = years.length > 5;
     const isLessThanFiveYears = years.length < 5 && !isSingleYear; // Exclude single year case
+    const isValidYearRange = !isMoreThanFiveYears && !isLessThanFiveYears;
 
     // Function to initialize a Leaflet map
     const initializeMap = (containerId) => {
         const map = L.map(containerId, {
             center: [1.3733, 32.2903], // Center on Uganda
-            zoom: 7,
+            zoom: 5.4,
         });
 
         // Add base map layer
@@ -61,22 +62,25 @@ function Page() {
 
     // Initialize maps for each preview section
     useEffect(() => {
-        years.forEach((year) => {
-            months.forEach((month) => {
-                const containerId = `map-${year}-${month}`;
-                if (!mapRefs.current[containerId]) {
-                    mapRefs.current[containerId] = initializeMap(containerId);
-                }
+        if (isValidYearRange) {
+            years.forEach((year) => {
+                months.forEach((month) => {
+                    const containerId = `map-${year}-${month}`;
+                    if (!mapRefs.current[containerId]) {
+                        mapRefs.current[containerId] = initializeMap(containerId);
+                    }
+                });
             });
-        });
+        }
 
-        // Cleanup function to remove maps when component unmounts
+        // Cleanup function to remove maps when component unmounts or year range becomes invalid
         return () => {
             Object.values(mapRefs.current).forEach((map) => {
                 if (map) map.remove();
             });
+            mapRefs.current = {}; // Reset the map refs
         };
-    }, [years, months]);
+    }, [years, months, isValidYearRange]); // Only re-run if years, months, or isValidYearRange changes
 
     return (
         <div className="min-h-screen bg-white">
