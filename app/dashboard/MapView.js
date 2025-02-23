@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import leafletImage from "leaflet-image";
-import { DROUGHT_SEVERITY_LEVELS } from "../utils/drought_levels";
+import { DROUGHT_SEVERITY_LEVELS, getIndex } from "../utils/drought_levels";
 import { FiDownload, FiInfo } from "react-icons/fi";
 import { useSideberStore } from "../store/useSideberStore";
 
@@ -203,7 +203,8 @@ const MapView = () => {
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center space-x-3">
           <h1 className="text-3xl font-bold text-gray-800">
-            Combined Drought Index (CDI)
+            {/* Combined Drought Index (CDI) */}
+           { getIndex(indicator)}
           </h1>
         </div>
         <h2 className="text-xl text-gray-600 font-medium">
