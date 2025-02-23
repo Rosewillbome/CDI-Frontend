@@ -5,25 +5,27 @@ import DashboardNav from "./DashboardNav";
 import Sidebar from "./Sidebar";
 // import MapView from "./MapView";
 import TableView from "./TableView";
-import dynamic from 'next/dynamic';
-const MapView = dynamic(() => import('./MapView'), {
+import dynamic from "next/dynamic";
+const MapView = dynamic(() => import("./MapView"), {
   loading: () => <p>Loading Map...</p>,
   ssr: false,
 });
 export default function Home() {
-  const [selectedTab,setSelectedTab] = useState("map-view")
+  const [selectedTab, setSelectedTab] = useState("map-view");
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex">
         <Sidebar />
         <div className="flex-1">
-          <DashboardNav selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
+          <DashboardNav
+            selectedTab={selectedTab}
+            setSelectedTab={setSelectedTab}
+          />
           <div className="p-6">
             {selectedTab === "map-view" ? (
               <MapView />
             ) : selectedTab === "table-view" ? (
               <TableView />
-            
             ) : null}
           </div>
         </div>

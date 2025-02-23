@@ -1,76 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-
-const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), { ssr: false });
-const GeoJSON = dynamic(() => import('react-leaflet').then((mod) => mod.GeoJSON), { ssr: false });
-
-import 'leaflet/dist/leaflet.css';
+"use client";
+import React, { useEffect, useState, useRef } from "react";
+import dynamic from "next/dynamic";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import axios from "axios";
 
 const UgandaMap = () => {
-  const [geoData, setGeoData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [geoData, setGeoData] = useState([]);
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null); // Prevent multiple initializations
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      fetch('/uganda.geojson')
-        .then((response) => response.json())
-        .then((data) => {
-          setGeoData(data);
-          setLoading(false);
+    const fetchBasemap = async () => {
+      await axios
+        .get("/api/geojson")
+        .then((response) => {
+          setGeoData(JSON.parse(response?.data?.geojsondata));
         })
-        .catch((error) => {
-          console.error('Error loading GeoJSON:', error);
-          setLoading(false);
-        });
-    }
+        .catch((error) => {});
+    };
+    fetchBasemap();
   }, []);
 
-  const defaultStyle = {
-    color: 'black',
-    weight: 1.5,
-    fillColor: '#72B3E0',
-    fillOpacity: 0.6,
-  };
+  useEffect(() => {
+    if (typeof window !== "undefined" && geoData?.length !== 0 ) {
+      // Only initialize the map if it hasn't been initialized
+      console.log("loaded map")
+      mapRef.current = L.map(mapContainerRef.current, {
+        center: [1.2, 34.5],
+        zoom: 7,
+        // layers: [
+        //   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
+        // ],
+      });
 
-  const highlightStyle = {
-    color: 'blue',
-    weight: 3,
-    fillColor: '#FFD700',
-    fillOpacity: 0.8,
-  };
+      L.geoJSON(geoData, {
+        style: {
+            color: 'black',
+            weight: 4,
+            // opacity: 0.3,
+            fill: false,
+            // stroke: false,
+        },
+    }).addTo(mapRef.current)
+    }
 
-  const onEachFeature = (feature, layer) => {
-    layer.on({
-      mouseover: (event) => {
-        const layer = event.target;
-        layer.setStyle(highlightStyle);
-        layer.bringToFront();
-        layer.bindTooltip(`<b>${feature.properties.name}</b>`, {
-          permanent: false,
-          direction: 'top',
-          opacity: 0.9,
-        }).openTooltip();
-      },
-      mouseout: (event) => {
-        const layer = event.target;
-        layer.setStyle(defaultStyle);
-        layer.closeTooltip();
-      },
-    });
-  };
+    return () => {
+      // Cleanup when component unmounts
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    }
+    
+  }, [geoData]);
 
   return (
-    <div style={{ position: 'relative', height: '60vh', width: '100%', background: '#f0f0f0' }}>
-      {typeof window !== 'undefined' && (
-        <MapContainer
-          center={[1.3733, 32.2903]}
-          zoom={7}
-          style={{ height: '100%', width: '100%', background:'transparent' }}
-        >
-          {geoData && <GeoJSON data={geoData} style={() => defaultStyle} onEachFeature={onEachFeature} />}
-        </MapContainer>
-      )}
-    </div>
+    <>
+    <div ref={mapContainerRef} style={{ position: 'relative', height: '60vh', width: '100%', background: '#f0f0f0' }}/>;
+    </>
   );
 };
 
