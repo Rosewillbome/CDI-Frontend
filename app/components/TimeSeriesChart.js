@@ -13,7 +13,7 @@ const TimeSeriesChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       axios
-        .get(`${process.env.NEXT_PUBLIC_API}cdi/json/${indicator?.toLowerCase()}/${district?.toUpperCase()}`)
+        .get(`${process.env.NEXT_PUBLIC_API}cdi/district/${indicator?.toLowerCase()}/${district?.toUpperCase()}`)
         .then((response) => {
           console.log("data response", response);
           setData(response?.data?.data);
