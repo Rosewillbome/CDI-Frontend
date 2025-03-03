@@ -5,7 +5,7 @@ import leafletImage from "leaflet-image";
 import { DROUGHT_SEVERITY_LEVELS, getIndex } from "../utils/drought_levels";
 import { FiDownload, FiInfo } from "react-icons/fi";
 import { useSideberStore } from "../store/useSideberStore";
-
+import TimeSeriesChart from "../components/TimeSeriesChart";
 // Define available years and months (the slider will cover 2001-2025)
 const years = Array.from({ length: 25 }, (_, i) => 2001 + i);
 const months = [
@@ -215,7 +215,7 @@ const MapView = () => {
       {/* Main Content Container */}
       <div className="flex h-[60vh] mb-4 gap-6">
         {/* Map Section */}
-        <div className="w-[60%] bg-white rounded-xl shadow-lg p-4 relative">
+        <div className="w-[40%] bg-white rounded-xl shadow-lg p-4 relative">
           {/* Legend at the bottom-right corner */}
           <div className="absolute bottom-4 right-4 z-[1000] bg-white shadow-lg p-2 text-sm rounded-lg">
             <h3 className="font-semibold mb-2">Legend</h3>
@@ -255,7 +255,7 @@ const MapView = () => {
         </div>
 
         {/* Chart Section */}
-        <div className="w-[40%] bg-white rounded-xl shadow-lg p-4 relative">
+        <div className="w-[65%] bg-white rounded-xl shadow-lg p-4 relative">
           <div className="absolute top-4 right-4 flex space-x-2">
             <button
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip"
@@ -265,7 +265,8 @@ const MapView = () => {
             </button>
           </div>
           <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg">
-            <span className="text-gray-400 font-medium">Time series</span>
+            {/* <span className="text-gray-400 font-medium">Time series</span> */}
+            <TimeSeriesChart/>
           </div>
         </div>
       </div>

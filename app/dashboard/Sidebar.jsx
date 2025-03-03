@@ -1,12 +1,11 @@
 "use client";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Calendar, Filter, Clock, MapPin } from "lucide-react";
 import { useSideberStore } from "../store/useSideberStore";
 import { showYears, months } from "../utils/selectYear";
 
 const Sidebar = () => {
   let {
-    
     indicator,
     timerange,
     month,
@@ -16,7 +15,7 @@ const Sidebar = () => {
     setMonth,
     setDistrict,
   } = useSideberStore((state) => state);
-  
+
   console.log("indicator", indicator);
   console.log("timerange", timerange);
   return (
@@ -120,6 +119,7 @@ const Sidebar = () => {
               <option className="bg-[#2c5d8a]">Acholi</option>
               <option className="bg-[#2c5d8a]">Lango</option>
               <option className="bg-[#2c5d8a]">West Nile</option>
+              <option className="bg-[#2c5d8a]">Masaka</option>
             </select>
           </div>
         </div>
