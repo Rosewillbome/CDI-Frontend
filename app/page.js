@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useState} from "react";
 import { Sun, Droplet, Menu, ChevronLeft } from "lucide-react";
 import dynamic from "next/dynamic";
 import OverviewIntro from "./components/ui/OverviewIntro";
