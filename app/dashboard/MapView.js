@@ -252,11 +252,17 @@ const MapView = () => {
           </div>
           <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg">
             {/* <span className="text-gray-400 font-medium">Time series</span> */}
-            <TimeSeriesChart />
+            <TimeSeriesChart
+              indicator={indicator}
+              timerange={timerange}
+              month={month}
+              district={district}
+              chart_id={"Dasboard_time_series"}
+            />
           </div>
         </div>
       </div>
-
+     
       {/* Time Selector Section */}
 
       <DashboardSlider />

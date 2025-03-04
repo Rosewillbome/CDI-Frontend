@@ -1,10 +1,13 @@
 "use client";
 
-import { useState} from "react";
+import { useState, useEffect } from "react";
 import { Sun, Droplet, Menu, ChevronLeft } from "lucide-react";
 import dynamic from "next/dynamic";
 import OverviewIntro from "./components/ui/OverviewIntro";
 import OverviewRightSection from "./components/ui/OverviewRightSection";
+import axios from "axios";
+import { useSideberStore } from "./store/useSideberStore";
+import { districts } from "./utils/selectYear";
 // import UgandaMap from './components/map/UgandaMap';
 
 const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
@@ -89,10 +92,11 @@ export default function Home() {
               className="appearance-none bg-white border border-[#308DE0] rounded-lg px-8 py-2 pr-10 text-sm font-semibold text-[#308DE0] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#308DE0]"
             >
               <option value="All">All</option>
-              <option value="Acholi">Acholi</option>
-              <option value="Lango">Lango</option>
-              <option value="Karamoja">Karamoja</option>
-              <option value="West Nile">West Nile</option>
+              {districts?.map((district) => (
+                <option key={district} value={district}>
+                  {district}
+                </option>
+              ))}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#308DE0]">
               <svg
