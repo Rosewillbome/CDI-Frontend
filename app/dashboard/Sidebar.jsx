@@ -1,12 +1,11 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, Filter, Clock, MapPin } from "lucide-react";
 import { useSideberStore } from "../store/useSideberStore";
-import { showYears, months } from "../utils/selectYear";
+import { showYears, months, districts } from "../utils/selectYear";
 
 const Sidebar = () => {
   let {
-    
     indicator,
     timerange,
     month,
@@ -16,9 +15,7 @@ const Sidebar = () => {
     setMonth,
     setDistrict,
   } = useSideberStore((state) => state);
-  
-  console.log("indicator", indicator);
-  console.log("timerange", timerange);
+
   return (
     <div className="w-64 min-h-screen bg-[#308DE0] border-r p-6 shadow-xl">
       <div className="space-y-8">
@@ -71,6 +68,7 @@ const Sidebar = () => {
                     onChange={(e) => setTimerange(e.target.value)}
                     className="w-full px-3 py-2 border border-white rounded-lg text-gray-700 "
                   >
+                    <option className="bg-[#2c5d8a]">select Year</option>
                     {showYears()?.map((year, index) => (
                       <option key={index} className="bg-[#2c5d8a]">
                         {year}
@@ -91,6 +89,7 @@ const Sidebar = () => {
                     onChange={(e) => setMonth(e.target.value)}
                     className="w-full px-3 py-2 border border-white rounded-lg text-gray-700 "
                   >
+                    <option className="bg-[#2c5d8a]">select Month</option>
                     {months?.map((month, index) => (
                       <option key={index} className="bg-[#2c5d8a]">
                         {month}
@@ -117,9 +116,11 @@ const Sidebar = () => {
               className="w-full px-3 py-2 border border-white rounded-lg  text-gray-700"
             >
               <option className="bg-[#2c5d8a]">All</option>
-              <option className="bg-[#2c5d8a]">Acholi</option>
-              <option className="bg-[#2c5d8a]">Lango</option>
-              <option className="bg-[#2c5d8a]">West Nile</option>
+              {districts?.map((district) => (
+                <option key={district} value={district}>
+                  {district}
+                </option>
+              ))}
             </select>
           </div>
         </div>

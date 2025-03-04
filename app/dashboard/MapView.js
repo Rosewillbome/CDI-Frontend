@@ -5,23 +5,9 @@ import leafletImage from "leaflet-image";
 import { DROUGHT_SEVERITY_LEVELS, getIndex } from "../utils/drought_levels";
 import { FiDownload, FiInfo } from "react-icons/fi";
 import { useSideberStore } from "../store/useSideberStore";
-
+import TimeSeriesChart from "../components/TimeSeriesChart";
+import DashboardSlider from "../components/ui/DashboardSlider";
 // Define available years and months (the slider will cover 2001-2025)
-const years = Array.from({ length: 25 }, (_, i) => 2001 + i);
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
 
 const MapView = () => {
   // Set default to June 2024 and default raster type to "PDI"
@@ -213,7 +199,7 @@ const MapView = () => {
         <div className="flex items-center justify-center space-x-3">
           <h1 className="text-3xl font-bold text-gray-800">
             {/* Combined Drought Index (CDI) */}
-           { getIndex(indicator)}
+            {getIndex(indicator)}
           </h1>
         </div>
         <h2 className="text-xl text-gray-600 font-medium">
@@ -224,7 +210,7 @@ const MapView = () => {
       {/* Main Content Container */}
       <div className="flex h-[60vh] mb-4 gap-6">
         {/* Map Section */}
-        <div className="w-[60%] bg-white rounded-xl shadow-lg p-4 relative">
+        <div className="w-[40%] bg-white rounded-xl shadow-lg p-4 relative">
           {/* Legend at the bottom-right corner */}
           <div className="absolute bottom-4 right-4 z-[1000] bg-white shadow-lg p-2 text-sm rounded-lg">
             <h3 className="font-semibold mb-2">Legend</h3>
@@ -264,7 +250,7 @@ const MapView = () => {
         </div>
 
         {/* Chart Section */}
-        <div className="w-[40%] bg-white rounded-xl shadow-lg p-4 relative">
+        <div className="w-[65%] bg-white rounded-xl shadow-lg p-4 relative">
           <div className="absolute top-4 right-4 flex space-x-2">
             <button
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip"
@@ -274,31 +260,21 @@ const MapView = () => {
             </button>
           </div>
           <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg">
-            <span className="text-gray-400 font-medium">Time series</span>
+            {/* <span className="text-gray-400 font-medium">Time series</span> */}
+            <TimeSeriesChart
+              indicator={indicator}
+              timerange={timerange}
+              month={month}
+              district={district}
+              chart_id={"Dasboard_time_series"}
+            />
           </div>
         </div>
       </div>
-
+     
       {/* Time Selector Section */}
-      <div className="">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-gray-700">
-            {months[selectedMonth]} {selectedYear}
-          </h3>
-          <span className="text-sm text-gray-500">
-            {2001} - {2025}
-          </span>
-        </div>
-        <input
-          type="range"
-          min={0}
-          max={(2025 - 2001) * 12 + 11}
-          step={1}
-          value={(selectedYear - 2001) * 12 + selectedMonth}
-          onChange={handleSliderChange}
-          className="w-full range-slider"
-        />
-      </div>
+
+      <DashboardSlider />
 
       {/* Key Note Section */}
       <div className="w-[60%] bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl shadow-lg p-6">
