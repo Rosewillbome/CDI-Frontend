@@ -56,8 +56,8 @@ const MapView = () => {
 
     // Create the map instance, setting the initial base layer
     mapInstance.current = L.map(mapRef.current, {
-      center: [1.2, 34.5],
-      zoom: 6,
+      center: [1.3733, 32.2903], // Center on Uganda
+      zoom: 7, // Adjust zoom level to focus on Uganda
       layers: [baseMapsRef.current["OpenStreetMap"]],
     });
 
@@ -100,6 +100,15 @@ const MapView = () => {
         { collapsed: false }
       )
       .addTo(mapInstance.current);
+
+    // Add a world layer with de-emphasized style
+    const worldLayer = L.tileLayer.wms(geoServerUrl, {
+      layers: "cdi:world", // Assuming you have a world layer in your GeoServer
+      format: "image/png",
+      transparent: true,
+      opacity: 0.3, // Reduce opacity to de-emphasize
+      attribution: "GeoServer",
+    }).addTo(mapInstance.current);
   }, []); // Run only once on mount
 
   // Update the raster layer (and layer control) whenever time or raster type changes.

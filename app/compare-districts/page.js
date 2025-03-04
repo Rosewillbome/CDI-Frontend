@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Info, Download, Calendar, Filter, ArrowUpRight } from "lucide-react";
 import DistrictSection from "./DistrictSection";
 import DistrictSectiontwo from "./DistrictSectiontwo";
