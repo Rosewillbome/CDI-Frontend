@@ -16,6 +16,9 @@ const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
 });
 
 export default function Home() {
+  let { indicator, timerange, month, district } = useSideberStore(
+      (state) => state
+    );
   const [progressYear, setProgressYear] = useState(2025);
   const [selectedDistrict, setSelectedDistrict] = useState("All");
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -125,10 +128,10 @@ export default function Home() {
           </div>
 
           {/* Map Placeholder and Legend */}
-          <div className="relative h-[500px]">
+          <div className="relative h-[600px]">
             {/* Map Placeholder */}
             <div className="w-full h-full  rounded-lg flex items-center justify-center">
-              <UgandaMap />
+              <UgandaMap indicator={indicator} timerange={timerange} month={month} district={district} />
             </div>
 
             {/* Legend */}

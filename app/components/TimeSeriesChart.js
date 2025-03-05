@@ -24,7 +24,6 @@ const TimeSeriesChart = ({
           }cdi/district/${indicator?.toLowerCase()}/${district?.toUpperCase()}`
         )
         .then((response) => {
-          console.log("data response", response);
           setData(response?.data?.data);
           setHreload(uuid());
         })
@@ -42,7 +41,6 @@ const TimeSeriesChart = ({
           filterByMonth(month_data) === month &&
           filterByYear(month_data) === parseInt(timerange)
       );
-      console.log("filtered data", filterbypcu, "original data", data);
       setFiltered(filterbypcu);
       setHreload(uuid());
       //filterByMonth(month_data) === month &&

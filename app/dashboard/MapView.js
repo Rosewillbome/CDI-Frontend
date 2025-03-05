@@ -7,6 +7,7 @@ import { FiDownload, FiInfo } from "react-icons/fi";
 import { useSideberStore } from "../store/useSideberStore";
 import TimeSeriesChart from "../components/TimeSeriesChart";
 import DashboardSlider from "../components/ui/DashboardSlider";
+import KeyNote from "../components/ui/KeyNote";
 // Define available years and months (the slider will cover 2001-2025)
 
 const MapView = () => {
@@ -28,7 +29,8 @@ const MapView = () => {
   const baseMapsRef = useRef(null);
 
   // Global GeoServer URL (update as needed)
-  const geoServerUrl = "http://188.166.39.65:8080/geoserver/wms";
+  // const geoServerUrl = "http://188.166.39.65:8080/geoserver/wms";
+   const geoServerUrl = `${process.env.REACT_APP_GEOSERVER_URL}`;
 
   // Initialize the Leaflet map (runs only once after mounting)
   useEffect(() => {
@@ -102,13 +104,15 @@ const MapView = () => {
       .addTo(mapInstance.current);
 
     // Add a world layer with de-emphasized style
-    const worldLayer = L.tileLayer.wms(geoServerUrl, {
-      layers: "cdi:world", // Assuming you have a world layer in your GeoServer
-      format: "image/png",
-      transparent: true,
-      opacity: 0.3, // Reduce opacity to de-emphasize
-      attribution: "GeoServer",
-    }).addTo(mapInstance.current);
+    const worldLayer = L.tileLayer
+      .wms(geoServerUrl, {
+        layers: "cdi:world", // Assuming you have a world layer in your GeoServer
+        format: "image/png",
+        transparent: true,
+        opacity: 0.3, // Reduce opacity to de-emphasize
+        attribution: "GeoServer",
+      })
+      .addTo(mapInstance.current);
   }, []); // Run only once on mount
 
   // Update the raster layer (and layer control) whenever time or raster type changes.
@@ -271,38 +275,13 @@ const MapView = () => {
           </div>
         </div>
       </div>
-     
+
       {/* Time Selector Section */}
 
       <DashboardSlider />
 
       {/* Key Note Section */}
-      <div className="w-[60%] bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Key Insights</h2>
-        <ul className="space-y-3 text-sm">
-          <li className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-white rounded-full" />
-            <span>
-              Real-time drought monitoring using FAO Combined Drought Index
-              (CDI)
-            </span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-white rounded-full" />
-            <span>
-              Integrated analysis of precipitation, soil moisture, and
-              vegetation health
-            </span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-white rounded-full" />
-            <span>
-              Supports Uganda's climate resilience and sustainable resource
-              management.
-            </span>
-          </li>
-        </ul>
-      </div>
+      <KeyNote />
     </div>
   );
 };
