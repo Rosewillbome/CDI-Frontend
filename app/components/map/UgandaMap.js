@@ -117,16 +117,73 @@ const UgandaMap = ({ indicator, timerange, month, zoom, minZoom }) => {
       return;
     }
 
-    layerControlRef.current = L.control
-      .layers(
-        baseMapsRef.current,
-        {
-          [newDisplayName]: rasterLayerRef.current,
-          Districts: districtLayerRef.current,
-        },
-        { collapsed: false }
-      )
-      .addTo(mapRef.current);
+    // Create a custom control container
+    const customControl = L.control({ position: 'topright' });
+
+    customControl.onAdd = function (map) {
+      const div = L.DomUtil.create('div', 'custom-control');
+
+      // Add base map options
+      const baseMaps = baseMapsRef.current;
+      const baseMapsSelect = L.DomUtil.create('select', 'base-maps-select', div);
+      for (const key in baseMaps) {
+        const option = L.DomUtil.create('option', '', baseMapsSelect);
+        option.value = key;
+        option.textContent = key;
+      }
+
+      // Add raster layer checkbox
+      const rasterLayerCheckbox = L.DomUtil.create('input', 'raster-layer-checkbox', div);
+      rasterLayerCheckbox.type = 'checkbox';
+      rasterLayerCheckbox.checked = true;
+      rasterLayerCheckbox.id = 'raster-layer-checkbox';
+      const rasterLayerLabel = L.DomUtil.create('label', '', div);
+      rasterLayerLabel.htmlFor = 'raster-layer-checkbox';
+      rasterLayerLabel.textContent = newDisplayName;
+
+      // Add district layer checkbox
+      const districtLayerCheckbox = L.DomUtil.create('input', 'district-layer-checkbox', div);
+      districtLayerCheckbox.type = 'checkbox';
+      districtLayerCheckbox.checked = true;
+      districtLayerCheckbox.id = 'district-layer-checkbox';
+      const districtLayerLabel = L.DomUtil.create('label', '', div);
+      districtLayerLabel.htmlFor = 'district-layer-checkbox';
+      districtLayerLabel.textContent = 'Districts';
+
+      // Event listeners for base map selection
+      L.DomEvent.on(baseMapsSelect, 'change', function (e) {
+        const selectedBaseMap = e.target.value;
+        for (const key in baseMaps) {
+          if (key === selectedBaseMap) {
+            map.addLayer(baseMaps[key]);
+          } else {
+            map.removeLayer(baseMaps[key]);
+          }
+        }
+      });
+
+      // Event listeners for raster layer checkbox
+      L.DomEvent.on(rasterLayerCheckbox, 'change', function (e) {
+        if (e.target.checked) {
+          map.addLayer(rasterLayerRef.current);
+        } else {
+          map.removeLayer(rasterLayerRef.current);
+        }
+      });
+
+      // Event listeners for district layer checkbox
+      L.DomEvent.on(districtLayerCheckbox, 'change', function (e) {
+        if (e.target.checked) {
+          map.addLayer(districtLayerRef.current);
+        } else {
+          map.removeLayer(districtLayerRef.current);
+        }
+      });
+
+      return div;
+    };
+
+    layerControlRef.current = customControl.addTo(mapRef.current);
   }, [timerange, month, indicator, Hreload]);
 
   return (
