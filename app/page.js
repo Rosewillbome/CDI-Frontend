@@ -11,7 +11,7 @@ import { districts } from "./utils/selectYear";
 // import UgandaMap from './components/map/UgandaMap';
 
 const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
-  loading: () => <p>Loading Map...</p>,
+  loading: () => <p>Loading Map..</p>,
   ssr: false,
 });
 
