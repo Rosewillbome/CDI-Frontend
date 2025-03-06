@@ -1,150 +1,21 @@
-// "use client";
-// import React, { useEffect, useState, useRef } from "react";
-// import dynamic from "next/dynamic";
-// import "leaflet/dist/leaflet.css";
-// import L from "leaflet";
-// import axios from "axios";
-
-// const UgandaMap = ({ indicator, timerange, month, district }) => {
-//   const [geoData, setGeoData] = useState([]);
-//   const mapContainerRef = useRef(null);
-//   const mapRef = useRef(null); // Prevent multiple initializations
-
-//   const rasterLayerRef = useRef(null);
-//   const districtLayerRef = useRef(null);
-//   const layerControlRef = useRef(null);
-//     const baseMapsRef = useRef(null);
-
-//   useEffect(() => {
-//     const fetchBasemap = async () => {
-//       await axios
-//         .get("/api/geojson")
-//         .then((response) => {
-//           setGeoData(JSON.parse(response?.data?.geojsondata));
-//         })
-//         .catch((error) => {});
-//     };
-//     fetchBasemap();
-//   }, []);
-
-//   useEffect(() => {
-//     if (typeof window !== "undefined" && geoData?.length !== 0) {
-//       // Only initialize the map if it hasn't been initialized
-//       console.log("loaded map");
-//       mapRef.current = L.map(mapContainerRef.current, {
-//         center: [1.3733, 32.2903],
-//         zoom: 7.2,
-//         minZoom: 7.2,
-//         // maxZoom: 0,
-//         layers: [
-//           L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
-//         ],
-//       });
-
-//       L.geoJSON(geoData, {
-//         style: {
-//           color: "black",
-//           weight: 1,
-//           // opacity: 0.3,
-//           fill: false,
-//           // stroke: false,
-//         },
-//       }).addTo(mapRef.current);
-//     }
-
-//     return () => {
-//       // Cleanup when component unmounts
-//       if (mapRef.current) {
-//         mapRef.current.remove();
-//         mapRef.current = null;
-//       }
-//     };
-//   }, [geoData]);
-
-//   // Update the raster layer (and layer control) whenever time or raster type changes.
-//   useEffect(() => {
-//     if (typeof window !== "undefined") {
-//       const geoServerUrl = `${process.env.REACT_APP_GEOSERVER_URL}`;
-//       if (!mapRef.current) return; // Wait until map is ready
-
-//       // Remove the old raster layer if it exists
-//       if (rasterLayerRef.current) {
-//         mapRef.current.removeLayer(rasterLayerRef.current);
-//       }
-
-//       // Construct the new WMS layer name and display name
-//       const monthLower = selectedMonth.toLowerCase();
-//       const newWmsLayerName =
-//         "cdi:Raw_" + indicator + "_" + month + "_" + timerange;
-//       const newDisplayName = indicator + " " + month + " " + timerange;
-
-//       // Create and add the updated raster layer
-//       rasterLayerRef.current = L.tileLayer
-//         .wms(geoServerUrl, {
-//           layers: newWmsLayerName,
-//           format: "image/png",
-//           transparent: true,
-//           opacity: 0.7,
-//           attribution: "GeoServer",
-//         })
-//         .addTo(mapRef.current);
-
-//       // Make sure the district layer stays on top
-//       if (districtLayerRef.current) {
-//         districtLayerRef.current.bringToFront();
-//       }
-
-//       // Remove and recreate the layer control with the new overlay name
-//       if (layerControlRef.current) {
-//         mapRef.current.removeControl(layerControlRef.current);
-//       }
-//       layerControlRef.current = L.control
-//         .layers(
-//           baseMapsRef.current,
-//           {
-//             [newDisplayName]: rasterLayerRef.current,
-//             Districts: districtLayerRef.current,
-//           },
-//           { collapsed: false }
-//         )
-//         .addTo(mapRef.current);
-//     }
-//   }, [timerange, month, indicator]);
-
-//   return (
-//     <>
-//       <div
-//         ref={mapContainerRef}
-//         style={{
-//           position: "relative",
-//           height: "100%",
-//           width: "100%",
-//           background: "#f0f0f0",
-//         }}
-//       />
-//       ;
-//     </>
-//   );
-// };
-
-// export default UgandaMap;
-
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import axios from "axios";
+import { v4 } from "uuid";
 
-const UgandaMap = ({ indicator, timerange, month, district }) => {
+const UgandaMap = ({ indicator, timerange, month, zoom, minZoom }) => {
   const [geoData, setGeoData] = useState(null);
+  const [Hreload, setHreload] = useState("");
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const rasterLayerRef = useRef(null);
-  const districtLayerRef = useRef(null);
   const layerControlRef = useRef(null);
   const baseMapsRef = useRef(null);
+  const districtLayerRef = useRef(null);
 
-  const geoServerUrl = process.env.NEXT_PUBLIC_WSM;
+  const geoServerUrl = `${process.env.NEXT_PUBLIC_WSM}`;
 
   // Fetch GeoJSON data
   useEffect(() => {
@@ -165,17 +36,33 @@ const UgandaMap = ({ indicator, timerange, month, district }) => {
     if (typeof window === "undefined" || !geoData || mapRef.current) return;
 
     console.log("Initializing map...");
+    baseMapsRef.current = {
+      OpenStreetMap: L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution: "© OpenStreetMap contributors",
+        }
+      ),
+      OpenTopoMap: L.tileLayer(
+        "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+        {
+          attribution: "© OpenTopoMap contributors",
+        }
+      ),
+      "Esri World Imagery": L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        { attribution: "© Esri" }
+      ),
+    };
     mapRef.current = L.map(mapContainerRef.current, {
       center: [1.3733, 32.2903],
-      zoom: 7.2,
-      minZoom: 7.2,
-      layers: [
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
-      ],
+      zoom: zoom ? zoom : 7.2,
+      minZoom: minZoom ? minZoom : 7.2,
+      layers: [baseMapsRef.current["OpenStreetMap"]],
     });
 
-    // Add district boundaries
-    L.geoJSON(geoData, {
+    // Initialize District Layer
+    districtLayerRef.current = L.geoJSON(geoData, {
       style: {
         color: "black",
         weight: 1,
@@ -183,20 +70,17 @@ const UgandaMap = ({ indicator, timerange, month, district }) => {
       },
     }).addTo(mapRef.current);
 
-    return () => {
-      // Cleanup on unmount
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-      }
-    };
+    setHreload(v4());
   }, [geoData]);
 
   // Update the raster layer when indicator, month, or timerange changes
   useEffect(() => {
-    console.log("Updating raster layer...",`${indicator} ${month} ${timerange}`);
-      if (typeof window === "undefined" || !mapRef.current) return;
-   
+    if (typeof window === "undefined" || !mapRef.current) return;
+    console.log(
+      "Updating raster layer...",
+      `${indicator} ${month} ${timerange}`
+    );
+
     if (!geoServerUrl) {
       console.error("GeoServer URL is missing. Check your .env file.");
       return;
@@ -204,31 +88,35 @@ const UgandaMap = ({ indicator, timerange, month, district }) => {
 
     // Remove the previous raster layer
     if (rasterLayerRef.current) {
+      console.log("Removed previous raster layer");
       mapRef.current.removeLayer(rasterLayerRef.current);
     }
 
     // Define new WMS layer
-    const newWmsLayerName = `cdi:Raw_${indicator}_${month}_${timerange}`;
+    const newWmsLayerName = `cdi:Raw_${indicator}_${month?.toLowerCase()}_${timerange}`;
     console.log("newWmsLayerName", newWmsLayerName);
     const newDisplayName = `${indicator} ${month} ${timerange}`;
 
-    rasterLayerRef.current = L.tileLayer.wms(geoServerUrl, {
-      layers: newWmsLayerName,
-      format: "image/png",
-      transparent: true,
-      opacity: 0.7,
-      attribution: "GeoServer",
-    }).addTo(mapRef.current);
+    rasterLayerRef.current = L.tileLayer
+      .wms(geoServerUrl, {
+        layers: newWmsLayerName,
+        format: "image/png",
+        transparent: true,
+        opacity: 0.7,
+        attribution: "GeoServer",
+      })
+      .addTo(mapRef.current);
 
-    // Keep district layer on top
-    if (districtLayerRef.current) {
-      districtLayerRef.current.bringToFront();
-    }
-
-    // Update the layer control
     if (layerControlRef.current) {
+      console.log("Removing previous layer control...");
       mapRef.current.removeControl(layerControlRef.current);
     }
+
+    if (!baseMapsRef.current) {
+      console.error("Base maps not initialized yet.");
+      return;
+    }
+
     layerControlRef.current = L.control
       .layers(
         baseMapsRef.current,
@@ -239,7 +127,7 @@ const UgandaMap = ({ indicator, timerange, month, district }) => {
         { collapsed: false }
       )
       .addTo(mapRef.current);
-  }, [timerange, month, indicator]);
+  }, [timerange, month, indicator, Hreload]);
 
   return (
     <div

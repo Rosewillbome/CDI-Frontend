@@ -2,7 +2,7 @@
 import { useEffect, useState, useMemo } from "react";
 import Highcharts from "highcharts/highstock";
 import axios from "axios";
-import { uuid } from "uuidv4";
+import { v4 } from 'uuid';
 import { filterByMonth, filterByYear } from "../utils/selectYear";
 const TimeSeriesChart = ({
   indicator,
@@ -25,7 +25,7 @@ const TimeSeriesChart = ({
         )
         .then((response) => {
           setData(response?.data?.data);
-          setHreload(uuid());
+          setHreload(v4());
         })
         .catch((error) => {
           console.error("comming error", error);
@@ -42,7 +42,7 @@ const TimeSeriesChart = ({
           filterByYear(month_data) === parseInt(timerange)
       );
       setFiltered(filterbypcu);
-      setHreload(uuid());
+      setHreload(v4());
       //filterByMonth(month_data) === month &&
     }
   }, [data, month, timerange]);
