@@ -9,14 +9,28 @@ import TimeSeriesChart from "../components/TimeSeriesChart";
 import DashboardSlider from "../components/ui/DashboardSlider";
 import KeyNote from "../components/ui/KeyNote";
 import UgandaMap from "../components/map/UgandaMap";
+import html2canvas from "html2canvas"; // Import html2canvas for capturing the chart as an image
 
 const MapView = () => {
   let { indicator, timerange, month, district } = useSideberStore(
     (state) => state
   );
 
+  const chartRef = useRef(null); // Ref to capture the chart element
+
   const handleDownloadMap = () => {
     // Your download logic here
+  };
+
+  const handleDownloadChart = () => {
+    if (chartRef.current) {
+      html2canvas(chartRef.current).then((canvas) => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = "chart.png";
+        link.click();
+      });
+    }
   };
 
   return (
@@ -37,7 +51,7 @@ const MapView = () => {
           {/* Download Button at the bottom-left corner */}
           <div className="absolute bottom-4 left-4 z-[1000]">
             <button
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip"
+              className="p-2 bg-white border border  hover:bg-gray-100 rounded-2xl transition-colors tooltip"
               data-tooltip="Download Map"
               onClick={handleDownloadMap}
             >
@@ -46,27 +60,40 @@ const MapView = () => {
           </div>
 
           {/* Leaflet map container */}
-          <UgandaMap indicator={indicator} timerange={timerange} month={month} district={district} zoom={6.4} minZoom={6.2} />
+          <UgandaMap indicator={indicator} timerange={timerange} month={month} district={district} zoom={6.4} minZoom={6.4} />
         </div>
 
         {/* Chart Section */}
         <div className="w-[65%] bg-white rounded-xl shadow-lg p-4 relative">
           <div className="absolute top-4 right-4 flex space-x-2">
-            <button
+            {/* <button
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip"
               data-tooltip="Download Chart"
+              onClick={handleDownloadChart}
+            >
+              <FiDownload className="text-gray-600" size={20} />
+            </button> */}
+          </div>
+          <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg">
+            <div ref={chartRef}>
+              <TimeSeriesChart
+                indicator={indicator}
+                timerange={timerange}
+                month={month}
+                district={district}
+                chart_id={"Dasboard_time_series"}
+              />
+            </div>
+          </div>
+          {/* Download Button at the bottom-left corner */}
+          <div className="absolute bottom-4 left-4 z-[1000]">
+            <button
+              className="p-2 bg-white border  hover:bg-gray-100 rounded-2xl transition-colors tooltip"
+              data-tooltip="Download Chart"
+              onClick={handleDownloadChart}
             >
               <FiDownload className="text-gray-600" size={20} />
             </button>
-          </div>
-          <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg">
-            <TimeSeriesChart
-              indicator={indicator}
-              timerange={timerange}
-              month={month}
-              district={district}
-              chart_id={"Dasboard_time_series"}
-            />
           </div>
         </div>
       </div>
