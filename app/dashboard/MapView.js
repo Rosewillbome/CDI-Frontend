@@ -9,38 +9,14 @@ import TimeSeriesChart from "../components/TimeSeriesChart";
 import DashboardSlider from "../components/ui/DashboardSlider";
 import KeyNote from "../components/ui/KeyNote";
 import UgandaMap from "../components/map/UgandaMap";
-// Define available years and months (the slider will cover 2001-2025)
 
 const MapView = () => {
-  // Set default to June 2024 and default raster type to "PDI"
   let { indicator, timerange, month, district } = useSideberStore(
     (state) => state
   );
 
-  // Refs to store the map container and Leaflet instances
-
-  // Handler for downloading the map as an image
   const handleDownloadMap = () => {
-    // if (!mapInstance.current) return;
-
-    // // Use leaflet-image to capture the map as a canvas
-    // leafletImage(mapInstance.current, (err, canvas) => {
-    //   if (err) {
-    //     console.error("Error capturing map:", err);
-    //     return;
-    //   }
-
-    //   // Convert the canvas to a data URL
-    //   const image = canvas.toDataURL("image/png");
-
-    //   // Create a temporary link element to trigger the download
-    //   const link = document.createElement("a");
-    //   link.href = image;
-    //   link.download = `map_${selectedRasterType}_${months[selectedMonth]}_${selectedYear}.png`;
-    //   document.body.appendChild(link);
-    //   link.click();
-    //   document.body.removeChild(link);
-    // });
+    // Your download logic here
   };
 
   return (
@@ -49,38 +25,15 @@ const MapView = () => {
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center space-x-3">
           <h1 className="text-3xl font-bold text-gray-800">
-            {/* Combined Drought Index (CDI) */}
             {getIndex(indicator)}
           </h1>
         </div>
-        {/* <h2 className="text-xl text-gray-600 font-medium">
-          {selectedDistrict || ""}
-        </h2> */}
       </div>
 
       {/* Main Content Container */}
       <div className="flex h-[60vh] mb-4 gap-6">
         {/* Map Section */}
-        <div className="w-[40%] bg-white rounded-xl shadow-lg p-4 relative">
-          {/* Legend at the bottom-right corner */}
-          <div className="absolute bottom-4 right-4 z-[1000] bg-white shadow-lg p-2 text-sm rounded-lg">
-            <h3 className="font-semibold mb-2">Legend</h3>
-            <div className="space-y-1">
-              {DROUGHT_SEVERITY_LEVELS.map((level) => (
-                <div
-                  key={level.range}
-                  className="flex items-center space-x-2 p-1"
-                  style={{ backgroundColor: level.color }}
-                >
-                  <span className="text-xs">{level.label}</span>
-                  <span className="text-[10px] text-gray-600">
-                    ({level.range})
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
+        <div className="w-[50%] bg-white rounded-xl shadow-lg p-4 relative">
           {/* Download Button at the bottom-left corner */}
           <div className="absolute bottom-4 left-4 z-[1000]">
             <button
@@ -93,7 +46,7 @@ const MapView = () => {
           </div>
 
           {/* Leaflet map container */}
-          <UgandaMap indicator={indicator} timerange={timerange} month={month} district={district} zoom={6.2} minZoom={6.2} />
+          <UgandaMap indicator={indicator} timerange={timerange} month={month} district={district} zoom={6.4} minZoom={6.2} />
         </div>
 
         {/* Chart Section */}
@@ -107,7 +60,6 @@ const MapView = () => {
             </button>
           </div>
           <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg">
-            {/* <span className="text-gray-400 font-medium">Time series</span> */}
             <TimeSeriesChart
               indicator={indicator}
               timerange={timerange}
@@ -120,11 +72,30 @@ const MapView = () => {
       </div>
 
       {/* Time Selector Section */}
-
       <DashboardSlider />
 
-      {/* Key Note Section */}
-      <KeyNote />
+      {/* Key Note Section  */}
+      <div className="flex items-start space-x-6">
+        <KeyNote />
+        {/* Legend */}
+        <div className="bg-white shadow-lg p-4 text-sm rounded-lg w-64">
+          <h3 className="font-semibold mb-2">Legend</h3>
+          <div className="space-y-1">
+            {DROUGHT_SEVERITY_LEVELS.map((level) => (
+              <div
+                key={level.range}
+                className="flex items-center space-x-2 p-1"
+                style={{ backgroundColor: level.color }}
+              >
+                <span className="text-xs">{level.label}</span>
+                <span className="text-[10px] text-gray-600">
+                  ({level.range})
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
