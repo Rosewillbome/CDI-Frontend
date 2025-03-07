@@ -5,33 +5,17 @@ import { Info } from "lucide-react";
 import { showYears, months, districts } from "../utils/selectYear";
 import Section from "../components/ui/Section";
 import { useSideberStore } from "../store/useSideberStore";
+// import UgandaMap from "../components/map/UgandaMap";
 
-const UgandaMap = ({ district }) => {
+const UgandaMapp = ({ district,month,timerange }) => {
   return (
     <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 mb-6">
       <div className="w-full h-full flex items-center justify-center text-gray-500">
-        Uganda Map View - Highlighting {district}
+            {/* <UgandaMap indicator={"PDI"} timerange={timerange} month={month} district={district} zoom={6.2} minZoom={6.2} /> */}
       </div>
     </div>
   );
 };
-
-// const TimeSeriesChart = ({ district, onFullView }) => {
-//   return (
-//     <div className="mb-6 relative">
-//       <h3 className="text-lg font-semibold mb-4">Time Series Analysis</h3>
-//       <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-center text-gray-500">
-//         Time Series Chart for {district}
-//       </div>
-//       <button
-//         onClick={onFullView}
-//         className="absolute top-2 right-2 px-3 py-1.5 bg-[#308DE0] text-white text-sm rounded-lg hover:bg-blue-700 flex items-center gap-1 shadow-md"
-//       >
-//         Full View <ArrowUpRight size={16} />
-//       </button>
-//     </div>
-//   );
-// };
 
 const FullScreenView = ({ title, children, onClose }) => {
   return (
@@ -120,7 +104,8 @@ function DistrictSection() {
       </div>
 
       <div className="space-y-6">
-        <UgandaMap district={districtOne} />
+        <UgandaMapp district={districtOne} timerange={timerangeOne}
+          month={monthOne} />
 
         <Section
           chart_id={"District_section_1"}
