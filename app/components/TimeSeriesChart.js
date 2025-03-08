@@ -2,18 +2,31 @@
 import { useEffect, useState, useMemo } from "react";
 import Highcharts from "highcharts/highstock";
 import axios from "axios";
-import { v4 } from 'uuid';
-import { filterByMonth, filterByYear } from "../utils/selectYear";
+import { v4 } from "uuid";
+import {
+  filterByMonth,
+  filterByYear,
+  filterDataByLegend,
+} from "../utils/selectYear";
 const TimeSeriesChart = ({
   indicator,
   timerange,
   month,
   district,
   chart_id,
+  filterBylegend,
 }) => {
   const [data, setData] = useState([]);
   const [filtered, setFiltered] = useState([]);
+  const [filteredLegend, setFilteredLegend] = useState([]);
   const [Hreload, setHreload] = useState("");
+
+  // let pgp;
+  // if (filterBylegend?.length > 0) {
+  //   pgp = useMemo(() => {
+  //     return filterBylegend;
+  //   }, [filterBylegend[0], filterBylegend[1]]);
+  // }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,24 +48,39 @@ const TimeSeriesChart = ({
   }, [indicator, district]);
 
   useEffect(() => {
-    if (data?.length > 0) {
-      const filterbypcu = data.filter(
-        (month_data) =>
-          filterByMonth(month_data) === month &&
-          filterByYear(month_data) === parseInt(timerange)
-      );
-      setFiltered(filterbypcu);
-      setHreload(v4());
-      //filterByMonth(month_data) === month &&
-    }
+    if (data?.length === 0) return;
+
+    const filterbypcu = data.filter(
+      (month_data) =>
+        filterByMonth(month_data) === month &&
+        filterByYear(month_data) === parseInt(timerange)
+    );
+
+    setFiltered(filterbypcu);
+    setHreload(v4());
   }, [data, month, timerange]);
+
+  useEffect(() => {
+  
+    if (data?.length === 0) return;
+    if (filterBylegend?.length === 0) return;
+    if (filtered?.length > 0) {
+      const filteredbylegend = filterDataByLegend(filterBylegend, filtered);
+      setFilteredLegend(filteredbylegend);
+      setHreload(v4());
+    } else {
+      const filteredbylegend_two = filterDataByLegend(filterBylegend, data);
+      setFilteredLegend(filteredbylegend_two);
+      setHreload(v4());
+    }
+  }, [filterBylegend]);
 
   useEffect(() => {
     Highcharts.stockChart(`${chart_id}`, {
       rangeSelector: { selected: 1, inputEnabled: false },
-      title: {
-        text: `${indicator?.toUpperCase()} Values with Drought Classification`,
-      },
+      // title: {
+      //   text: `${indicator?.toUpperCase()} Values with Drought Classification`,
+      // },
       xAxis: { type: "datetime", title: { text: "Date" } },
       yAxis: {
         title: { text: `${indicator?.toUpperCase()} Value` },
@@ -60,13 +88,13 @@ const TimeSeriesChart = ({
           {
             from: 1.0,
             to: 2.0,
-            color: "rgba(144, 238, 144, 0.2)",
+            color: "#D2FBD2",
             // label: { text: "No Drought (> 1.0)" },
           },
           {
             from: 0.8,
             to: 1.0,
-            color: "rgba(255, 255, 0, 0.2)",
+            color: "#E6987B",
             // label: { text: "Mild (0.8 - 1.0)" },
           },
           {
@@ -78,13 +106,13 @@ const TimeSeriesChart = ({
           {
             from: 0.4,
             to: 0.6,
-            color: "rgba(255, 69, 0, 0.2)",
+            color: "#D03A27",
             // label: { text: "Severe (0.4 - 0.6)" },
           },
           {
             from: 0,
             to: 0.4,
-            color: "rgba(139, 0, 0, 0.2)",
+            color: "#940905",
             // label: { text: "Extreme (< 0.4)" },
           },
         ],
@@ -110,7 +138,12 @@ const TimeSeriesChart = ({
       series: [
         {
           name: `${indicator?.toUpperCase()} Uganda`,
-          data: filtered?.length > 0 ? filtered : data,
+          data:
+            filteredLegend?.length > 0
+              ? filteredLegend
+              : filtered?.length > 0
+              ? filtered
+              : data,
           color: "#2f7ed8",
           lineWidth: 3,
           marker: { enabled: true, radius: 4 },
