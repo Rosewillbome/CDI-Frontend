@@ -12,6 +12,8 @@ export const useSideberStore = create((set) => ({
   timerangeTwo: "",
   monthOne: "",
   monthTwo: "",
+  filterBylegend:[],
+  setFilterBylegend: (newFilterBylegend) => set((state) => ({ filterBylegend: newFilterBylegend })),
   setMonthTwo: (newMonthTwo) => set((state) => ({ monthTwo: newMonthTwo })),
   setMonthOne: (newMonthOne) => set((state) => ({ monthOne: newMonthOne })),
   setTimerangeOne: (newTimerangeOne) => set((state) => ({ timerangeOne: newTimerangeOne })),

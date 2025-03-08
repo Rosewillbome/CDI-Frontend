@@ -5,12 +5,13 @@ import { Info } from "lucide-react";
 import { showYears, months, districts } from "../utils/selectYear";
 import Section from "../components/ui/Section";
 import { useSideberStore } from "../store/useSideberStore";
+// import UgandaMap from "../components/map/UgandaMap";
 
-const UgandaMap = ({ district }) => {
+const UgandaMapp = ({ district,monthTwo,timerangeTwo }) => {
   return (
     <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 mb-6">
       <div className="w-full h-full flex items-center justify-center text-gray-500">
-        Uganda Map View - Highlighting {district}
+      {/* <UgandaMap indicator={"PDI"} timerange={timerangeTwo} month={monthTwo} district={district} zoom={6.2} minZoom={6.2} /> */}
       </div>
     </div>
   );
@@ -103,7 +104,8 @@ function DistrictSectiontwo() {
       </div>
 
       <div className="space-y-6">
-        <UgandaMap district={districtTwo} />
+      <UgandaMapp district={districtTwo} timerange={timerangeTwo}
+          month={monthTwo} />
 
         <Section
           chart_id={"District_section_4"}
