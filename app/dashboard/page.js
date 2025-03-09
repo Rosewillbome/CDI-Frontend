@@ -5,11 +5,8 @@ import DashboardNav from "./DashboardNav";
 import Sidebar from "./Sidebar";
 // import MapView from "./MapView";
 import TableView from "./TableView";
-import dynamic from "next/dynamic";
-const MapView = dynamic(() => import("./MapView"), {
-  loading: () => <p>Loading Map...</p>,
-  ssr: false,
-});
+import MapView from "./MapView";
+
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState("map-view");
   return (

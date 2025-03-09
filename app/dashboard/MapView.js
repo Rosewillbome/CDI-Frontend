@@ -1,17 +1,21 @@
-import React, {useRef} from "react";
-import { DROUGHT_SEVERITY_LEVELS, getIndex } from "../utils/drought_levels";
+import React, { useRef } from "react";
+import { getIndex } from "../utils/drought_levels";
 import { FiDownload, FiInfo } from "react-icons/fi";
 import { useSideberStore } from "../store/useSideberStore";
 import TimeSeriesChart from "../components/TimeSeriesChart";
 import DashboardSlider from "../components/ui/DashboardSlider";
-import UgandaMap from "../components/map/UgandaMap";
+// import UgandaMap from "../components/map/UgandaMap";
 import html2canvas from "html2canvas"; // Import html2canvas for capturing the chart as an image
 import LegendData from "../components/ui/LegendData";
+import dynamic from "next/dynamic";
+const UgandaMap = dynamic(() => import("../components/map/UgandaMap"), {
+  loading: () => <p>Loading Map...</p>,
+  ssr: false,
+});
 
 const MapView = () => {
-  let { indicator, timerange, month, district,filterBylegend} = useSideberStore(
-    (state) => state
-  );
+  let { indicator, timerange, month, district, filterBylegend } =
+    useSideberStore((state) => state);
 
   const chartRef = useRef(null); // Ref to capture the chart element
 
@@ -30,7 +34,6 @@ const MapView = () => {
     }
   };
 
- 
   return (
     <div className="bg-gray-50 flex flex-col h-full p-6 space-y-6">
       {/* Header Section */}
@@ -58,7 +61,14 @@ const MapView = () => {
           </div>
 
           {/* Leaflet map container */}
-          <UgandaMap indicator={indicator} timerange={timerange} month={month} district={district} zoom={6.7} minZoom={6.7} />
+          <UgandaMap
+            indicator={indicator}
+            timerange={timerange}
+            month={month}
+            district={district}
+            zoom={6.7}
+            minZoom={6.7}
+          />
         </div>
 
         {/* Chart Section */}
@@ -101,27 +111,7 @@ const MapView = () => {
       <DashboardSlider />
 
       {/* Key Note Section  */}
-      {/* <div className="flex items-start space-x-6">
-        <KeyNote />
-           <div className="bg-white shadow-lg p-4 text-sm rounded-lg w-64">
-          <h3 className="font-semibold mb-2">Legend</h3>
-          <div className="space-y-1">
-            {DROUGHT_SEVERITY_LEVELS.map((level) => (
-              <div
-                key={level.range}
-                className="flex items-center space-x-2 p-1"
-                style={{ backgroundColor: level.color }}
-              >
-                <span className="text-xs">{level.label}</span>
-                <span className="text-[10px] text-gray-600" onClick={ e => hundleFilterBylegend(e,level.range)}>
-                  ({level.range})
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div> */}
-      <LegendData/>
+      <LegendData />
     </div>
   );
 };

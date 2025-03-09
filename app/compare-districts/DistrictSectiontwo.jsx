@@ -6,12 +6,17 @@ import { showYears, months, districts } from "../utils/selectYear";
 import Section from "../components/ui/Section";
 import { useSideberStore } from "../store/useSideberStore";
 // import UgandaMap from "../components/map/UgandaMap";
+import dynamic from "next/dynamic";
+const UgandaMap = dynamic(() => import("../components/map/UgandaMap"), {
+  loading: () => <p>Loading Map...</p>,
+  ssr: false,
+});
 
-const UgandaMapp = ({ district,monthTwo,timerangeTwo }) => {
+const UgandaMapp = ({ district,month,timerange }) => {
   return (
     <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 mb-6">
       <div className="w-full h-full flex items-center justify-center text-gray-500">
-      {/* <UgandaMap indicator={"PDI"} timerange={timerangeTwo} month={monthTwo} district={district} zoom={6.2} minZoom={6.2} /> */}
+      <UgandaMap indicator={"PDI"} timerange={timerange} month={month} district={district} zoom={6.2} minZoom={6.2} />
       </div>
     </div>
   );
