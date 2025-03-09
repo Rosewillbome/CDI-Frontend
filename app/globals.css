@@ -2,11 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary: #4A8BD0; 
+  --primary: #4a8bd0;
   --secondary: #171717;
   --border-color: rgba(0, 0, 0, 0.1);
   --shadow-color: rgba(0, 0, 0, 0.2);
@@ -22,7 +21,6 @@
   }
 }
 
-
 body {
   color: var(--foreground);
   background: var(--background);
@@ -31,11 +29,9 @@ body {
   scroll-behavior: smooth;
 }
 
-
 .shadow-custom {
   box-shadow: 0 4px 8px var(--shadow-color);
 }
-
 
 .btn {
   padding: 8px 16px;
@@ -63,7 +59,7 @@ body {
 }
 
 .btn-secondary:hover {
-  background: #F1F1F1;
+  background: #f1f1f1;
   box-shadow: 0 4px 8px var(--shadow-color);
 }
 
@@ -84,3 +80,16 @@ body {
 .highcharts-credits {
   display: none;
 }
+/* .highcharts-navigator  {
+  display: none !important;
+}
+.highcharts-navigator-xaxis  {
+  display: none !important;
+}
+.highcharts-axis-labels {
+  display: none !important;
+}
+.highcharts-scrollbar {
+  display: none !important;
+} */
+

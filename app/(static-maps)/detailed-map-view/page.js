@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Image from "next/image";
 import { Download } from 'lucide-react';
 import { useDroughtData } from '../../hooks/useDroughtData';
-import { DROUGHT_SEVERITY_LEVELS } from "../../utils/drought_levels";
+import { CDI_legend } from "../../utils/drought_levels";
 export default function Home() {
   const [selectedIndicator, setSelectedIndicator] = useState('CDI');
   const [selectedYear, setSelectedYear] = useState(2025);
@@ -68,7 +68,7 @@ export default function Home() {
           <div className="bg-white rounded-lg shadow-md p-4">
             <h3 className="text-sm font-medium mb-3">Severity Type</h3>
             <div className="space-y-2">
-              {DROUGHT_SEVERITY_LEVELS.map((level) => (
+              {CDI_legend.map((level) => (
                 <div
                   key={level.range}
                   className="flex items-center space-x-2 p-2 rounded"
