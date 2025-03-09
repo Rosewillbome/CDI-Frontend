@@ -46,13 +46,13 @@ const MapView = () => {
       </div>
 
       {/* Main Content Container */}
-      <div className="flex h-[60vh] mb-4 gap-6">
+      <div className="flex h-[70vh] mb-4 gap-6">
         {/* Map Section */}
-        <div className="w-[50%] bg-white rounded-xl shadow-lg p-4 relative">
+        <div className="w-[55%] bg-white rounded-xl shadow-lg p-4 relative">
           {/* Download Button at the bottom-left corner */}
           <div className="absolute bottom-4 left-4 z-[1000]">
             <button
-              className="p-2 bg-white border border  hover:bg-gray-100 rounded-2xl transition-colors tooltip"
+              className="p-2 bg-white border   hover:bg-gray-100 rounded-2xl transition-colors tooltip"
               data-tooltip="Download Map"
               onClick={handleDownloadMap}
             >
@@ -66,23 +66,19 @@ const MapView = () => {
             timerange={timerange}
             month={month}
             district={district}
-            zoom={6.7}
-            minZoom={6.7}
+            zoom={6.9}
+            minZoom={6.9}
           />
         </div>
 
         {/* Chart Section */}
-        <div className="w-[65%] bg-white rounded-xl shadow-lg p-4 relative">
-          <div className="absolute top-4 right-4 flex space-x-2">
-            {/* <button
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip"
-              data-tooltip="Download Chart"
-              onClick={handleDownloadChart}
-            >
-              <FiDownload className="text-gray-600" size={20} />
-            </button> */}
+        <div className="w-[45%] relative flex flex-col items-center">
+          {/* District Name Title */}
+          <div className="text-lg font-semibold text-gray-800 leading-tight pb-1">
+            {district ? district : "Select a District"}
           </div>
-          <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg">
+
+          <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 w-full">
             <div ref={chartRef}>
               <TimeSeriesChart
                 indicator={indicator}
@@ -94,10 +90,11 @@ const MapView = () => {
               />
             </div>
           </div>
+
           {/* Download Button at the bottom-left corner */}
           <div className="absolute bottom-4 left-4 z-[1000]">
             <button
-              className="p-2 bg-white border  hover:bg-gray-100 rounded-2xl transition-colors tooltip"
+              className="p-2 bg-white border hover:bg-gray-100 rounded-2xl transition-colors tooltip"
               data-tooltip="Download Chart"
               onClick={handleDownloadChart}
             >

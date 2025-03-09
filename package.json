@@ -16,6 +16,7 @@
     "d3-scale": "^4.0.2",
     "highcharts": "github:highcharts/highcharts-dist#nightly",
     "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.0",
     "leaflet": "^1.9.4",
     "leaflet-image": "^0.4.0",
     "lucide-react": "^0.474.0",

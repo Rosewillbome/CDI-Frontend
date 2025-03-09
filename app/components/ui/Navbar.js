@@ -13,13 +13,14 @@ function Navbar() {
   return (
     <div className="bg-gray-100 shadow-md flex justify-between items-center px-8 py-4">
       {/* Left Section - Title */}
-      <div className="flex flex-col items-start">
-        <h2 className="text-lg text-[#308DE0] font-light tracking-wide uppercase">
-          Uganda National Drought
-        </h2>
-        <h1 className="text-2xl md:text-3xl text-[#308DE0] font-semibold uppercase ">
-          Monitoring Tool
-        </h1>
+      <div className="flex  items-start">
+      <Image
+          src="/fao.png"
+          alt="FAO Logo"
+          width={200}
+          height={100}
+          className="object-contain"
+        />
       </div>
 
       {/* Center Section - Navigation */}
@@ -35,14 +36,14 @@ function Navbar() {
       </nav>
 
       {/* Right Section - Logo */}
-      <div className="flex items-center">
-        <Image
-          src="/fao.png"
-          alt="FAO Logo"
-          width={150}
-          height={80}
-          className="object-contain"
-        />
+      <div className="flex flex-col items-center">
+      <h2 className="text-lg text-[#308DE0] font-light tracking-wide uppercase">
+          Uganda National Drought
+        </h2>
+        <h1 className="text-2xl md:text-3xl text-[#308DE0] font-semibold uppercase ">
+          Monitoring Tool
+        </h1>
+       
       </div>
     </div>
   );

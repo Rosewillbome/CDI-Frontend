@@ -38,35 +38,42 @@ const UgandaMap = ({ indicator, timerange, month, zoom, minZoom }) => {
     console.log("Initializing map...");
     baseMapsRef.current = {
       OpenStreetMap: L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          attribution: "© OpenStreetMap contributors",
-        }
-      ),
-      OpenTopoMap: L.tileLayer(
-        "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-        {
-          attribution: "© OpenTopoMap contributors",
-        }
-      ),
-      "Esri World Imagery": L.tileLayer(
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        { attribution: "© Esri" }
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       ),
     };
+
     mapRef.current = L.map(mapContainerRef.current, {
       center: [1.3733, 32.2903],
       zoom: zoom ? zoom : 7.2,
       minZoom: minZoom ? minZoom : 7.2,
       layers: [baseMapsRef.current["OpenStreetMap"]],
+      attributionControl: false,
     });
 
     // Initialize District Layer
     districtLayerRef.current = L.geoJSON(geoData, {
       style: {
-        color: "black",
+        color: "gray",
         weight: 1,
         fill: false,
+      },
+      onEachFeature: function (feature, layer) {
+        const districtName =
+          feature.properties?.DISTRICT ||
+          feature.properties?.NAME_1 ||
+          feature.properties?.name ||
+          "Unknown";
+
+        console.log("Binding tooltip for:", districtName);
+
+        if (districtName !== "Unknown") {
+          layer.bindTooltip(districtName, {
+            permanent: true,
+            direction: "center",
+            className: "district-label",
+          }).openTooltip();
+          layer.bringToFront();
+        }
       },
     }).addTo(mapRef.current);
 
@@ -103,7 +110,6 @@ const UgandaMap = ({ indicator, timerange, month, zoom, minZoom }) => {
         format: "image/png",
         transparent: true,
         opacity: 0.7,
-        attribution: "GeoServer",
       })
       .addTo(mapRef.current);
 

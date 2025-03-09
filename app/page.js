@@ -8,6 +8,7 @@ import OverviewRightSection from "./components/ui/OverviewRightSection";
 import axios from "axios";
 import { useSideberStore } from "./store/useSideberStore";
 import { districts } from "./utils/selectYear";
+import Image from "next/image";
 // import UgandaMap from './components/map/UgandaMap';
 
 const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
@@ -17,8 +18,8 @@ const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
 
 export default function Home() {
   let { indicator, timerange, month, district } = useSideberStore(
-      (state) => state
-    );
+    (state) => state
+  );
   const [progressYear, setProgressYear] = useState(2025);
   const [selectedDistrict, setSelectedDistrict] = useState("All");
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -58,10 +59,13 @@ export default function Home() {
           </button>
 
           {/* Header */}
-          <div>
-            <h2 className="text-xl font-thin">UGANDA NATIONAL DROUGHT</h2>
-            <h1 className="text-3xl font-bold">MONITORING TOOL</h1>
-          </div>
+          <Image
+            src="/fao-white.png"
+            alt="FAO Logo"
+            width={250}
+            height={150}
+            className="object-contain"
+          />
 
           <OverviewIntro />
         </div>
@@ -131,7 +135,12 @@ export default function Home() {
           <div className="relative h-[600px]">
             {/* Map Placeholder */}
             <div className="w-full h-full  rounded-lg flex items-center justify-center">
-              <UgandaMap indicator={indicator} timerange={timerange} month={month} district={district} />
+              <UgandaMap
+                indicator={indicator}
+                timerange={timerange}
+                month={month}
+                district={district}
+              />
             </div>
 
             {/* Legend */}
@@ -191,8 +200,9 @@ export default function Home() {
       </div>
 
       {/* Right Section */}
-
-      <OverviewRightSection />
+      <div className="absolute top-0 right-0 h-full w-[16.67%] z-30">
+        <OverviewRightSection />
+      </div>
     </div>
   );
 }
