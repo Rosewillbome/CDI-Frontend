@@ -267,10 +267,14 @@ const UgandaMap = ({
       .addTo(mapRef.current)
       .bringToBack();
     const getboundary = boundaryLayer.current.getBounds();
-
-    mapRef.current.fitBounds(getboundary);
-    mapRef.current.setMaxBounds(getboundary);
-  }, [getTheBounds]);
+    console.log("getboundary", getboundary);
+    if (Object.keys(getboundary).length !== 0) {
+      mapRef.current.fitBounds(getboundary);
+      mapRef.current.setMaxBounds(getboundary);
+    } else {
+      console.error("Bounds are not valid:");
+    }
+  }, [getTheBounds,geoData]);
 
   return (
     <div
