@@ -17,11 +17,20 @@ const Sidebar = () => {
     setTimerange,
     setMonth,
     setDistrict,
+    setFilterBylegend
   } = useSideberStore((state) => state);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+  const clearFilters =(e)=>{
+    e.preventDefault()
+    setIndicator("CDI")
+    setTimerange("2024")
+    setMonth("June")
+    setDistrict("MASAKA")
+    setFilterBylegend([])
+  }
 
   return (
     <div className="relative">
@@ -135,7 +144,7 @@ const Sidebar = () => {
                     onChange={(e) => setDistrict(e.target.value)}
                     className="w-full px-3 py-2 border border-white rounded-lg text-gray-700"
                   >
-                    <option className="bg-[#2c5d8a]">All</option>
+                    {/* <option className="bg-[#2c5d8a]">All</option> */}
                     {districts?.map((district) => (
                       <option key={district} value={district}>
                         {district}
@@ -146,7 +155,7 @@ const Sidebar = () => {
               </div>
 
               {/* Clear Button */}
-              <button className="w-full mt-8 bg-white/10 backdrop-blur-sm text-white px-6 py-3 rounded-lg font-medium hover:bg-white/20 border border-white/20 transition-all hover:shadow-lg">
+              <button onClick={e => clearFilters(e)} className="w-full mt-8 bg-white/10 backdrop-blur-sm text-white px-6 py-3 rounded-lg font-medium hover:bg-white/20 border border-white/20 transition-all hover:shadow-lg">
                 Clear Filters
               </button>
             </div>

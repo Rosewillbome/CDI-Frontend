@@ -144,14 +144,17 @@ export const getRegexExpression = (valueInput) => {
 };
 
 export const filterDataByLegend = (legendString, dataa) => {
-  const left_operator = legendString[0]
-    ? getRegexExpression(legendString[0])
-    : null;
+  let left_operator;
+  let right_operator;
+  if (legendString?.length > 0) {
+    left_operator = legendString[0]
+      ? getRegexExpression(legendString[0])
+      : null;
 
-  const right_operator = legendString[1]
-    ? getRegexExpression(legendString[1])
-    : null;
-
+    right_operator = legendString[1]
+      ? getRegexExpression(legendString[1])
+      : null;
+  }
   let filteredData = dataa;
 
   // Apply left operator filter
@@ -171,7 +174,6 @@ export const filterDataByLegend = (legendString, dataa) => {
         filteredData = filteredData.filter((d) => d[1] <= numericValue);
         break;
       default:
-        console.warn(`Unsupported expression: ${expression}`);
         break;
     }
   }
@@ -193,11 +195,13 @@ export const filterDataByLegend = (legendString, dataa) => {
         filteredData = filteredData.filter((d) => d[1] <= numericValue);
         break;
       default:
-        console.warn(`Unsupported expression: ${expression}`);
         break;
     }
   }
 
-  console.log("filteredData", filteredData);
   return filteredData;
+};
+
+export const capitalize = (s) => {
+  return s && String(s[0]).toUpperCase() + String(s).slice(1);
 };

@@ -15,7 +15,7 @@ const UgandaMapp = ({ district,month,timerange }) => {
   return (
     <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 mb-6">
       <div className="w-full h-full flex items-center justify-center text-gray-500">
-            <UgandaMap indicator={"PDI"} timerange={timerange} month={month} district={district} zoom={6.2} minZoom={6.2} />
+            <UgandaMap indicator={"PDI"} timerange={timerange} month={month} district={district} zoom={6.2} minZoom={6.2} getTheBounds={district}/>
       </div>
     </div>
   );

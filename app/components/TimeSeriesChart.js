@@ -42,8 +42,11 @@ const TimeSeriesChart = ({
   }, [indicator, district]);
 
   useEffect(() => {
-    if (data?.length === 0) return;
-
+    if (data?.length === 0) {
+      setFiltered([]);
+      setHreload(v4());
+      return;
+    }
     const filterbypcu = data.filter(
       (month_data) =>
         filterByMonth(month_data) === month &&
@@ -55,8 +58,12 @@ const TimeSeriesChart = ({
   }, [data, month, timerange]);
 
   useEffect(() => {
-    if (data?.length === 0) return;
-    if (filterBylegend?.length === 0) return;
+    // if (data?.length === 0) return;
+    if (filterBylegend?.length === 0 || data?.length === 0) {
+      setFilteredLegend([]);
+      setHreload(v4());
+      return;
+    }
     if (filtered?.length > 0) {
       const filteredbylegend = filterDataByLegend(filterBylegend, filtered);
       setFilteredLegend(filteredbylegend);
@@ -66,14 +73,14 @@ const TimeSeriesChart = ({
       setFilteredLegend(filteredbylegend_two);
       setHreload(v4());
     }
-  }, [filterBylegend]);
+  }, [filterBylegend, filtered]);
 
   useEffect(() => {
     Highcharts.stockChart(`${chart_id}`, {
       rangeSelector: { selected: 5, inputEnabled: false },
-      // title: {
-      //   text: `${indicator?.toUpperCase()} Values with Drought Classification`,
-      // },
+      title: {
+        text: `${indicator?.toUpperCase()} Values with Drought Classification`,
+      },
       xAxis: { type: "datetime", title: { text: "Date" } },
       yAxis: {
         title: { text: `${indicator?.toUpperCase()} Value` },
