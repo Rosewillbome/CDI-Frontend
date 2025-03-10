@@ -4,8 +4,18 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import axios from "axios";
 import { v4 } from "uuid";
+import { capitalize } from "../../utils/selectYear";
+import * as turf from "@turf/turf";
 
-const UgandaMap = ({ indicator, timerange, month, zoom, minZoom }) => {
+const UgandaMap = ({
+  indicator,
+  timerange,
+  month,
+  zoom,
+  minZoom,
+  setDistrict,
+  getTheBounds,
+}) => {
   const [geoData, setGeoData] = useState(null);
   const [Hreload, setHreload] = useState("");
   const mapContainerRef = useRef(null);
@@ -14,6 +24,7 @@ const UgandaMap = ({ indicator, timerange, month, zoom, minZoom }) => {
   const layerControlRef = useRef(null);
   const baseMapsRef = useRef(null);
   const districtLayerRef = useRef(null);
+  const boundaryLayer = useRef(null);
 
   const geoServerUrl = `${process.env.NEXT_PUBLIC_WSM}`;
 
@@ -64,29 +75,50 @@ const UgandaMap = ({ indicator, timerange, month, zoom, minZoom }) => {
           feature.properties?.name ||
           "Unknown";
 
-        console.log("Binding tooltip for:", districtName);
-
         if (districtName !== "Unknown") {
-          layer.bindTooltip(districtName, {
-            permanent: true,
-            direction: "center",
-            className: "district-label",
-          }).openTooltip();
+          layer
+            .bindTooltip(districtName, {
+              permanent: true,
+              direction: "center",
+              className: "district-label",
+            })
+            .openTooltip();
           layer.bringToFront();
         }
       },
     }).addTo(mapRef.current);
 
+    // mapRef.current.fitBounds(districtLayerRef.current.getBounds());
+    districtLayerRef.current.bringToFront();
+    mapRef.current.on("click", function (ev) {
+      console.log("Clicked at:", ev.latlng);
+
+      let clickedFeature = null;
+
+      // Iterate through the district layer to find the clicked feature
+      districtLayerRef.current.eachLayer(function (layer) {
+        if (
+          layer instanceof L.Polygon &&
+          layer.getBounds().contains(ev.latlng)
+        ) {
+          clickedFeature = layer.feature;
+        }
+      });
+
+      if (clickedFeature) {
+        if (setDistrict) {
+          setDistrict(clickedFeature.properties.name?.toUpperCase());
+        }
+      } else {
+        console.log("No feature clicked.");
+      }
+    });
     setHreload(v4());
   }, [geoData]);
 
   // Update the raster layer when indicator, month, or timerange changes
   useEffect(() => {
     if (typeof window === "undefined" || !mapRef.current) return;
-    console.log(
-      "Updating raster layer...",
-      `${indicator} ${month} ${timerange}`
-    );
 
     if (!geoServerUrl) {
       console.error("GeoServer URL is missing. Check your .env file.");
@@ -203,6 +235,42 @@ const UgandaMap = ({ indicator, timerange, month, zoom, minZoom }) => {
 
     layerControlRef.current = customControl.addTo(mapRef.current);
   }, [timerange, month, indicator, Hreload]);
+
+  useEffect(() => {
+    if (geoData?.length === 0) return;
+    if (getTheBounds?.trim()?.length === 0) return;
+    const updatedFeatures = geoData?.features?.filter(
+      (feature) =>
+        feature?.properties?.name === capitalize(getTheBounds?.toLowerCase())
+    );
+    if (!updatedFeatures) return;
+    // Create a new GeoJSON object with the updated features array
+    const updatedJsson = {
+      ...geoData, // Copy all properties from the original GeoJSON
+      features: updatedFeatures, // Replace the features array with the updated one
+    };
+    if (!updatedJsson) return;
+
+    if (boundaryLayer.current) {
+      mapRef.current.removeLayer(boundaryLayer.current);
+      boundaryLayer.current = null;
+    }
+    boundaryLayer.current = L.geoJSON(updatedJsson, {
+      style: {
+        color: "blue",
+        weight: 4,
+        // opacity: 0.3,
+        fill: false,
+        // stroke: false,
+      },
+    })
+      .addTo(mapRef.current)
+      .bringToBack();
+    const getboundary = boundaryLayer.current.getBounds();
+
+    mapRef.current.fitBounds(getboundary);
+    mapRef.current.setMaxBounds(getboundary);
+  }, [getTheBounds]);
 
   return (
     <div

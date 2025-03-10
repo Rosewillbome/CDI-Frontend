@@ -14,7 +14,7 @@ const UgandaMap = dynamic(() => import("../components/map/UgandaMap"), {
 });
 
 const MapView = () => {
-  let { indicator, timerange, month, district, filterBylegend } =
+  let { indicator, timerange, month, district, filterBylegend,setDistrict } =
     useSideberStore((state) => state);
 
   const chartRef = useRef(null); // Ref to capture the chart element
@@ -66,8 +66,9 @@ const MapView = () => {
             timerange={timerange}
             month={month}
             district={district}
-            zoom={6.9}
-            minZoom={6.9}
+            zoom={7.15}
+            minZoom={7.15}
+            setDistrict={setDistrict}
           />
         </div>
 
