@@ -107,7 +107,26 @@ const UgandaMap = ({
 
       if (clickedFeature) {
         if (setDistrict) {
+          //set district
           setDistrict(clickedFeature.properties.name?.toUpperCase());
+          let coordinates = clickedFeature;
+          console.log("coordinates", coordinates);
+          if (!coordinates) return;
+          if (boundaryLayer.current) {
+            mapRef.current.removeLayer(boundaryLayer.current);
+            boundaryLayer.current = null;
+          }
+          boundaryLayer.current = L.geoJSON(coordinates, {
+            style: {
+              color: "blue",
+              weight: 4,
+              // opacity: 0.3,
+              fill: false,
+              // stroke: false,
+            },
+          })
+            .addTo(mapRef.current)
+            .bringToBack();
         }
       } else {
         console.log("No feature clicked.");
@@ -274,7 +293,7 @@ const UgandaMap = ({
     } else {
       console.error("Bounds are not valid:");
     }
-  }, [getTheBounds,geoData]);
+  }, [getTheBounds, geoData]);
 
   return (
     <div
