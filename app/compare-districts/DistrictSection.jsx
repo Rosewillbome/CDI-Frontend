@@ -11,11 +11,19 @@ const UgandaMap = dynamic(() => import("../components/map/UgandaMap"), {
   ssr: false,
 });
 
-const UgandaMapp = ({ district,month,timerange }) => {
+const UgandaMapp = ({ district, month, timerange }) => {
   return (
     <div className="h-64 bg-gray-50 rounded-xl border border-gray-200 mb-6">
       <div className="w-full h-full flex items-center justify-center text-gray-500">
-            <UgandaMap indicator={"PDI"} timerange={timerange} month={month} district={district} zoom={6.2} minZoom={6.2} getTheBounds={district}/>
+        <UgandaMap
+          indicator={"PDI"}
+          timerange={timerange}
+          month={month}
+          district={district}
+          zoom={6.2}
+          minZoom={6.2}
+          getTheBounds={district}
+        />
       </div>
     </div>
   );
@@ -108,8 +116,19 @@ function DistrictSection() {
       </div>
 
       <div className="space-y-6">
-        <UgandaMapp district={districtOne} timerange={timerangeOne}
-          month={monthOne} />
+        <UgandaMapp
+          district={districtOne}
+          timerange={timerangeOne}
+          month={monthOne}
+        />
+
+        <Section
+          chart_id={"District_section_0"}
+          indicator={"CDI"}
+          timerange={timerangeOne}
+          month={monthOne}
+          district={districtOne}
+        />
 
         <Section
           chart_id={"District_section_1"}
