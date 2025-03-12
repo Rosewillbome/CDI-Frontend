@@ -120,7 +120,7 @@ export const districts = [
   "SHEEMA",
   "SIRONKO",
   "SOROTI",
-  "SSEMBABULE",
+  "SEMBABULE",
   "TORORO",
   "WAKISO",
   "YUMBE",

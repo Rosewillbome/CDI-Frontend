@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Download, Loader } from "lucide-react";
 import DistrictSection from "./DistrictSection";
 import DistrictSectiontwo from "./DistrictSectiontwo";
@@ -13,6 +13,13 @@ export default function Home() {
   const reportRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (footer) {
+      footer.classList.add("hidden");
+    }
+  }, []);
+
   const handleDownloadAllPdf = async () => {
     if (!reportRef.current) {
       console.error("Report section not found!");
@@ -24,19 +31,19 @@ export default function Home() {
     try {
       const pdf = new jsPDF("p", "mm", "a4");
       const canvas = await html2canvas(reportRef.current, {
-        scale: 2, 
+        scale: 2,
         windowWidth: reportRef.current.scrollWidth,
         windowHeight: reportRef.current.scrollHeight,
       });
 
-      const imgData = canvas.toDataURL("image/jpeg", 0.8); 
-      const imgWidth = 210; 
+      const imgData = canvas.toDataURL("image/jpeg", 0.8);
+      const imgWidth = 210;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
       let position = 0;
 
       pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-      heightLeft -= 297; 
+      heightLeft -= 297;
 
       while (heightLeft > 0) {
         position -= 297;
@@ -54,21 +61,18 @@ export default function Home() {
   };
 
   return (
-    <div ref={reportRef} className="min-h-screen bg-gray-100 p-8">
-      {/* Top Border */}
-      <div className="border-t-2  border-[#308DE0]"></div>
-
+    <div ref={reportRef} className="min-h-screen bg-white">
       {/* Header & Download Button */}
-      <div className="max-w-7xl mx-auto mb-8 mt-3 relative">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-          <h1 className="text-3xl font-bold text-black text-center w-full">
-            {selectedIndicator}
-          </h1>
-
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-4">
+        <div className="w-1/3"></div> 
+        <h1 className="text-3xl font-bold text-black text-center w-1/3">
+          {selectedIndicator}
+        </h1>
+        <div className="w-1/3 flex justify-end">
           <button
             onClick={handleDownloadAllPdf}
             disabled={isDownloading}
-            className={`absolute top-0 right-0 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
+            className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
               isDownloading
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-[#308DE0] text-white hover:bg-blue-700"
@@ -81,18 +85,18 @@ export default function Home() {
       </div>
 
       {/* Comparison Title */}
-      <div className="mb-6 text-center">
+      <div className="text-center mb-2">
         <h2 className="text-xl font-semibold text-[#e03030]">
           Comparing: {districtOne} vs {districtTwo}
         </h2>
       </div>
 
-     
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full mx-auto px-4">
-        <div className="bg-white p-6 rounded-lg shadow-lg h-[90vh] w-full">
+      {/* District Comparison Sections */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full mx-auto px-4">
+        <div className="h-screen w-full">
           <DistrictSection />
         </div>
-        <div className="bg-white p-6 rounded-lg shadow-lg h-[90vh] w-full">
+        <div className="h-screen w-full">
           <DistrictSectiontwo />
         </div>
       </div>

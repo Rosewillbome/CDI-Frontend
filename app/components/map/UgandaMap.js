@@ -118,7 +118,7 @@ const UgandaMap = ({
           }
           boundaryLayer.current = L.geoJSON(coordinates, {
             style: {
-              color: "blue",
+              color: "#308DE0",
               weight: 4,
               // opacity: 0.3,
               fill: false,

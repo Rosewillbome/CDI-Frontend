@@ -1,18 +1,35 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-function Navbtn({ hlink, label }) {
+
+function Navbtn({ hlink, label, index }) {
   const pathname = usePathname();
- 
+  const isActive = pathname === hlink;
+  const isEven = index % 2 === 0;
+
+  const clipPathStyle = isEven
+    ? "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)"
+    : "polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%)";
+
   return (
-    <Link
-      href={hlink}
-      className={`mr-2 ml-2 text-black font-bold text-xl mt-6 hover:text-blue-600 ${
-        pathname === hlink ? "border-b-2 border-blue-600" :""
-      } `}
-    >
-      {label}
+    <Link href={hlink} passHref>
+      <div
+        className="w-32 h-12 flex items-center justify-center font-bold text-lg transition-all"
+        style={{
+          clipPath: clipPathStyle,
+          backgroundColor: isActive ? "white" : "#308DE0",
+          color: isActive ? "#308DE0" : "white",
+
+          display: "inline-flex",
+          textAlign: "center",
+          padding: 0,
+          margin: 0,
+          lineHeight: "48px",
+        }}
+      >
+        {label}
+      </div>
     </Link>
   );
 }

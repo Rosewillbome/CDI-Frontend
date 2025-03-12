@@ -200,9 +200,10 @@ export default function Home() {
       </div>
 
       {/* Right Section */}
-      <div className="absolute top-0 right-0 h-full w-[16.67%] z-30">
-        <OverviewRightSection />
-      </div>
+      <div className="absolute right-0 w-[16.67%] z-30" style={{ top: "auto", bottom: "4rem" }}>
+  <OverviewRightSection />
+</div>
+
     </div>
   );
 }
