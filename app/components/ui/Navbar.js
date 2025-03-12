@@ -11,10 +11,10 @@ function Navbar() {
   ];
 
   return (
-    <div className="bg-gray-100 shadow-md flex justify-between items-center px-8 py-4">
+    <div className="bg-gray-100 shadow-md border border-blue-100 flex justify-between items-center px-8 py-4">
       {/* Left Section - Title */}
-      <div className="flex  items-start">
-      <Image
+      <div className="flex items-start">
+        <Image
           src="/fao.png"
           alt="FAO Logo"
           width={200}
@@ -24,26 +24,25 @@ function Navbar() {
       </div>
 
       {/* Center Section - Navigation */}
-      <nav className="flex-1 flex justify-center space-x-4">
+      <nav className="flex">
         {navItems.map((data, index) => (
           <Navbtn
             key={index}
             label={data.label}
             hlink={data.path}
-            className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+            index={index}
           />
         ))}
       </nav>
 
       {/* Right Section - Logo */}
       <div className="flex flex-col items-center">
-      <h2 className="text-lg text-[#308DE0] font-light tracking-wide uppercase">
+        <h2 className="text-lg text-[#308DE0] font-light tracking-wide uppercase">
           Uganda National Drought
         </h2>
-        <h1 className="text-2xl md:text-3xl text-[#308DE0] font-semibold uppercase ">
+        <h1 className="text-2xl md:text-3xl text-[#308DE0] font-semibold uppercase">
           Monitoring Tool
         </h1>
-       
       </div>
     </div>
   );

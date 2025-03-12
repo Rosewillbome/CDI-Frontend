@@ -3,10 +3,17 @@ import React, { useState } from "react";
 
 function OverviewIntro() {
   const [activeTab, setActiveTab] = useState("introduction");
-  const handleDownload = (tabName) => {
-    // Placeholder function for download logic
-    alert(`Downloading ${tabName}...`);
+
+  const handleDownload = () => {
+    // Create a link element
+    const link = document.createElement("a");
+    link.href = "/CDI-manual.pdf"; // Path to the PDF file in the public directory
+    link.download = "CDI-manual.pdf"; // Name of the downloaded file
+    document.body.appendChild(link); // Append the link to the body
+    link.click(); // Programmatically click the link to trigger the download
+    document.body.removeChild(link); // Remove the link from the document
   };
+
   return (
     <>
       <div className="flex border border-[#F1F1F1] rounded-3xl text-sm overflow-hidden w-[70%]">
@@ -126,7 +133,7 @@ function OverviewIntro() {
           <>
             <div className="prose max-w-none space-y-4 pl-4">
               <button
-                onClick={() => handleDownload("Methodology")}
+                onClick={handleDownload}
                 className="mt-4 flex items-center justify-center gap-2 bg-[#F1F1F1] text-[#308DE0] py-2 px-4 rounded-2xl hover:bg-[#308DE0] hover:text-white transition-all text-sm"
               >
                 <span>Download Methodology</span>
