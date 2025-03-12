@@ -28,7 +28,7 @@ const TimeSeriesChart = ({
         .get(
           `${
             process.env.NEXT_PUBLIC_API
-          }cdi/district/${indicator?.toLowerCase()}/${district?.toUpperCase()}`
+          }data/district/${indicator?.toLowerCase()}/${district?.toUpperCase()}`
         )
         .then((response) => {
           setData(response?.data?.data);

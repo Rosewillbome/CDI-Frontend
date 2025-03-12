@@ -1,23 +1,38 @@
 "use client";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { FiDownload } from "react-icons/fi";
+
+//  test pagination
+// ...Array.from({ length: 100 }, (_, i) => ({
+//   District: `District ${i + 1}`,
+//   CurrentCDI: (Math.random() * 5).toFixed(1),
+//   MonthYear: "Jan 2025",
+//   PreviousCDI: (Math.random() * 5).toFixed(1),
+//   PreviousMonthYear: "Dec 2024",
+//   LongTermMeanCDI: (Math.random() * 5).toFixed(1),
+// })),
 
 const TableView = () => {
   // Dummy data for table
-  const [tableData, setTableData] = useState([
-    //  test pagination
-    ...Array.from({ length: 100 }, (_, i) => ({
-      District: `District ${i + 1}`,
-      CurrentCDI: (Math.random() * 5).toFixed(1),
-      MonthYear: "Jan 2025",
-      PreviousCDI: (Math.random() * 5).toFixed(1),
-      PreviousMonthYear: "Dec 2024",
-      LongTermMeanCDI: (Math.random() * 5).toFixed(1),
-    })),
-  ]);
-
+  const [tableData, setTableData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 20;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_API}data/district/table/cdi`)
+        .then((response) => {
+          console.log("table",response?.data?.data)
+          setTableData(response?.data?.data);
+        })
+        .catch((error) => {
+          console.error("comming error", error);
+        });
+    };
+    fetchData();
+  }, []);
 
   const totalPages = Math.ceil(tableData.length / rowsPerPage);
 
@@ -82,16 +97,16 @@ const TableView = () => {
             </thead>
             <tbody className="bg-gray-50 divide-y divide-gray-200">
               {currentData.map((item, index) => {
-                const deviationFromPrevious = (
-                  item.CurrentCDI - item.PreviousCDI
-                ).toFixed(2);
-                const deviationFromLongTerm = (
-                  item.CurrentCDI - item.LongTermMeanCDI
-                ).toFixed(2);
-                const status =
-                  deviationFromPrevious > 0 || deviationFromLongTerm > 0
-                    ? "Worsening"
-                    : "Improving";
+                // const deviationFromPrevious = (
+                //   parseFloat(item[1]) - parseFloat(item[3])
+                // ).toFixed(2);
+                // const deviationFromLongTerm = (
+                //   parseFloat(item[1]) - parseFloat(item.LongTermMeanCDI)
+                // ).toFixed(2);
+                // const status =
+                //   deviationFromPrevious > 0 || deviationFromLongTerm > 0
+                //     ? "Worsening"
+                //     : "Improving";
 
                 return (
                   <tr
@@ -99,34 +114,34 @@ const TableView = () => {
                     className="hover:bg-gray-100 transition-colors"
                   >
                     <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 bg-blue-50 border-r border-white">
-                      {item.District}
+                      {item[0]}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {item.CurrentCDI}
+                      {item[1]}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {item.MonthYear}
+                      {item[2]}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {item.PreviousCDI}
+                      {item[3]}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {item.PreviousMonthYear}
+                      {item[4]}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {deviationFromPrevious}
+                      {item[5]}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {deviationFromLongTerm}
+                      {item[6]}
                     </td>
                     <td
                       className={`px-4 py-2 whitespace-nowrap text-sm font-bold ${
-                        status === "Worsening"
+                        item[7] === "Worsening"
                           ? "text-red-600"
                           : "text-green-600"
                       }`}
                     >
-                      {status}
+                      {item[7]}
                     </td>
                   </tr>
                 );

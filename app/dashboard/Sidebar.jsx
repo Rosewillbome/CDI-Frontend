@@ -123,7 +123,7 @@ const Sidebar = () => {
                         <option className="bg-[#2c5d8a]">Select Month</option>
                         {months?.map((month, index) => (
                           <option key={index} className="bg-[#2c5d8a]">
-                            {month}
+                            {month[0]}
                           </option>
                         ))}
                       </select>

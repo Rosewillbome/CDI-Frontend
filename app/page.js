@@ -5,7 +5,7 @@ import { Sun, Droplet, Menu, ChevronLeft } from "lucide-react";
 import dynamic from "next/dynamic";
 import OverviewIntro from "./components/ui/OverviewIntro";
 import OverviewRightSection from "./components/ui/OverviewRightSection";
-import axios from "axios";
+import { useRouter } from 'next/navigation'
 import { useSideberStore } from "./store/useSideberStore";
 import { districts } from "./utils/selectYear";
 import Image from "next/image";
@@ -17,11 +17,11 @@ const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
 });
 
 export default function Home() {
-  let { indicator, timerange, month, district } = useSideberStore(
+  const router = useRouter()
+  let { indicator, timerange, month, district,setDistrict } = useSideberStore(
     (state) => state
   );
   const [progressYear, setProgressYear] = useState(2025);
-  const [selectedDistrict, setSelectedDistrict] = useState("All");
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const handleYearChange = (year) => {
@@ -29,7 +29,9 @@ export default function Home() {
   };
 
   const handleDistrictChange = (event) => {
-    setSelectedDistrict(event.target.value);
+    event.preventDefault()
+    setDistrict(event.target.value);
+    router.push('/dashboard')
   };
 
   const getActiveTabTitle = () => {
@@ -94,8 +96,8 @@ export default function Home() {
           </h2>
           <div className="relative">
             <select
-              value={selectedDistrict}
-              onChange={handleDistrictChange}
+              // value={district}
+              onChange={ e => handleDistrictChange(e)}
               className="appearance-none bg-white border border-[#308DE0] rounded-lg px-8 py-2 pr-10 text-sm font-semibold text-[#308DE0] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#308DE0]"
             >
               <option value="All">All</option>

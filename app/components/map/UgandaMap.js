@@ -5,7 +5,6 @@ import L from "leaflet";
 import axios from "axios";
 import { v4 } from "uuid";
 import { capitalize } from "../../utils/selectYear";
-import * as turf from "@turf/turf";
 
 const UgandaMap = ({
   indicator,
@@ -286,12 +285,11 @@ const UgandaMap = ({
       .addTo(mapRef.current)
       .bringToBack();
     const getboundary = boundaryLayer.current.getBounds();
-    console.log("getboundary", getboundary);
-    if (Object.keys(getboundary).length !== 0) {
+    if (Object?.keys(getboundary)?.length !== 0) {
       mapRef.current.fitBounds(getboundary);
       mapRef.current.setMaxBounds(getboundary);
     } else {
-      console.error("Bounds are not valid:");
+      // console.error("Bounds are not valid:");
     }
   }, [getTheBounds, geoData]);
 
