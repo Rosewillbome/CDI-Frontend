@@ -65,7 +65,7 @@ const MapView = () => {
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-auto lg:h-auto mb-4">
         {/* Map Section */}
-        <div ref={mapRef} className="relative w-full bg-white rounded-xl shadow-lg p-4">
+        <div ref={mapRef} className="relative w-full bg-white rounded-sm shadow-lg p-4">
           <div className="absolute top-4 right-4 z-[1000]">
             <button
               className="p-2 bg-white border hover:bg-gray-100 rounded-2xl transition-colors shadow-lg"
