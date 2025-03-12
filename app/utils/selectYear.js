@@ -220,7 +220,7 @@ export const filter_static_data = (data, month, year) => {
       static_dataa[0]?.toString()?.trim() === month?.toString()?.trim() &&
       static_dataa[1]?.toString()?.trim() === year?.toString().trim()
   );
-console.log("static_data",static_data[0])
+  console.log("static_data", static_data[0]);
   return static_data;
 };
 
@@ -245,4 +245,33 @@ export const returnYears = (startYear, endYear) => {
     data = da;
   }
   return data;
+};
+
+export const handleDownload = (Data, month, endYear) => {
+  const fts = async () => {
+    const fileUrl = `${process.env.NEXT_PUBLIC_API}uploaded/uploads/data/RFE/${
+      filter_static_data(Data, month, endYear)[0]?.[3]
+    }`;
+
+    try {
+      const response = await fetch(fileUrl);
+      if (!response.ok) {
+        throw new Error("File not found or server error");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileUrl.split("/").pop() || "download";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
+  fts()
 };

@@ -8,16 +8,16 @@ import {
   returnYears,
 } from "../../utils/selectYear";
 import axios from "axios";
-import Image from "next/image";
+
+import ImageStatic from "../../components/ImageStatic";
 
 function Page() {
   const [selectedIndicator, setSelectedIndicator] = useState("CDI");
   const [Data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [endYear, setEndYear] = useState(new Date().getFullYear()-1);
-  const [startYear, setStartYear] = useState(endYear - 5);
-  
+  const [endYear, setEndYear] = useState(new Date().getFullYear() - 1);
+  const [startYear, setStartYear] = useState(endYear - 4);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,13 +40,9 @@ function Page() {
         });
     };
     fetchData();
-  }, [selectedIndicator,startYear,endYear]);
+  }, [selectedIndicator, startYear, endYear]);
 
   let getYears = returnYears(startYear, endYear);
-
-  const handleDownloadMap = (year, month) => {
-    console.log(`Downloading map for ${month} ${year}`);
-  };
 
   const handleDownloadAllMaps = () => {
     console.log("Downloading all maps");
@@ -121,41 +117,52 @@ function Page() {
                   >
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm font-medium">{month[0]}</span>
-                      <button
-                        onClick={() => handleDownloadMap(startYear, month[0])}
+                      <a
                         className="text-[#4A8BD0] hover:text-[#3870a8]"
+                        href={`${
+                          process.env.NEXT_PUBLIC_API
+                        }uploaded/uploads/data/RFE/${
+                          filter_static_data(Data, month[1], endYear)[0]?.[3]
+                        }`}
+                        download={`
+                          ${
+                            filter_static_data(Data, month[1], endYear)[0]?.[3]
+                          }`}
                       >
                         <Download className="h-4 w-4" />
-                      </button>
+                      </a>
                     </div>
 
                     <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
                       {filter_static_data(Data, month[1], endYear)?.length >
                       0 ? (
                         <>
-                          
-                            <div className="absolute inset-0 flex items-center justify-center text-gray-400 h-full">
-                              <img
-                                src={`${
-                                  process.env.NEXT_PUBLIC_API
-                                }uploaded/uploads/data/RFE/${
-                                  filter_static_data(
-                                    Data,
-                                    month[1],
-                                    endYear
-                                  )[0]?.[3]
-                                }`}
-                                alt={
-                                  filter_static_data(
-                                    Data,
-                                    month[1],
-                                    endYear
-                                  )[0]?.[3]
-                                }
-                                className="static_image"
-                              />
-                            </div>
-                          
+                          {/* <div className="absolute inset-0 flex items-center justify-center text-gray-400 h-full">
+                            <img
+                              src={`${
+                                process.env.NEXT_PUBLIC_API
+                              }uploaded/uploads/data/RFE/${
+                                filter_static_data(
+                                  Data,
+                                  month[1],
+                                  endYear
+                                )[0]?.[3]
+                              }`}
+                              alt={
+                                filter_static_data(
+                                  Data,
+                                  month[1],
+                                  endYear
+                                )[0]?.[3]
+                              }
+                              className="static_image"
+                            />
+                          </div> */}
+                          <ImageStatic
+                            Data={Data}
+                            month={month[1]}
+                            year={endYear}
+                          />
                         </>
                       ) : (
                         <>
@@ -168,7 +175,7 @@ function Page() {
                   </div>
                 ))}
               </div>
-            ) : endYear - startYear === 5 ? (
+            ) : endYear - startYear + 1 === 5 ? (
               <div className="flex space-x-8">
                 {getYears?.map((year) => (
                   <div key={year} className="flex-1">
@@ -186,20 +193,8 @@ function Page() {
                               <span className="text-sm font-medium">
                                 {month[0]}
                               </span>
-                              <button
-                                onClick={() =>
-                                  handleDownloadMap(year, month[0])
-                                }
-                                className="text-[#4A8BD0] hover:text-[#3870a8]"
-                              >
-                                <Download className="h-4 w-4" />
-                              </button>
-                            </div>
-                            <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
-                              {/* Placeholder for map */}
-                              <div className="absolute inset-0 flex items-center justify-center text-gray-400 h-full">
-                              <img
-                                src={`${
+                              <a
+                                href={`${
                                   process.env.NEXT_PUBLIC_API
                                 }uploaded/uploads/data/RFE/${
                                   filter_static_data(
@@ -208,16 +203,46 @@ function Page() {
                                     year
                                   )[0]?.[3]
                                 }`}
-                                alt={
-                                  filter_static_data(
-                                    Data,
-                                    month[1],
-                                    year
-                                  )[0]?.[3]
-                                }
-                                className="static_image"
-                              />
+                                download={`
+                                  ${
+                                    filter_static_data(
+                                      Data,
+                                      month[1],
+                                      endYear
+                                    )[0]?.[3]
+                                  }`}
+                              >
+                                <Download className="h-4 w-4" />
+                              </a>
                             </div>
+                            <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
+                              {/* Placeholder for map */}
+                              {/* <div className="absolute inset-0 flex items-center justify-center text-gray-400 h-full">
+                                <img
+                                  src={`${
+                                    process.env.NEXT_PUBLIC_API
+                                  }uploaded/uploads/data/RFE/${
+                                    filter_static_data(
+                                      Data,
+                                      month[1],
+                                      year
+                                    )[0]?.[3]
+                                  }`}
+                                  alt={
+                                    filter_static_data(
+                                      Data,
+                                      month[1],
+                                      year
+                                    )[0]?.[3]
+                                  }
+                                  className="static_image"
+                                />
+                              </div> */}
+                              <ImageStatic
+                                Data={Data}
+                                month={month[1]}
+                                year={year}
+                              />
                             </div>
                           </div>
                         ))}

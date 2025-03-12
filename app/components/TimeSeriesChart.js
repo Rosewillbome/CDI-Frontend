@@ -77,13 +77,53 @@ const TimeSeriesChart = ({
 
   useEffect(() => {
     Highcharts.stockChart(`${chart_id}`, {
-      rangeSelector: { selected: 5, inputEnabled: false },
+      exporting: {
+        buttons: {
+          contextButton: {
+            enabled: false,
+          },
+          csv: {
+            dateFormat: "%d-%m-%Y %H:%M:%S",
+          },
+        },
+      },
+      rangeSelector: {
+        x: -10,
+        allButtonsEnabled: false,
+        enabled: false,
+        inputEnabled: false,
+        buttonPosition: {
+          align: "right",
+        },
+        labelStyle: {
+          display: "none",
+        },
+      },
       title: {
         text: `${indicator?.toUpperCase()} Values with Drought Classification`,
       },
-      xAxis: { type: "datetime", title: { text: "Date" } },
+      xAxis: {
+        minRange: 0,
+        scrollbar: {
+          enabled: true,
+        },
+        type: "datetime",
+        opposite: false,
+      },
       yAxis: {
-        title: { text: `${indicator?.toUpperCase()} Value` },
+        title: {
+          text: `${indicator?.toUpperCase()} Value`,
+          margin: 30,
+          rotation: 270,
+          style: {
+            fontSize: "1.2em",
+          },
+        },
+        reversed: false,
+        opposite: false,
+        showEmpty: true,
+        zoomEnabled: true,
+        endOnTick: false,
         // plotBands: [
         //   {
         //     from: 1.0,
@@ -125,7 +165,11 @@ const TimeSeriesChart = ({
             ? TDI_legend
             : [],
         min: 0,
-        max: 2.5,
+        tickInterval: 0.5,
+        max: 3,
+      },
+      legend: {
+        enabled: "true",
       },
       tooltip: {
         formatter: function () {
