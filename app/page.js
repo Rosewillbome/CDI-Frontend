@@ -5,7 +5,7 @@ import { Sun, Droplet, Menu, ChevronLeft } from "lucide-react";
 import dynamic from "next/dynamic";
 import OverviewIntro from "./components/ui/OverviewIntro";
 import OverviewRightSection from "./components/ui/OverviewRightSection";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { useSideberStore } from "./store/useSideberStore";
 import { districts } from "./utils/selectYear";
 import Image from "next/image";
@@ -17,8 +17,8 @@ const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
 });
 
 export default function Home() {
-  const router = useRouter()
-  let { indicator, timerange, month, district,setDistrict } = useSideberStore(
+  const router = useRouter();
+  let { indicator, timerange, month, district, setDistrict } = useSideberStore(
     (state) => state
   );
   const [progressYear, setProgressYear] = useState(2025);
@@ -29,9 +29,9 @@ export default function Home() {
   };
 
   const handleDistrictChange = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     setDistrict(event.target.value);
-    router.push('/dashboard')
+    router.push("/dashboard");
   };
 
   const getActiveTabTitle = () => {
@@ -97,7 +97,7 @@ export default function Home() {
           <div className="relative">
             <select
               // value={district}
-              onChange={ e => handleDistrictChange(e)}
+              onChange={(e) => handleDistrictChange(e)}
               className="appearance-none bg-white border border-[#308DE0] rounded-lg px-8 py-2 pr-10 text-sm font-semibold text-[#308DE0] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#308DE0]"
             >
               <option value="All">All</option>
@@ -146,7 +146,7 @@ export default function Home() {
             </div>
 
             {/* Legend */}
-            <div className="absolute bottom-4 right-4 bg-white p-1 shadow-md">
+            <div className="absolute bottom-4 right-4 bg-white p-2 shadow-md z-[1000] border border-gray-300 rounded-sm">
               <h3 className="text-sm text-black font-semibold mb-2">Legend</h3>
               <div className="flex flex-col gap-1">
                 <div
@@ -155,7 +155,6 @@ export default function Home() {
                 >
                   Other
                 </div>
-
                 <div
                   className="px-2 py-1 text-sm text-white"
                   style={{ backgroundColor: "#D03A27" }}
@@ -202,10 +201,12 @@ export default function Home() {
       </div>
 
       {/* Right Section */}
-      <div className="absolute right-0 w-[16.67%] z-30" style={{ top: "auto", bottom: "4rem" }}>
-  <OverviewRightSection />
-</div>
-
+      <div
+        className="absolute right-0 w-[16.67%] z-30"
+        style={{ top: "auto", bottom: "4rem" }}
+      >
+        <OverviewRightSection />
+      </div>
     </div>
   );
 }
