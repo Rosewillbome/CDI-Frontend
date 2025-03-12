@@ -24,7 +24,7 @@ function Navbar() {
       </div>
 
       {/* Center Section - Navigation */}
-      <nav className="flex">
+      <nav className="flex ml-10">
         {navItems.map((data, index) => (
           <Navbtn
             key={index}
