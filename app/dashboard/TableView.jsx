@@ -1,88 +1,160 @@
-'use client'
-import React, { useState } from 'react';
-import { Calendar } from 'lucide-react';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
-import { FiDownload, FiInfo } from "react-icons/fi";
+"use client";
+import React, { useState } from "react";
+import { FiDownload } from "react-icons/fi";
 
 const TableView = () => {
   // Dummy data for table
   const [tableData, setTableData] = useState([
-    { District: 'Acholi', name: 'Sample District 1', date: '2025-01-01' },
-    { District: 'Buganda', name: 'Sample District 2', date: '2025-02-15' },
-    { District: 'Bunyoro', name: 'Sample District 3', date: '2025-03-05' },
-    { District: 'Karamoja', name: 'Sample District 4', date: '2025-04-10' },
+    //  test pagination
+    ...Array.from({ length: 100 }, (_, i) => ({
+      District: `District ${i + 1}`,
+      CurrentCDI: (Math.random() * 5).toFixed(1),
+      MonthYear: "Jan 2025",
+      PreviousCDI: (Math.random() * 5).toFixed(1),
+      PreviousMonthYear: "Dec 2024",
+      LongTermMeanCDI: (Math.random() * 5).toFixed(1),
+    })),
   ]);
 
-  // State for selected date
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 20;
 
-  // Function to clear all filters
-  const clearFilters = () => {
-    setSelectedDate(null);
+  const totalPages = Math.ceil(tableData.length / rowsPerPage);
+
+  const currentData = tableData.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   return (
-    <div className="space-y-6">
-      
-      <h1 className="text-2xl font-bold text-gray-900">Table View</h1>
+    <div className="space-y-6 pl-7">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-900">Table View</h1>
 
-      {/* Filters Section */}
-      <div className="flex items-center justify-between space-x-4 mb-4">
-        {/* Date Picker */}
-        <div className="">
-            <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors tooltip items-center" 
-                    data-tooltip="Download Chart">
-             Download csv <FiDownload className="text-gray-600" size={20} />
-            </button>
-          </div>
-
-        {/* Clear Filters Button */}
-        
+        <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors">
+          Download CSV <FiDownload className="ml-2" size={20} />
+        </button>
       </div>
 
       {/* Table Section */}
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-[#308DE0] rounded-sm shadow-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-[#308DE0]">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
                   District
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  District Name
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Current CDI
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Month & Year
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Previous CDI
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Previous Month & Year
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Deviation from Previous
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Deviation from Long-Term Mean
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  Status
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {tableData
-                .filter((item) => {
-                  // Filter table data by selected date if any
-                  if (selectedDate) {
-                    const itemDate = new Date(item.date);
-                    return itemDate.toDateString() === selectedDate.toDateString();
-                  }
-                  return true;
-                })
-                .map((item, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.District}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <div className="flex items-center space-x-2">
-                        <span>{item.date}</span>
-                        <Calendar className="h-4 w-4 text-gray-400" />
-                      </div>
+            <tbody className="bg-gray-50 divide-y divide-gray-200">
+              {currentData.map((item, index) => {
+                const deviationFromPrevious = (
+                  item.CurrentCDI - item.PreviousCDI
+                ).toFixed(2);
+                const deviationFromLongTerm = (
+                  item.CurrentCDI - item.LongTermMeanCDI
+                ).toFixed(2);
+                const status =
+                  deviationFromPrevious > 0 || deviationFromLongTerm > 0
+                    ? "Worsening"
+                    : "Improving";
+
+                return (
+                  <tr
+                    key={index}
+                    className="hover:bg-gray-100 transition-colors"
+                  >
+                    <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 bg-blue-50 border-r border-white">
+                      {item.District}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                      {item.CurrentCDI}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                      {item.MonthYear}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                      {item.PreviousCDI}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                      {item.PreviousMonthYear}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                      {deviationFromPrevious}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                      {deviationFromLongTerm}
+                    </td>
+                    <td
+                      className={`px-4 py-2 whitespace-nowrap text-sm font-bold ${
+                        status === "Worsening"
+                          ? "text-red-600"
+                          : "text-green-600"
+                      }`}
+                    >
+                      {status}
                     </td>
                   </tr>
-                ))}
+                );
+              })}
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-between items-center">
+        <button
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        <span className="text-sm text-gray-700">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

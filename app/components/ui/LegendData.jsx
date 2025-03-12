@@ -28,7 +28,7 @@ function LegendData() {
     <div className="flex items-start space-x-6">
       <KeyNote />
       {/* Legend */}
-      <div className="bg-white shadow-lg p-4 text-sm rounded-lg w-64">
+      <div className="bg-white shadow-lg p-2 text-sm rounded-lg w-60">
         <h3 className="font-semibold mb-2">Legend</h3>
         <div className="space-y-1">
           {legend?.map((level) => (
@@ -41,7 +41,7 @@ function LegendData() {
               }
             >
               <span className="text-xs">{level.labels}</span>
-              <span className="text-[10px] text-gray-600 ">
+              <span className="text-[8px] text-gray-600 ">
                 ({level.range})
               </span>
             </div>
