@@ -9,18 +9,18 @@ export const showYears = () => {
 };
 
 export const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  ["January", "01"],
+  ["February", "02"],
+  ["March", "03"],
+  ["April", "04"],
+  ["May", "05"],
+  ["June", "06"],
+  ["July", "07"],
+  ["August", "08"],
+  ["September", "09"],
+  ["October", "10"],
+  ["November", "11"],
+  ["December", "12"],
 ];
 
 export const filterByMonth = (data) => {
@@ -204,4 +204,45 @@ export const filterDataByLegend = (legendString, dataa) => {
 
 export const capitalize = (s) => {
   return s && String(s[0]).toUpperCase() + String(s).slice(1);
+};
+
+export const filter_static_data = (data, month, year) => {
+  console.log(
+    "dataa",
+    [],
+    "month",
+    month?.toString()?.trim(),
+    "year",
+    year?.toString()?.trim()
+  );
+  const static_data = data?.filter(
+    (static_dataa) =>
+      static_dataa[0]?.toString()?.trim() === month?.toString()?.trim() &&
+      static_dataa[1]?.toString()?.trim() === year?.toString().trim()
+  );
+console.log("static_data",static_data[0])
+  return static_data;
+};
+
+export const getYearsList = () => {
+  let startYear = 2001;
+  const currentYear = new Date().getFullYear();
+  return Array.from(
+    { length: currentYear - startYear + 1 },
+    (_, i) => startYear + i
+  );
+};
+
+export const returnYears = (startYear, endYear) => {
+  let data = [];
+  if (endYear - startYear === 0) {
+    data = startYear;
+  } else {
+    let da = [];
+    for (let i = startYear; i <= endYear; i++) {
+      da.push(i);
+    }
+    data = da;
+  }
+  return data;
 };

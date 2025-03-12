@@ -1,9 +1,25 @@
 "use client";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import Image from "next/image";
 import { FileText } from "lucide-react";
+import axios from "axios";
 
 function OverviewRightSection() {
+  const [assessment,setAssesment] = useState([])
+  useEffect(() => {
+    const fetchData = async () => {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_API}data/district/assessment/count`)
+        .then((response) => {
+          console.log("setAssesment",response?.data?.data[0])
+          setAssesment(response?.data?.data[0]);
+        })
+        .catch((error) => {
+          console.error("comming error", error);
+        });
+    };
+    fetchData();
+  }, []);
   const handleDownload = (tabName) => {
     alert(`Downloading ${tabName}...`);
   };
@@ -36,7 +52,7 @@ function OverviewRightSection() {
             <div>
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
                 <div className="w-16 bg-[#308DE0] p-2 border-r border-[#308DE0] rounded-l-lg flex items-center justify-center">
-                  <div className="text-2xl font-bold text-white">12</div>
+                  <div className="text-2xl font-bold text-white">{assessment?.length === 0 ? 0 :assessment[0]}</div>
                 </div>
                 <div className="flex-1 flex items-center justify-between p-2">
                   <p className="text-xs text-gray-600">Extreme Severity</p>
@@ -65,7 +81,7 @@ function OverviewRightSection() {
             <div>
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
                 <div className="w-16 bg-[#308DE0] p-2 border-r border-[#308DE0] rounded-l-lg flex items-center justify-center">
-                  <div className="text-2xl font-bold text-white">8</div>
+                  <div className="text-2xl font-bold text-white">{assessment?.length === 0 ? 0 :assessment[1]}</div>
                 </div>
                 <div className="flex-1 flex items-center justify-between p-2">
                   <p className="text-xs text-gray-600">Trending</p>
@@ -94,7 +110,7 @@ function OverviewRightSection() {
             <div>
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
                 <div className="w-16 bg-[#308DE0] p-2 border-r border-[#308DE0] rounded-l-lg flex items-center justify-center">
-                  <div className="text-2xl font-bold text-white">5</div>
+                  <div className="text-2xl font-bold text-white">{assessment?.length === 0 ? 0 :assessment[2]}</div>
                 </div>
                 <div className="flex-1 flex items-center justify-between p-2">
                   <p className="text-xs text-gray-600">Improving</p>

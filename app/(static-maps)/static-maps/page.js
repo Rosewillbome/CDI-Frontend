@@ -1,40 +1,48 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Download } from "lucide-react";
-import { DROUGHT_SEVERITY_LEVELS } from "../../utils/drought_levels";
+import {
+  filter_static_data,
+  getYearsList,
+  months,
+  returnYears,
+} from "../../utils/selectYear";
+import axios from "axios";
+import Image from "next/image";
 
 function Page() {
   const [selectedIndicator, setSelectedIndicator] = useState("CDI");
-  const currentYear = new Date().getFullYear();
-  const [yearRange, setYearRange] = useState({
-    start: currentYear - 4,
-    end: currentYear,
-  });
-  const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [selectedMonth, setSelectedMonth] = useState("January");
+  const [Data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  const [endYear, setEndYear] = useState(new Date().getFullYear()-1);
+  const [startYear, setStartYear] = useState(endYear - 5);
+  
 
-  const years = Array.from(
-    { length: Math.abs(yearRange.end - yearRange.start) + 1 },
-    (_, i) =>
-      yearRange.start < yearRange.end
-        ? yearRange.start + i
-        : yearRange.start - i
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      axios
+        .get(
+          `${
+            selectedIndicator === "Rainfall"
+              ? `${process.env.NEXT_PUBLIC_API}data/all/rfe`
+              : ""
+          }`
+        )
+        .then((response) => {
+          // console.log("all rainfall",response?.data?.data)
+          setData(response?.data?.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("comming error", error);
+        });
+    };
+    fetchData();
+  }, [selectedIndicator,startYear,endYear]);
+
+  let getYears = returnYears(startYear, endYear);
 
   const handleDownloadMap = (year, month) => {
     console.log(`Downloading map for ${month} ${year}`);
@@ -43,14 +51,6 @@ function Page() {
   const handleDownloadAllMaps = () => {
     console.log("Downloading all maps");
   };
-
-  const handleYearRangeChange = (e) => {
-    const { name, value } = e.target;
-    setYearRange((prev) => ({ ...prev, [name]: parseInt(value) }));
-  };
-
-  const isSingleYear = yearRange.start === yearRange.end;
-  const isFiveYears = years.length === 5;
 
   return (
     <div className="min-h-screen bg-white">
@@ -84,14 +84,11 @@ function Page() {
           <div className="flex space-x-4">
             <select
               name="start"
-              value={yearRange.start}
-              onChange={handleYearRangeChange}
+              value={startYear}
+              onChange={(e) => setStartYear(e.target.value)}
               className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
             >
-              {Array.from(
-                { length: currentYear - 2001 + 1 },
-                (_, i) => 2001 + i
-              ).map((year) => (
+              {getYearsList()?.map((year) => (
                 <option key={year} value={year}>
                   {year}
                 </option>
@@ -99,14 +96,11 @@ function Page() {
             </select>
             <select
               name="end"
-              value={yearRange.end}
-              onChange={handleYearRangeChange}
+              value={endYear}
+              onChange={(e) => setEndYear(e.target.value)}
               className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
             >
-              {Array.from(
-                { length: currentYear - 2001 + 1 },
-                (_, i) => 2001 + i
-              ).map((year) => (
+              {getYearsList()?.map((year) => (
                 <option key={year} value={year}>
                   {year}
                 </option>
@@ -115,69 +109,134 @@ function Page() {
           </div>
         </div>
 
-        {isSingleYear ? (
-          <div className="grid grid-cols-3 gap-6">
-            {months.map((month) => (
-              <div
-                key={`${selectedYear}-${month}`}
-                className="bg-white rounded-lg shadow-md p-4"
-              >
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium">{month}</span>
-                  <button
-                    onClick={() => handleDownloadMap(selectedYear, month)}
-                    className="text-[#4A8BD0] hover:text-[#3870a8]"
+        {!loading && Data?.length > 0 ? (
+          <>
+            {" "}
+            {endYear - startYear === 0 ? (
+              <div className="grid grid-cols-3 gap-6">
+                {months.map((month) => (
+                  <div
+                    key={`${startYear}-${month[0]}`}
+                    className="bg-white rounded-lg shadow-md p-4"
                   >
-                    <Download className="h-4 w-4" />
-                  </button>
-                </div>
-                <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[200px]">
-                  {/* Placeholder for map */}
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                    Map Preview
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : isFiveYears ? (
-          <div className="flex space-x-8">
-            {years.map((year) => (
-              <div key={year} className="flex-1">
-                <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                  <div className="p-4 bg-[#4A8BD0] text-white">
-                    <h3 className="text-lg font-semibold">{year}</h3>
-                  </div>
-                  <div className="p-4 space-y-4">
-                    {months.map((month) => (
-                      <div key={`${year}-${month}`} className="flex flex-col">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm font-medium">{month}</span>
-                          <button
-                            onClick={() => handleDownloadMap(year, month)}
-                            className="text-[#4A8BD0] hover:text-[#3870a8]"
-                          >
-                            <Download className="h-4 w-4" />
-                          </button>
-                        </div>
-                        <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[200px]">
-                          {/* Placeholder for map */}
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm font-medium">{month[0]}</span>
+                      <button
+                        onClick={() => handleDownloadMap(startYear, month[0])}
+                        className="text-[#4A8BD0] hover:text-[#3870a8]"
+                      >
+                        <Download className="h-4 w-4" />
+                      </button>
+                    </div>
+
+                    <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
+                      {filter_static_data(Data, month[1], endYear)?.length >
+                      0 ? (
+                        <>
+                          
+                            <div className="absolute inset-0 flex items-center justify-center text-gray-400 h-full">
+                              <img
+                                src={`${
+                                  process.env.NEXT_PUBLIC_API
+                                }uploaded/uploads/data/RFE/${
+                                  filter_static_data(
+                                    Data,
+                                    month[1],
+                                    endYear
+                                  )[0]?.[3]
+                                }`}
+                                alt={
+                                  filter_static_data(
+                                    Data,
+                                    month[1],
+                                    endYear
+                                  )[0]?.[3]
+                                }
+                                className="static_image"
+                              />
+                            </div>
+                          
+                        </>
+                      ) : (
+                        <>
                           <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                            Map Preview
+                            test
                           </div>
-                        </div>
-                      </div>
-                    ))}
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
+            ) : endYear - startYear === 5 ? (
+              <div className="flex space-x-8">
+                {getYears?.map((year) => (
+                  <div key={year} className="flex-1">
+                    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                      <div className="p-4 bg-[#4A8BD0] text-white">
+                        <h3 className="text-lg font-semibold">{year}</h3>
+                      </div>
+                      <div className="p-4 space-y-4">
+                        {months?.map((month) => (
+                          <div
+                            key={`${year}-${month[0]}`}
+                            className="flex flex-col"
+                          >
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-sm font-medium">
+                                {month[0]}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  handleDownloadMap(year, month[0])
+                                }
+                                className="text-[#4A8BD0] hover:text-[#3870a8]"
+                              >
+                                <Download className="h-4 w-4" />
+                              </button>
+                            </div>
+                            <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
+                              {/* Placeholder for map */}
+                              <div className="absolute inset-0 flex items-center justify-center text-gray-400 h-full">
+                              <img
+                                src={`${
+                                  process.env.NEXT_PUBLIC_API
+                                }uploaded/uploads/data/RFE/${
+                                  filter_static_data(
+                                    Data,
+                                    month[1],
+                                    year
+                                  )[0]?.[3]
+                                }`}
+                                alt={
+                                  filter_static_data(
+                                    Data,
+                                    month[1],
+                                    year
+                                  )[0]?.[3]
+                                }
+                                className="static_image"
+                              />
+                            </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-lg font-semibold mb-4">
+                  Please select either one year or five years.
+                </p>
+              </div>
+            )}
+          </>
         ) : (
           <div className="text-center py-8">
-            <p className="text-lg font-semibold mb-4">
-              Please select either one year or five years.
-            </p>
+            <p className="text-lg font-semibold mb-4">Loading Please wait ..</p>
           </div>
         )}
       </div>
