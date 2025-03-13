@@ -19,16 +19,17 @@ const TimeSeriesChart = ({
 }) => {
   const [data, setData] = useState([]);
   const [filtered, setFiltered] = useState([]);
-  const [filteredLegend, setFilteredLegend] = useState([]);
   const [Hreload, setHreload] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       axios
         .get(
-          `${
-            process.env.NEXT_PUBLIC_API
-          }data/district/${indicator?.toLowerCase()}/${district?.toUpperCase()}`
+          `${process.env.NEXT_PUBLIC_API}data/district/${
+            district === "All" || district === ""
+              ? `all/${indicator?.toLowerCase()}`
+              : `${indicator?.toLowerCase()}/${district?.toUpperCase()}`
+          }`
         )
         .then((response) => {
           setData(response?.data?.data);
@@ -47,33 +48,50 @@ const TimeSeriesChart = ({
       setHreload(v4());
       return;
     }
-    const filterbypcu = data.filter(
-      (month_data) =>
-        filterByMonth(month_data) === month &&
-        filterByYear(month_data) === parseInt(timerange)
-    );
+    let filtered = [];
 
-    setFiltered(filterbypcu);
+    if (timerange?.trim()?.length !== 0) {
+      if (filtered?.length > 0) {
+        const filterbypcu = filtered?.filter(
+          (month_data) => filterByYear(month_data) === parseInt(timerange)
+        );
+        filtered = filterbypcu;
+      } else {
+        const filterbypcu = data?.filter(
+          (month_data) => filterByYear(month_data) === parseInt(timerange)
+        );
+        filtered = filterbypcu;
+      }
+    }
+
+    // if (month?.trim()?.length !== 0) {
+    //   if (filtered?.length > 0) {
+    //     const filterbypcu = filtered?.filter(
+    //       (month_data) =>
+    //         filterByMonth(month_data)?.toLowerCase() === month?.toLowerCase()
+    //     );
+    //     filtered = filterbypcu;
+    //   } else {
+    //     const filterbypcu = data?.filter(
+    //       (month_data) =>
+    //         filterByMonth(month_data)?.toLowerCase() === month?.toLowerCase()
+    //     );
+    //     filtered = filterbypcu;
+    //   }
+    // }
+
+    if (filterBylegend?.length > 0) {
+      if (filtered?.length > 0) {
+        const filteredbylegend = filterDataByLegend(filterBylegend, filtered);
+        filtered = filteredbylegend;
+      } else {
+        const filteredbylegend_two = filterDataByLegend(filterBylegend, data);
+        filtered = filteredbylegend_two;
+      }
+    }
+    setFiltered(filtered);
     setHreload(v4());
-  }, [data, month, timerange]);
-
-  useEffect(() => {
-    // if (data?.length === 0) return;
-    if (filterBylegend?.length === 0 || data?.length === 0) {
-      setFilteredLegend([]);
-      setHreload(v4());
-      return;
-    }
-    if (filtered?.length > 0) {
-      const filteredbylegend = filterDataByLegend(filterBylegend, filtered);
-      setFilteredLegend(filteredbylegend);
-      setHreload(v4());
-    } else {
-      const filteredbylegend_two = filterDataByLegend(filterBylegend, data);
-      setFilteredLegend(filteredbylegend_two);
-      setHreload(v4());
-    }
-  }, [filterBylegend, filtered]);
+  }, [data, timerange, filterBylegend]);
 
   useEffect(() => {
     Highcharts.stockChart(`${chart_id}`, {
@@ -100,7 +118,7 @@ const TimeSeriesChart = ({
         },
       },
       title: {
-        text: `${indicator?.toUpperCase()} Values with Drought Classification`,
+        text: `${indicator?.toUpperCase()} Time Series`,
       },
       xAxis: {
         minRange: 0,
@@ -109,6 +127,7 @@ const TimeSeriesChart = ({
         },
         type: "datetime",
         opposite: false,
+        tickInterval: 1,
       },
       yAxis: {
         title: {
@@ -239,11 +258,13 @@ const TimeSeriesChart = ({
         {
           name: `${indicator?.toUpperCase()} Uganda`,
           data:
-            filteredLegend?.length > 0
-              ? filteredLegend
-              : filtered?.length > 0
-              ? filtered
-              : data,
+            // filteredLegend?.length > 0
+            //   ? filteredLegend
+            //   : filtered?.length > 0
+            //   ? filtered
+            //   : data,
+
+            filtered?.length > 0 ? filtered : data,
           color: "#2f7ed8",
           lineWidth: 2.5,
           marker: { enabled: false, radius: 4 },

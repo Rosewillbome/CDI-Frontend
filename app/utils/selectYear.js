@@ -28,7 +28,8 @@ export const filterByMonth = (data) => {
   const timestamp = data[0];
   const date = new Date(timestamp);
   const month_current = date.getMonth(); // 0-based index
-  return months[month_current];
+  // console.log("months[month_current]",months[month_current][0])
+  return months[month_current][0];
 };
 
 export const filterByYear = (data) => {

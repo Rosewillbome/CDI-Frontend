@@ -26,9 +26,9 @@ const Sidebar = () => {
   const clearFilters =(e)=>{
     e.preventDefault()
     setIndicator("CDI")
-    setTimerange("2024")
-    setMonth("June")
-    setDistrict("MASAKA")
+    setTimerange("")
+    setMonth("")
+    setDistrict("All")
     setFilterBylegend([])
   }
 
@@ -144,7 +144,7 @@ const Sidebar = () => {
                     onChange={(e) => setDistrict(e.target.value)}
                     className="w-full px-3 py-2 border border-white rounded-lg text-gray-700"
                   >
-                    {/* <option className="bg-[#2c5d8a]">All</option> */}
+                    <option className="bg-[#2c5d8a]" value={"All"}>All</option>
                     {districts?.map((district) => (
                       <option key={district} value={district}>
                         {district}
