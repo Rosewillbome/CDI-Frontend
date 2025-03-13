@@ -127,7 +127,6 @@ const TimeSeriesChart = ({
         },
         type: "datetime",
         opposite: false,
-        tickInterval: 1,
       },
       yAxis: {
         title: {
@@ -143,38 +142,7 @@ const TimeSeriesChart = ({
         showEmpty: true,
         zoomEnabled: true,
         endOnTick: false,
-        // plotBands: [
-        //   {
-        //     from: 1.0,
-        //     to: 2.0,
-        //     color: "#D2FBD2",
-        //     label: { text: "No Drought (> 1.0)" },
-        //   },
-        //   {
-        //     from: 0.8,
-        //     to: 1.0,
-        //     color: "#E6987B",
-        //     label: { text: "Mild (0.8 - 1.0)" },
-        //   },
-        //   {
-        //     from: 0.6,
-        //     to: 0.8,
-        //     color: "rgba(255, 165, 0, 0.2)",
-        //     label: { text: "Moderate (0.6 - 0.8)" },
-        //   },
-        //   {
-        //     from: 0.4,
-        //     to: 0.6,
-        //     color: "#D03A27",
-        //     label: { text: "Severe (0.4 - 0.6)" },
-        //   },
-        //   {
-        //     from: 0,
-        //     to: 0.4,
-        //     color: "#940905",
-        //     label: { text: "Extreme (< 0.4)" },
-        //   },
-        // ],
+
         plotBands:
           indicator === "CDI"
             ? CDI_legend
@@ -193,18 +161,6 @@ const TimeSeriesChart = ({
       tooltip: {
         formatter: function () {
           const PDI_data_hover = (point) => {
-            // let droughtLevel = "No Drought";
-            // const value = this.y;
-            // if (value <= 0.4) droughtLevel = "Extreme";
-            // else if (value <= 0.6) droughtLevel = "Severe";
-            // else if (value <= 0.8) droughtLevel = "Moderate";
-            // else if (value <= 1.0) droughtLevel = "Mild";
-            // return `<b>Date:</b> ${Highcharts.dateFormat(
-            //   "%d %b %Y",
-            //   this.x
-            // )}<br><b>PDI:</b> ${this.y.toFixed(
-            //   4
-            // )}<br><b>Drought Level:</b> ${droughtLevel}`;
             let rainfall = "Above average";
             const value = point.y;
             if (value <= 0.4) rainfall = "Significantly below average";
