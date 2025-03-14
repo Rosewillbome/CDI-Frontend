@@ -143,14 +143,14 @@ const MapView = () => {
           </div>
 
           
-          <div className="mt-2 text-center">
+          {/* <div className="mt-2 text-center">
             <div className="flex items-center justify-center mt-1 text-gray-600 text-sm">
               <FiInfo size={16} className="mr-1" />
               <span className="font-light italic text-sm">
                 Click the legend to filter with severity.
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
