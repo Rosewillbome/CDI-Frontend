@@ -143,7 +143,8 @@ const UgandaMap = ({
     }
 
     // Define new WMS layer
-    const newWmsLayerName = `cdi:Raw_${indicator}_${month?.toLowerCase()}_${timerange}`;
+    const newWmsLayerName = `cdi_workspace:Raw_${indicator}_${month?.toLowerCase()}_${timerange}`;
+    console.log("newWmsLayerName",newWmsLayerName)
 
     const newDisplayName = `${indicator} ${month} ${timerange}`;
 
