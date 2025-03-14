@@ -90,7 +90,7 @@ const TableView = () => {
       console.error("Error downloading the file:", error);
     } finally {
       // setLoading(false); // Hide loader
-      setLoading(false)
+      setLoading(false);
     }
   };
   return (
@@ -161,22 +161,23 @@ const TableView = () => {
                       {item[0]}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {item[1]}
+                      {/* {item[1]?.toFixed(2)} */}
+                      {parseFloat(item[1])?.toFixed(2)}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
                       {item[2]}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {item[3]}
+                      {parseFloat(item[3])?.toFixed(2)}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
                       {item[4]}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {item[5]}
+                      {parseFloat(item[5])?.toFixed(2)}
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {item[6]}
+                      {parseFloat(item[6])?.toFixed(2)}
                     </td>
                     <td
                       className={`px-4 py-2 whitespace-nowrap text-sm font-bold ${

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import "leaflet/dist/leaflet.css";
+import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
 import L from "leaflet";
 import axios from "axios";
 import { v4 } from "uuid";
@@ -124,6 +124,7 @@ const UgandaMap = ({
       } else {
       }
     });
+
     setHreload(v4());
   }, [geoData]);
 
