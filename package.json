@@ -18,6 +18,7 @@
     "axios": "^1.7.9",
     "core-js": "^3.40.0",
     "d3-scale": "^4.0.2",
+    "docx-templates": "^4.14.1",
     "headlessui": "^0.0.0",
     "highcharts": "github:highcharts/highcharts-dist#nightly",
     "html2canvas": "^1.4.1",
@@ -35,6 +36,7 @@
     "react-slider": "^2.0.6",
     "regenerator-runtime": "^0.14.1",
     "uuid": "^11.1.0",
+    "xlsx-template": "^1.4.4",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

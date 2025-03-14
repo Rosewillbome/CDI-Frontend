@@ -3,20 +3,11 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { FiDownload } from "react-icons/fi";
 
-//  test pagination
-// ...Array.from({ length: 100 }, (_, i) => ({
-//   District: `District ${i + 1}`,
-//   CurrentCDI: (Math.random() * 5).toFixed(1),
-//   MonthYear: "Jan 2025",
-//   PreviousCDI: (Math.random() * 5).toFixed(1),
-//   PreviousMonthYear: "Dec 2024",
-//   LongTermMeanCDI: (Math.random() * 5).toFixed(1),
-// })),
-
 const TableView = () => {
   // Dummy data for table
   const [tableData, setTableData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const rowsPerPage = 20;
 
   useEffect(() => {
@@ -24,7 +15,7 @@ const TableView = () => {
       axios
         .get(`${process.env.NEXT_PUBLIC_API}data/district/table/cdi`)
         .then((response) => {
-          console.log("table",response?.data?.data)
+          console.log("table", response?.data?.data);
           setTableData(response?.data?.data);
         })
         .catch((error) => {
@@ -53,13 +44,66 @@ const TableView = () => {
     }
   };
 
+  const handleDownloadTableData = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      let requestData;
+      let filename;
+
+      // Prepare request data for XLSX
+      requestData = {
+        reportType: "xlsx",
+        reportData: {
+          tableView: tableData,
+        },
+      };
+      filename = "CDI.xlsx";
+
+      if (!filename) {
+        throw new Error("Invalid report type selected");
+      }
+
+      // Make the POST request to the API endpoint
+      const response = await fetch("/api/tableViewReport", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!response.ok) throw new Error("Network response was not ok");
+
+      const blob = await response.blob();
+      // let url:string = ''
+      // let url = window.URL.createObjectURL(blob);
+      let url;
+      if (typeof window !== "undefined") {
+        url = window.URL.createObjectURL(blob);
+      }
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename); // Use the appropriate filename based on report type
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error downloading the file:", error);
+    } finally {
+      // setLoading(false); // Hide loader
+      setLoading(false)
+    }
+  };
   return (
     <div className="space-y-6 pl-7">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900">Table View</h1>
 
-        <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors">
-          Download CSV <FiDownload className="ml-2" size={20} />
+        <button
+          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors"
+          onClick={(e) => handleDownloadTableData(e)}
+        >
+          {`${loading ? "Proccessing please wait..." : `Download CSV`}`}{" "}
+          <FiDownload className="ml-2" size={20} />
         </button>
       </div>
 
