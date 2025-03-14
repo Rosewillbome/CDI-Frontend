@@ -1,6 +1,6 @@
 "use client";
 import React, {useEffect } from "react";
-import { months } from "../../utils/selectYear";
+import { moth  } from "../../utils/selectYear";
 import { useSideberStore } from "../../store/useSideberStore";
 function DashboardSlider() {
   let { timerange, month, setTimerange, setMonth } = useSideberStore(
@@ -8,7 +8,7 @@ function DashboardSlider() {
   );
 
   useEffect(() => {
-    console.log("month", months[months.indexOf(month)], "year", timerange);
+    console.log("month", moth[moth.indexOf(month)], "year", timerange);
   }, [timerange, month]);
   // Handler for the slider (time selector)
   const handleSliderChange = (event) => {
@@ -17,8 +17,8 @@ function DashboardSlider() {
     // Calculate year and month from the slider value (assuming slider value 0 corresponds to January 2001)
     const year = 2001 + Math.floor(value / 12);
     const month = value % 12;
-    setTimerange(year);
-    setMonth(months[month]);
+    setTimerange(year?.toString());
+    setMonth(moth[month]);
   };
   return (
     <>
@@ -27,7 +27,7 @@ function DashboardSlider() {
       <div className="">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-lg font-semibold text-gray-700">
-            {months[months.indexOf(month)]} {timerange}
+            {moth[moth.indexOf(month)]} {timerange}
           </h3>
           <span className="text-sm text-gray-500">
             {2001} - {2025}
@@ -38,7 +38,7 @@ function DashboardSlider() {
           min={0}
           max={(2025 - 2001) * 12 + 11}
           step={1}
-          value={(timerange - 2001) * 12 + months.indexOf(month)}
+          value={(timerange - 2001) * 12 + moth.indexOf(month)}
           onChange={(event) => handleSliderChange(event)}
           className="w-full range-slider"
         />
