@@ -8,7 +8,7 @@ export async function POST(req) {
     // Parse the request body to get the report type and data
     const { reportType, reportData } = await req.json();
 
-  // console.log("reportData",reportData)
+    // console.log("reportData",reportData)
 
     let buffer;
     if (reportType === "docx") {
@@ -36,21 +36,21 @@ export async function POST(req) {
     } else if (reportType === "xlsx") {
       function transformData(data) {
         const reportData = {
-          tableView: data.map(row => ({
+          tableView: data.map((row) => ({
             district: row[0], // First element is the name
-            currentCdi: row[1], // Second element is value1
+            currentCdi: parseFloat(row[1])?.toFixed(2), // Second element is value1
             monthOrYear: row[2], // Third element is date1
-            prevCdi: row[3], // Fourth element is value2
+            prevCdi: parseFloat(row[3])?.toFixed(2), // Fourth element is value2
             prevmonthOrYear: row[4], // Fifth element is date2
-            devationFromPrevious: row[5], // Sixth element is the difference
-            devationFromLongTermMean: row[6], // Seventh element is the percentage
+            devationFromPrevious: parseFloat(row[5])?.toFixed(2), // Sixth element is the difference
+            devationFromLongTermMean: parseFloat(row[6])?.toFixed(2), // Seventh element is the percentage
             status: row[7], // Eighth element is the status
           })),
         };
-    
+
         return reportData;
       }
-      console.log("refined data",transformData(reportData?.tableView))
+      console.log("refined data", transformData(reportData?.tableView));
       // Define the path to your Excel template
       const templatePath = join(process.cwd(), "public", "tableView.xlsx");
 

@@ -6,7 +6,7 @@ import Footer from "./components/ui/Footer";
 const nunitoSans = Nunito_Sans({
   variable: "--font-nunito-sans",
   subsets: ["latin"],
-  weight: ["400", "600", "700"], 
+  weight: ["400", "600", "700"],
 });
 
 export default function RootLayout({ children }) {
