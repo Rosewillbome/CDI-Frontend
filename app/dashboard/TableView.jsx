@@ -155,7 +155,13 @@ const TableView = () => {
                 return (
                   <tr
                     key={index}
-                    className="hover:bg-gray-100 transition-colors"
+                    className={`hover:bg-gray-100 transition-colors ${
+                      item[7] === "Worsening"
+                        ? "bg-[#733635]"
+                        : item[7] === "Improving"
+                        ? "bg-[#ACE1AF]" //#6B8E23
+                        : "bg-[#D0F0C0]" // Default color for other cases
+                    }`}
                   >
                     <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 bg-blue-50 border-r border-white">
                       {item[0]}
