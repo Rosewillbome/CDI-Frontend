@@ -9,6 +9,7 @@ import {
   filterDataByLegend,
 } from "../utils/selectYear";
 import { CDI_legend, PDI_legend, TDI_legend } from "../utils/drought_levels";
+
 const TimeSeriesChart = ({
   indicator,
   timerange,
@@ -20,7 +21,6 @@ const TimeSeriesChart = ({
   const [data, setData] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [Hreload, setHreload] = useState("");
-
   useEffect(() => {
     const fetchData = async () => {
       axios
@@ -229,7 +229,11 @@ const TimeSeriesChart = ({
     });
   }, [Hreload]);
 
-  return <div id={chart_id} style={{ height: "100%", minWidth: "100%" }}></div>;
+  return (
+    <>
+      <div id={chart_id} style={{ height: "100%", minWidth: "100%" }}></div>
+    </>
+  );
 };
 
 export default TimeSeriesChart;

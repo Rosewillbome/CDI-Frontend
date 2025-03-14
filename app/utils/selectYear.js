@@ -23,6 +23,20 @@ export const months = [
   ["December", "12"],
 ];
 
+export const moth = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 export const filterByMonth = (data) => {
   if (!data || !data[0]) return null; // Prevent errors if data is undefined
   const timestamp = data[0];
