@@ -126,7 +126,7 @@ function DistrictSection() {
           chart_id={"District_section_0"}
           indicator={"CDI"}
           timerange={timerangeOne}
-          month={monthOne}
+          // month={monthOne}
           district={districtOne}
         />
 
@@ -134,7 +134,7 @@ function DistrictSection() {
           chart_id={"District_section_1"}
           indicator={"TDI"}
           timerange={timerangeOne}
-          month={monthOne}
+          // month={monthOne}
           district={districtOne}
         />
 
@@ -142,7 +142,7 @@ function DistrictSection() {
           chart_id={"District_section_2"}
           indicator={"PDI"}
           timerange={timerangeOne}
-          month={monthOne}
+          // month={monthOne}
           district={districtOne}
         />
       </div>

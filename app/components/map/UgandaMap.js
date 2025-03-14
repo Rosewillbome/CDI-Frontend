@@ -44,8 +44,6 @@ const UgandaMap = ({
   // Initialize the map when geoData is available
   useEffect(() => {
     if (typeof window === "undefined" || !geoData || mapRef.current) return;
-
-    console.log("Initializing map...");
     baseMapsRef.current = {
       OpenStreetMap: L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -90,10 +88,7 @@ const UgandaMap = ({
     // mapRef.current.fitBounds(districtLayerRef.current.getBounds());
     districtLayerRef.current.bringToFront();
     mapRef.current.on("click", function (ev) {
-      console.log("Clicked at:", ev.latlng);
-
       let clickedFeature = null;
-
       // Iterate through the district layer to find the clicked feature
       districtLayerRef.current.eachLayer(function (layer) {
         if (
@@ -109,7 +104,6 @@ const UgandaMap = ({
           //set district
           setDistrict(clickedFeature.properties.name?.toUpperCase());
           let coordinates = clickedFeature;
-          console.log("coordinates", coordinates);
           if (!coordinates) return;
           if (boundaryLayer.current) {
             mapRef.current.removeLayer(boundaryLayer.current);
@@ -128,7 +122,6 @@ const UgandaMap = ({
             .bringToBack();
         }
       } else {
-        console.log("No feature clicked.");
       }
     });
     setHreload(v4());
@@ -145,13 +138,12 @@ const UgandaMap = ({
 
     // Remove the previous raster layer
     if (rasterLayerRef.current) {
-      console.log("Removed previous raster layer");
       mapRef.current.removeLayer(rasterLayerRef.current);
     }
 
     // Define new WMS layer
     const newWmsLayerName = `cdi:Raw_${indicator}_${month?.toLowerCase()}_${timerange}`;
-    console.log("newWmsLayerName", newWmsLayerName);
+
     const newDisplayName = `${indicator} ${month} ${timerange}`;
 
     rasterLayerRef.current = L.tileLayer
@@ -164,12 +156,10 @@ const UgandaMap = ({
       .addTo(mapRef.current);
 
     if (layerControlRef.current) {
-      console.log("Removing previous layer control...");
       mapRef.current.removeControl(layerControlRef.current);
     }
 
     if (!baseMapsRef.current) {
-      console.error("Base maps not initialized yet.");
       return;
     }
 

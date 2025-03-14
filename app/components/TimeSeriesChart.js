@@ -19,16 +19,17 @@ const TimeSeriesChart = ({
 }) => {
   const [data, setData] = useState([]);
   const [filtered, setFiltered] = useState([]);
-  const [filteredLegend, setFilteredLegend] = useState([]);
   const [Hreload, setHreload] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       axios
         .get(
-          `${
-            process.env.NEXT_PUBLIC_API
-          }data/district/${indicator?.toLowerCase()}/${district?.toUpperCase()}`
+          `${process.env.NEXT_PUBLIC_API}data/district/${
+            district === "All" || district === ""
+              ? `all/${indicator?.toLowerCase()}`
+              : `${indicator?.toLowerCase()}/${district?.toUpperCase()}`
+          }`
         )
         .then((response) => {
           setData(response?.data?.data);
@@ -47,33 +48,50 @@ const TimeSeriesChart = ({
       setHreload(v4());
       return;
     }
-    const filterbypcu = data.filter(
-      (month_data) =>
-        filterByMonth(month_data) === month &&
-        filterByYear(month_data) === parseInt(timerange)
-    );
+    let filtered = [];
 
-    setFiltered(filterbypcu);
+    if (timerange?.trim()?.length !== 0) {
+      if (filtered?.length > 0) {
+        const filterbypcu = filtered?.filter(
+          (month_data) => filterByYear(month_data) === parseInt(timerange)
+        );
+        filtered = filterbypcu;
+      } else {
+        const filterbypcu = data?.filter(
+          (month_data) => filterByYear(month_data) === parseInt(timerange)
+        );
+        filtered = filterbypcu;
+      }
+    }
+
+    // if (month?.trim()?.length !== 0) {
+    //   if (filtered?.length > 0) {
+    //     const filterbypcu = filtered?.filter(
+    //       (month_data) =>
+    //         filterByMonth(month_data)?.toLowerCase() === month?.toLowerCase()
+    //     );
+    //     filtered = filterbypcu;
+    //   } else {
+    //     const filterbypcu = data?.filter(
+    //       (month_data) =>
+    //         filterByMonth(month_data)?.toLowerCase() === month?.toLowerCase()
+    //     );
+    //     filtered = filterbypcu;
+    //   }
+    // }
+
+    if (filterBylegend?.length > 0) {
+      if (filtered?.length > 0) {
+        const filteredbylegend = filterDataByLegend(filterBylegend, filtered);
+        filtered = filteredbylegend;
+      } else {
+        const filteredbylegend_two = filterDataByLegend(filterBylegend, data);
+        filtered = filteredbylegend_two;
+      }
+    }
+    setFiltered(filtered);
     setHreload(v4());
-  }, [data, month, timerange]);
-
-  useEffect(() => {
-    // if (data?.length === 0) return;
-    if (filterBylegend?.length === 0 || data?.length === 0) {
-      setFilteredLegend([]);
-      setHreload(v4());
-      return;
-    }
-    if (filtered?.length > 0) {
-      const filteredbylegend = filterDataByLegend(filterBylegend, filtered);
-      setFilteredLegend(filteredbylegend);
-      setHreload(v4());
-    } else {
-      const filteredbylegend_two = filterDataByLegend(filterBylegend, data);
-      setFilteredLegend(filteredbylegend_two);
-      setHreload(v4());
-    }
-  }, [filterBylegend, filtered]);
+  }, [data, timerange, filterBylegend]);
 
   useEffect(() => {
     Highcharts.stockChart(`${chart_id}`, {
@@ -100,7 +118,7 @@ const TimeSeriesChart = ({
         },
       },
       title: {
-        text: `${indicator?.toUpperCase()} Values with Drought Classification`,
+        text: `${indicator?.toUpperCase()} Time Series`,
       },
       xAxis: {
         minRange: 0,
@@ -124,38 +142,7 @@ const TimeSeriesChart = ({
         showEmpty: true,
         zoomEnabled: true,
         endOnTick: false,
-        // plotBands: [
-        //   {
-        //     from: 1.0,
-        //     to: 2.0,
-        //     color: "#D2FBD2",
-        //     label: { text: "No Drought (> 1.0)" },
-        //   },
-        //   {
-        //     from: 0.8,
-        //     to: 1.0,
-        //     color: "#E6987B",
-        //     label: { text: "Mild (0.8 - 1.0)" },
-        //   },
-        //   {
-        //     from: 0.6,
-        //     to: 0.8,
-        //     color: "rgba(255, 165, 0, 0.2)",
-        //     label: { text: "Moderate (0.6 - 0.8)" },
-        //   },
-        //   {
-        //     from: 0.4,
-        //     to: 0.6,
-        //     color: "#D03A27",
-        //     label: { text: "Severe (0.4 - 0.6)" },
-        //   },
-        //   {
-        //     from: 0,
-        //     to: 0.4,
-        //     color: "#940905",
-        //     label: { text: "Extreme (< 0.4)" },
-        //   },
-        // ],
+
         plotBands:
           indicator === "CDI"
             ? CDI_legend
@@ -174,18 +161,6 @@ const TimeSeriesChart = ({
       tooltip: {
         formatter: function () {
           const PDI_data_hover = (point) => {
-            // let droughtLevel = "No Drought";
-            // const value = this.y;
-            // if (value <= 0.4) droughtLevel = "Extreme";
-            // else if (value <= 0.6) droughtLevel = "Severe";
-            // else if (value <= 0.8) droughtLevel = "Moderate";
-            // else if (value <= 1.0) droughtLevel = "Mild";
-            // return `<b>Date:</b> ${Highcharts.dateFormat(
-            //   "%d %b %Y",
-            //   this.x
-            // )}<br><b>PDI:</b> ${this.y.toFixed(
-            //   4
-            // )}<br><b>Drought Level:</b> ${droughtLevel}`;
             let rainfall = "Above average";
             const value = point.y;
             if (value <= 0.4) rainfall = "Significantly below average";
@@ -239,11 +214,13 @@ const TimeSeriesChart = ({
         {
           name: `${indicator?.toUpperCase()} Uganda`,
           data:
-            filteredLegend?.length > 0
-              ? filteredLegend
-              : filtered?.length > 0
-              ? filtered
-              : data,
+            // filteredLegend?.length > 0
+            //   ? filteredLegend
+            //   : filtered?.length > 0
+            //   ? filtered
+            //   : data,
+
+            filtered?.length > 0 ? filtered : data,
           color: "#2f7ed8",
           lineWidth: 2.5,
           marker: { enabled: false, radius: 4 },
