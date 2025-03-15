@@ -5,6 +5,7 @@ import L from "leaflet";
 import axios from "axios";
 import { v4 } from "uuid";
 import { capitalize } from "../../utils/selectYear";
+import { useSideberStore } from "../../store/useSideberStore";
 
 const UgandaMap = ({
   indicator,
@@ -14,6 +15,7 @@ const UgandaMap = ({
   minZoom,
   setDistrict,
   getTheBounds,
+  district,
 }) => {
   const [geoData, setGeoData] = useState(null);
   const [Hreload, setHreload] = useState("");
@@ -24,7 +26,6 @@ const UgandaMap = ({
   const baseMapsRef = useRef(null);
   const districtLayerRef = useRef(null);
   const boundaryLayer = useRef(null);
-
   const geoServerUrl = `${process.env.NEXT_PUBLIC_WSM}`;
 
   // Fetch GeoJSON data
@@ -44,6 +45,8 @@ const UgandaMap = ({
   // Initialize the map when geoData is available
   useEffect(() => {
     if (typeof window === "undefined" || !geoData || mapRef.current) return;
+    //|| mapRef.current
+
     baseMapsRef.current = {
       OpenStreetMap: L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -125,6 +128,11 @@ const UgandaMap = ({
       }
     });
 
+    const resizeObserver = new ResizeObserver(() => {
+      mapRef.current.invalidateSize();
+    });
+
+    resizeObserver.observe(mapContainerRef.current);
     setHreload(v4());
   }, [geoData]);
 
@@ -144,7 +152,7 @@ const UgandaMap = ({
 
     // Define new WMS layer
     const newWmsLayerName = `cdi_workspace:Raw_${indicator}_${month?.toLowerCase()}_${timerange}`;
-    console.log("newWmsLayerName",newWmsLayerName)
+    console.log("newWmsLayerName", newWmsLayerName);
 
     const newDisplayName = `${indicator} ${month} ${timerange}`;
 
@@ -244,7 +252,35 @@ const UgandaMap = ({
     };
 
     layerControlRef.current = customControl.addTo(mapRef.current);
-  }, [timerange, month, indicator, Hreload]);
+
+    if (boundaryLayer.current) {
+      mapRef.current.removeLayer(boundaryLayer.current);
+      boundaryLayer.current = null;
+    }
+
+    const updatedFeatures = geoData?.features?.filter(
+      (feature) =>
+        feature?.properties?.name === capitalize(district?.toLowerCase())
+    );
+    if (!updatedFeatures) return;
+    // Create a new GeoJSON object with the updated features array
+    const updatedJsson = {
+      ...geoData, // Copy all properties from the original GeoJSON
+      features: updatedFeatures, // Replace the features array with the updated one
+    };
+    if (!updatedJsson) return;
+    boundaryLayer.current = L.geoJSON(updatedJsson, {
+      style: {
+        color: "#308DE0",
+        weight: 4,
+        // opacity: 0.3,
+        fill: false,
+        // stroke: false,
+      },
+    })
+      .addTo(mapRef.current)
+      .bringToBack();
+  }, [timerange, month, indicator, Hreload, district]);
 
   useEffect(() => {
     if (geoData?.length === 0) return;
