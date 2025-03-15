@@ -2,13 +2,16 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { FiDownload } from "react-icons/fi";
+import { useSideberStore } from "../store/useSideberStore";
 
 const TableView = () => {
   // Dummy data for table
   const [tableData, setTableData] = useState([]);
+  const [filterd, setfilterd] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const rowsPerPage = 20;
+  const { district } = useSideberStore((state) => state);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,15 +28,35 @@ const TableView = () => {
     fetchData();
   }, []);
 
-  const totalPages = Math.ceil(tableData.length / rowsPerPage);
+  useEffect(() => {
+    let filterd = [];
+    if (district?.trim()?.length !== 0 && district?.toLowerCase() !== "all") {
+      if (filterd?.length > 0) {
+        const filterbypcu = filterd?.filter(
+          (month_data) =>
+            month_data[0]?.toLowerCase() === district?.toLowerCase()
+        );
+        filterd = filterbypcu;
+      } else {
+        const filterbypcu = tableData?.filter(
+          (month_data) =>
+            month_data[0]?.toLowerCase() === district?.toLowerCase()
+        );
+        filterd = filterbypcu;
+      }
+    }
+    setfilterd(filterd);
+  }, [district]);
+  let filtable = filterd?.length > 0 ? filterd : tableData;
+  const totalPages = Math.ceil(filtable.length / rowsPerPage);
 
-  const currentData = tableData.slice(
+  const currentData = filtable.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
+    if (currentPage < filtable) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -55,7 +78,7 @@ const TableView = () => {
       requestData = {
         reportType: "xlsx",
         reportData: {
-          tableView: tableData,
+          tableView: filtable,
         },
       };
       filename = "CDI.xlsx";
@@ -141,17 +164,6 @@ const TableView = () => {
             </thead>
             <tbody className="bg-gray-50 divide-y divide-gray-200">
               {currentData.map((item, index) => {
-                // const deviationFromPrevious = (
-                //   parseFloat(item[1]) - parseFloat(item[3])
-                // ).toFixed(2);
-                // const deviationFromLongTerm = (
-                //   parseFloat(item[1]) - parseFloat(item.LongTermMeanCDI)
-                // ).toFixed(2);
-                // const status =
-                //   deviationFromPrevious > 0 || deviationFromLongTerm > 0
-                //     ? "Worsening"
-                //     : "Improving";
-
                 return (
                   <tr
                     key={index}

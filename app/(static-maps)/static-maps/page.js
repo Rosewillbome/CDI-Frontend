@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Download } from "lucide-react";
 import {
   filter_static_data,
-  getYearsList,
+  showYears,
   months,
   returnYears,
 } from "../../utils/selectYear";
@@ -26,6 +26,8 @@ function Page() {
           `${
             selectedIndicator === "Rainfall"
               ? `${process.env.NEXT_PUBLIC_API}data/all/rfe`
+              : selectedIndicator === "CDI"
+              ? `${process.env.NEXT_PUBLIC_API}data/all/cdi`
               : ""
           }`
         )
@@ -104,7 +106,7 @@ function Page() {
               onChange={(e) => setStartYear(e.target.value)}
               className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
             >
-              {getYearsList()?.map((year) => (
+              {showYears()?.map((year) => (
                 <option key={year} value={year}>
                   {year}
                 </option>
@@ -116,7 +118,7 @@ function Page() {
               onChange={(e) => setEndYear(e.target.value)}
               className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
             >
-              {getYearsList()?.map((year) => (
+              {showYears()?.map((year) => (
                 <option key={year} value={year}>
                   {year}
                 </option>
@@ -151,12 +153,12 @@ function Page() {
                         </div>
 
                         <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
-                          {filter_static_data(Data, month[1], endYear)?.length >
+                          {filter_static_data(Data, month[0], endYear)?.length >
                           0 ? (
                             <>
                               <ImageStatic
                                 Data={Data}
-                                month={month[1]}
+                                month={month[0]}
                                 year={endYear}
                               />
                             </>
@@ -201,7 +203,7 @@ function Page() {
                                 <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
                                   <ImageStatic
                                     Data={Data}
-                                    month={month[1]}
+                                    month={month[0]}
                                     year={year}
                                   />
                                 </div>

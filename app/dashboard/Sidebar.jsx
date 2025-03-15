@@ -85,7 +85,7 @@ const Sidebar = () => {
                     <option className="bg-[#2c5d8a]">CDI</option>
                     <option className="bg-[#2c5d8a]">PDI</option>
                     <option className="bg-[#2c5d8a]">TDI</option>
-                    <option className="bg-[#2c5d8a]">MDI</option>
+                    <option className="bg-[#2c5d8a]">VDI</option>
                   </select>
                 </div>
 
