@@ -30,13 +30,13 @@ function DashboardSlider() {
             {moth[moth.indexOf(month)]} {timerange}
           </h3>
           <span className="text-sm text-gray-500">
-            {2001} - {2025}
+            {2002} - {2025}
           </span>
         </div>
         <input
           type="range"
           min={0}
-          max={(2025 - 2001) * 12 + 11}
+          max={(2025 - 2002) * 12 + 11}
           step={1}
           value={(timerange - 2001) * 12 + moth.indexOf(month)}
           onChange={(event) => handleSliderChange(event)}

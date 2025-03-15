@@ -10,6 +10,7 @@ import { useSideberStore } from "./store/useSideberStore";
 import { districts } from "./utils/selectYear";
 import Image from "next/image";
 import { v4 } from "uuid";
+import DashboardSlider from "./components/ui/DashboardSlider";
 // import UgandaMap from './components/map/UgandaMap';
 
 const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
@@ -182,7 +183,7 @@ export default function Home() {
           </div>
 
           {/* Progress Bar */}
-          <div className="mt-8">
+          {/* <div className="mt-8">
             <div className="flex justify-between text-sm font-semibold text-gray-700 mb-2">
               <span>2001</span>
               <span>2025</span>
@@ -206,7 +207,8 @@ export default function Home() {
               onChange={(e) => handleYearChange(Number(e.target.value))}
               className="w-full mt-4"
             />
-          </div>
+          </div> */}
+          <DashboardSlider/>
         </div>
       </div>
 
