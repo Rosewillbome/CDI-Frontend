@@ -10,8 +10,9 @@ const TableView = () => {
   const [filterd, setfilterd] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("");
   const rowsPerPage = 20;
-  const { district } = useSideberStore((state) => state);
+  const { district, timerange } = useSideberStore((state) => state);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,8 +46,42 @@ const TableView = () => {
         filterd = filterbypcu;
       }
     }
+
+    if (timerange?.trim()?.length !== 0) {
+      function getYear(dateString) {
+        // Split the string by spaces and get the second part (the year)
+        return dateString.split(" ")[1];
+      }
+      if (filterd?.length > 0) {
+        const filterbypcu = filterd?.filter(
+          (month_data) =>
+            month_data[2]?.toLowerCase() === getYear(timerange?.toLowerCase())
+        );
+        filterd = filterbypcu;
+      } else {
+        const filterbypcu = tableData?.filter(
+          (month_data) =>
+            month_data[2]?.toLowerCase() === getYear(timerange?.toLowerCase())
+        );
+        filterd = filterbypcu;
+      }
+    }
+
+    if (status?.trim()?.length !== 0 && status?.toLowerCase() !== "status") {
+      if (filterd?.length > 0) {
+        const filterbypcu = filterd?.filter(
+          (month_data) => month_data[7]?.toLowerCase() === status?.toLowerCase()
+        );
+        filterd = filterbypcu;
+      } else {
+        const filterbypcu = tableData?.filter(
+          (month_data) => month_data[7]?.toLowerCase() === status?.toLowerCase()
+        );
+        filterd = filterbypcu;
+      }
+    }
     setfilterd(filterd);
-  }, [district]);
+  }, [timerange, district, status]);
   let filtable = filterd?.length > 0 ? filterd : tableData;
   const totalPages = Math.ceil(filtable.length / rowsPerPage);
 
@@ -56,7 +91,7 @@ const TableView = () => {
   );
 
   const handleNextPage = () => {
-    if (currentPage < filtable) {
+    if (currentPage < filtable?.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -158,7 +193,16 @@ const TableView = () => {
                   Deviation from Long-Term Mean
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Status
+                  <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="w-full px-3 py-2 border border-white rounded-lg text-gray-700"
+                  >
+                    <option className="bg-[#2c5d8a]">Status</option>
+                    <option className="bg-[#2c5d8a]">Improving</option>
+                    <option className="bg-[#2c5d8a]">Normal</option>
+                    <option className="bg-[#2c5d8a]">Worsening</option>
+                  </select>
                 </th>
               </tr>
             </thead>
