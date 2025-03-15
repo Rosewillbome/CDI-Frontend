@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useSideberStore } from "./store/useSideberStore";
 import { districts } from "./utils/selectYear";
 import Image from "next/image";
+import { v4 } from "uuid";
 // import UgandaMap from './components/map/UgandaMap';
 
 const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
@@ -55,7 +56,7 @@ export default function Home() {
           <button
             title="Collapse Sidebar"
             className="absolute top-4 right-4 bg-[#F1F1F1] text-[#308DE0] p-2 rounded-full shadow-md transition-all"
-            onClick={() => setSidebarOpen(false)}
+            onClick={(e) => setSidebarOpen(!sidebarOpen)}
           >
             <ChevronLeft size={20} />
           </button>
@@ -77,7 +78,7 @@ export default function Home() {
       {!sidebarOpen && (
         <button
           title="Sidebar"
-          onClick={() => setSidebarOpen(true)}
+          onClick={(e) => setSidebarOpen(!sidebarOpen)}
           className="fixed top-20 left-8 bg-[#308DE0] text-white p-3 rounded-full shadow-lg z-50 transition-all"
         >
           <Menu size={24} />
