@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Sun, Droplet, Menu, ChevronLeft } from "lucide-react";
+import { useState } from "react";
+import { Menu, ChevronLeft } from "lucide-react";
 import dynamic from "next/dynamic";
 import OverviewIntro from "./components/ui/OverviewIntro";
 import OverviewRightSection from "./components/ui/OverviewRightSection";
@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { useSideberStore } from "./store/useSideberStore";
 import { districts } from "./utils/selectYear";
 import Image from "next/image";
-// import UgandaMap from './components/map/UgandaMap';
 
 const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
   loading: () => <p>Loading Map..</p>,
@@ -88,7 +87,11 @@ export default function Home() {
       <div
         className={`flex-1 transition-all duration-300 ${
           sidebarOpen ? "ml-[32%]" : "ml-0"
-        } mr-[16.67%]`}
+        }`}
+        style={{
+          width: sidebarOpen ? "calc(100% - 32% - 16.67%)" : "calc(100% - 16.67%)",
+          marginRight: "16.67%", 
+        }}
       >
         <div className="flex items-center gap-4">
           <h2 className="text-2xl font-bold text-[#651d32]">
@@ -96,7 +99,6 @@ export default function Home() {
           </h2>
           <div className="relative">
             <select
-              // value={district}
               onChange={(e) => handleDistrictChange(e)}
               className="appearance-none bg-white border border-[#308DE0] rounded-lg px-8 py-2 pr-10 text-sm font-semibold text-[#308DE0] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#308DE0]"
             >
@@ -134,9 +136,15 @@ export default function Home() {
           </div>
 
           {/* Map Placeholder and Legend */}
-          <div className="relative h-[600px]">
-            {/* Map Placeholder */}
-            <div className="w-full h-full  rounded-lg flex items-center justify-center">
+          <div
+            className="relative"
+            style={{
+              height: sidebarOpen ? "600px" : "800px", 
+              width: "100%", 
+            }}
+          >
+            {/* Map Container */}
+            <div className="w-full h-full rounded-lg flex items-center justify-center">
               <UgandaMap
                 indicator={indicator}
                 timerange={timerange}
@@ -202,8 +210,8 @@ export default function Home() {
 
       {/* Right Section */}
       <div
-        className="absolute right-0 w-[16.67%] z-30"
-        style={{ top: "auto", bottom: "4rem" }}
+        className="fixed right-0 w-[16.67%] h-full z-30"
+        style={{ top: 0 }}
       >
         <OverviewRightSection />
       </div>
