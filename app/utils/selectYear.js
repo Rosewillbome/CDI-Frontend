@@ -1,5 +1,5 @@
 export const showYears = () => {
-  const startYear = 2000;
+  const startYear = 2002;
   const currentYear = new Date().getFullYear();
   const years = Array.from(
     new Array(currentYear - startYear + 1),
@@ -222,31 +222,31 @@ export const capitalize = (s) => {
 };
 
 export const filter_static_data = (data, month, year) => {
-  console.log(
-    "dataa",
-    [],
-    "month",
-    month?.toString()?.trim(),
-    "year",
-    year?.toString()?.trim()
-  );
+  // console.log(
+  //   "dataa",
+  //   [],
+  //   "month",
+  //   month?.toString()?.trim(),
+  //   "year",
+  //   year?.toString()?.trim()
+  // );
   const static_data = data?.filter(
     (static_dataa) =>
-      static_dataa[0]?.toString()?.trim() === month?.toString()?.trim() &&
+      static_dataa[0]?.toString()?.trim()?.toLowerCase() === month?.toString()?.trim()?.toLowerCase() &&
       static_dataa[1]?.toString()?.trim() === year?.toString().trim()
   );
-  console.log("static_data", static_data[0]);
+  // console.log("static_data", static_data[0]?.[4]);
   return static_data;
 };
 
-export const getYearsList = () => {
-  let startYear = 2001;
-  const currentYear = new Date().getFullYear();
-  return Array.from(
-    { length: currentYear - startYear + 1 },
-    (_, i) => startYear + i
-  );
-};
+// export const getYearsList = () => {
+//   let startYear = 2001;
+//   const currentYear = new Date().getFullYear();
+//   return Array.from(
+//     { length: currentYear - startYear + 1 },
+//     (_, i) => startYear + i
+//   );
+// };
 
 export const returnYears = (startYear, endYear) => {
   let data = [];
