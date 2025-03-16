@@ -96,7 +96,7 @@ const TimeSeriesChart = ({
   useEffect(() => {
     Highcharts.stockChart(`${chart_id}`, {
       chart: {
-        marginLeft: 5,
+        marginLeft: 50,
       },
       exporting: {
         buttons: {
