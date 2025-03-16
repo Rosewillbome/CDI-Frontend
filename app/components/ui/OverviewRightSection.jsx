@@ -66,7 +66,7 @@ function OverviewRightSection() {
             {/* Extreme Severity */}
             <div>
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
-                <div className="w-16 bg-[#308DE0] p-2 border-r border-[#308DE0] rounded-l-lg flex items-center justify-center">
+                <div className="w-16 bg-[#940905] p-2 border-r border-white rounded-l-lg flex items-center justify-center">
                   <div className="text-2xl font-bold text-white">
                     {filtered?.length === 0 ? 0 : filtered[3]}
                   </div>
@@ -75,7 +75,7 @@ function OverviewRightSection() {
                   <p className="text-xs text-gray-600">Extreme Severity</p>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-gray-600"
+                    className="h-6 w-6 text-[#940905]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -97,7 +97,7 @@ function OverviewRightSection() {
             {/* Trending */}
             <div>
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
-                <div className="w-16 bg-[#308DE0] p-2 border-r border-[#308DE0] rounded-l-lg flex items-center justify-center">
+                <div className="w-16 bg-[#308DE0] p-2 border-r border-white rounded-l-lg flex items-center justify-center">
                   <div className="text-2xl font-bold text-white">
                     {filtered?.length === 0 ? 0 : filtered[4]}
                   </div>
@@ -106,7 +106,7 @@ function OverviewRightSection() {
                   <p className="text-xs text-gray-600">Trending</p>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-gray-600"
+                    className="h-6 w-6 text-[#308DE0]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -128,7 +128,7 @@ function OverviewRightSection() {
             {/* Improving */}
             <div>
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
-                <div className="w-16 bg-[#308DE0] p-2 border-r border-[#308DE0] rounded-l-lg flex items-center justify-center">
+                <div className="w-16 bg-green-600 p-2 border-r border-white rounded-l-lg flex items-center justify-center">
                   <div className="text-2xl font-bold text-white">
                     {filtered?.length === 0 ? 0 : filtered[5]}
                   </div>
@@ -137,7 +137,7 @@ function OverviewRightSection() {
                   <p className="text-xs text-gray-600">Improving</p>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-gray-600"
+                    className="h-6 w-6 text-green-600"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"

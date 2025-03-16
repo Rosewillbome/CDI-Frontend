@@ -152,3 +152,61 @@ body {
 .leaflet-container {
   z-index: 10;
 }
+
+/* Loader Container */
+.loaderContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(48, 141, 224, 0.9); /* Match your theme color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeOut 1s ease-in-out 4s forwards; /* Fade out after 4 seconds */
+}
+
+/* Welcome Text */
+.welcomeText {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: white;
+  overflow: hidden; /* Hide overflow for typing effect */
+  white-space: nowrap; /* Keep text in one line */
+  border-right: 0.15em solid white; /* Cursor effect */
+  animation: typing 3.5s steps(40, end), blinkCursor 0.75s step-end infinite;
+}
+
+/* Typing Animation */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Cursor Blink Animation */
+@keyframes blinkCursor {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: white;
+  }
+}
+
+/* Fade Out Animation */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden; /* Hide after fading out */
+  }
+}
