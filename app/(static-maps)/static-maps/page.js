@@ -73,8 +73,20 @@ function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="w-full px-4 py-8"> {/* Removed max-w-7xl and mx-auto */}
+    <div className="min-h-screen bg-white relative">
+      {/* Loader */}
+      {loading && (
+        <div className="fixed inset-0 bg-white bg-opacity-75 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            <p className="text-lg font-semibold text-gray-900">
+              Fetching data, please wait...
+            </p>
+          </div>
+        </div>
+      )}
+
+      <div className="w-full px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-[#4A8BD0] text-center w-full">
             {selectedIndicator} Maps
@@ -134,11 +146,11 @@ function Page() {
             {Data?.length > 0 ? (
               <>
                 {endYear - startYear === 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6">
                     {months.map((month) => (
                       <div
                         key={`${startYear}-${month[0]}`}
-                        className="bg-white rounded-lg shadow-md p-4"
+                        className="bg-white rounded-lg shadow-md p-3"
                       >
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-sm font-medium">
@@ -228,11 +240,7 @@ function Page() {
               </div>
             )}
           </>
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-lg font-semibold mb-4">Loading Please wait ..</p>
-          </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
