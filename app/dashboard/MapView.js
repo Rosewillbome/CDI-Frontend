@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { getIndex } from "../utils/drought_levels";
-import { FiDownload, FiMoreVertical, FiInfo } from "react-icons/fi";
+import { FiDownload, FiMoreVertical } from "react-icons/fi";
 import { useSideberStore } from "../store/useSideberStore";
 import TimeSeriesChart from "../components/TimeSeriesChart";
 import DashboardSlider from "../components/ui/DashboardSlider";
@@ -18,8 +18,26 @@ const MapView = () => {
   const { indicator, timerange, month, district, filterBylegend, setDistrict } =
     useSideberStore((state) => state);
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [isChartLoaded, setIsChartLoaded] = useState(false);
+
   const chartContainerRef = useRef(null);
   const mapRef = useRef(null);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+
+    if (isMapLoaded && isChartLoaded) {
+      setIsLoading(false);
+      clearTimeout(timeout);
+    }
+
+    
+    return () => clearTimeout(timeout);
+  }, [isMapLoaded, isChartLoaded]);
 
   const handleDownloadMap = () => {
     if (mapRef.current) {
@@ -54,7 +72,19 @@ const MapView = () => {
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col h-full p-6 space-y-6">
+    <div className="bg-gray-50 flex flex-col h-full p-6 space-y-6 relative">
+      {/* Loader */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-white bg-opacity-75 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            <p className="text-lg font-semibold text-gray-900">
+              Fetching data, please wait...
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Indicator Title */}
       <div className="text-center">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
@@ -65,15 +95,20 @@ const MapView = () => {
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-auto lg:h-auto mb-4">
         {/* Map Section */}
-        <div ref={mapRef} className="relative w-full bg-white rounded-sm shadow-lg p-4">
-          <div className="absolute top-4 right-4 z-[1000]">
-            <button
-              className="p-2 bg-white border hover:bg-gray-100 rounded-2xl transition-colors shadow-lg"
-              onClick={handleDownloadMap}
-            >
-              <FiDownload className="text-gray-600" size={20} />
-            </button>
-          </div>
+        <div
+          ref={mapRef}
+          className="relative w-full bg-white rounded-sm shadow-lg p-4"
+        >
+          {!isLoading && (
+            <div className="absolute top-4 right-4 z-[1000]">
+              <button
+                className="p-2 bg-white border hover:bg-gray-100 rounded-2xl transition-colors shadow-lg"
+                onClick={handleDownloadMap}
+              >
+                <FiDownload className="text-gray-600" size={20} />
+              </button>
+            </div>
+          )}
 
           <UgandaMap
             indicator={indicator}
@@ -83,11 +118,15 @@ const MapView = () => {
             zoom={7.4}
             minZoom={7.4}
             setDistrict={setDistrict}
+            onLoad={() => setIsMapLoaded(true)}
           />
         </div>
 
-        
-        <div ref={chartContainerRef} className="relative w-full bg-white rounded-sm shadow-md p-4 flex flex-col">
+        {/* Chart Section */}
+        <div
+          ref={chartContainerRef}
+          className="relative w-full bg-white rounded-sm shadow-md p-4 flex flex-col"
+        >
           <div className="flex justify-between items-center pb-2">
             <h2 className="text-lg font-semibold text-gray-800 text-center flex-grow truncate">
               {district ? district : "Select a District"}
@@ -134,6 +173,7 @@ const MapView = () => {
               district={district}
               chart_id={"Dasboard_time_series"}
               filterBylegend={filterBylegend}
+              onLoad={() => setIsChartLoaded(true)}
             />
           </div>
 
@@ -141,9 +181,6 @@ const MapView = () => {
           <div className="pt-4 w-full">
             <LegendData />
           </div>
-
-          
-         
         </div>
       </div>
 
