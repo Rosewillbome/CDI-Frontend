@@ -285,6 +285,15 @@ const UgandaMap = ({
   useEffect(() => {
     if (geoData?.length === 0) return;
     if (getTheBounds?.trim()?.length === 0) return;
+    if (getTheBounds?.trim()?.toLowerCase() === "all" || getTheBounds?.trim() === "") {
+      if (boundaryLayer.current) {
+        mapRef.current.removeLayer(boundaryLayer.current);
+        boundaryLayer.current = null;
+      }
+      mapRef.current.setView([1.3733, 2.2903], zoom ? zoom : 7.2);
+      mapRef.current.setMinZoom(minZoom ? minZoom : 7.2);
+      return;
+    }
     const updatedFeatures = geoData?.features?.filter(
       (feature) =>
         feature?.properties?.name === capitalize(getTheBounds?.toLowerCase())
