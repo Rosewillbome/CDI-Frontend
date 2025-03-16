@@ -72,7 +72,7 @@ function Page() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="w-full px-4 py-8"> {/* Removed max-w-7xl and mx-auto */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-[#4A8BD0] text-center w-full">
             {selectedIndicator} Maps
@@ -132,7 +132,7 @@ function Page() {
             {Data?.length > 0 ? (
               <>
                 {endYear - startYear === 0 ? (
-                  <div className="grid grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {months.map((month) => (
                       <div
                         key={`${startYear}-${month[0]}`}
@@ -174,42 +174,40 @@ function Page() {
                     ))}
                   </div>
                 ) : endYear - startYear + 1 === 5 ? (
-                  <div id="maps-container" className="flex space-x-8">
+                  <div id="maps-container" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 w-full">
                     {getYears?.map((year) => (
-                      <div key={year} className="flex-1" style={{ width: "20%" }}>
-                        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                          <div className="p-4 bg-[#4A8BD0] text-white">
-                            <h3 className="text-lg font-semibold">{year}</h3>
-                          </div>
-                          <div className="p-4 space-y-4">
-                            {months?.map((month) => (
-                              <div
-                                key={`${year}-${month[0]}`}
-                                className="flex flex-col"
-                              >
-                                <div className="flex justify-between items-center mb-2">
-                                  <span className="text-sm font-medium">
-                                    {month[0]}
-                                  </span>
-                                  <button
-                                    className="text-[#4A8BD0] hover:text-[#3870a8]"
-                                    onClick={(e) =>
-                                      handleDownload(e, month[1], year)
-                                    }
-                                  >
-                                    <Download className="h-4 w-4" />
-                                  </button>
-                                </div>
-                                <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
-                                  <ImageStatic
-                                    Data={Data}
-                                    month={month[0]}
-                                    year={year}
-                                  />
-                                </div>
+                      <div key={year} className="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div className="p-4 bg-[#4A8BD0] text-white">
+                          <h3 className="text-lg font-semibold">{year}</h3>
+                        </div>
+                        <div className="p-4 space-y-4">
+                          {months?.map((month) => (
+                            <div
+                              key={`${year}-${month[0]}`}
+                              className="flex flex-col"
+                            >
+                              <div className="flex justify-between items-center mb-2">
+                                <span className="text-sm font-medium">
+                                  {month[0]}
+                                </span>
+                                <button
+                                  className="text-[#4A8BD0] hover:text-[#3870a8]"
+                                  onClick={(e) =>
+                                    handleDownload(e, month[1], year)
+                                  }
+                                >
+                                  <Download className="h-4 w-4" />
+                                </button>
                               </div>
-                            ))}
-                          </div>
+                              <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
+                                <ImageStatic
+                                  Data={Data}
+                                  month={month[0]}
+                                  year={year}
+                                />
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     ))}

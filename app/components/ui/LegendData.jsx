@@ -29,7 +29,7 @@ function LegendData() {
   return (
     <div className="flex items-start space-x-6">
       {/* Legend */}
-      <div className="relative bg-white shadow-lg p-2 text-sm rounded-lg w-60">
+      <div className="relative bg-white shadow-lg p-2 text-sm rounded-sm w-full">
         {/* Info Icon */}
         <div className="absolute top-2 right-2">
           <span className="relative group cursor-pointer">
@@ -66,7 +66,7 @@ function LegendData() {
           ))}
         </div>
       </div>
-      <KeyNote />
+      
     </div>
   );
 }
