@@ -25,7 +25,7 @@ function ImageStatic({ Data, month, year }) {
       <div className="absolute inset-0 flex items-center justify-center text-gray-400 h-full">
         <img
           src={`${process.env.NEXT_PUBLIC_API}uploaded${
-            filter_static_data(Data, month, year)[0]?.[5]
+            filter_static_data(Data, month, year)[0]?.[4]
           }`}
           alt={`${filter_static_data(Data, month, year)[0]?.[2]}`}
           className="static_image"
@@ -45,9 +45,9 @@ function ImageStatic({ Data, month, year }) {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             <img
               src={`${process.env.NEXT_PUBLIC_API}uploaded${
-                filter_static_data(Data, month, year)[0]?.[5]
+                filter_static_data(Data, month, year)[0]?.[4]
               }`}
-              alt={`${filter_static_data(Data, month, year)[0]?.[3]}`}
+              alt={`${filter_static_data(Data, month, year)[0]?.[4]}`}
               className="static_image"
               onClick={handleOpen}
             />

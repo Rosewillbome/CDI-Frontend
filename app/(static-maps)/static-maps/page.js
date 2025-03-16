@@ -28,6 +28,8 @@ function Page() {
               ? `${process.env.NEXT_PUBLIC_API}data/all/rfe`
               : selectedIndicator === "CDI"
               ? `${process.env.NEXT_PUBLIC_API}data/all/cdi`
+              : selectedIndicator === "VDI"
+              ? `${process.env.NEXT_PUBLIC_API}data/all/vdi`
               : ""
           }`
         )
@@ -84,7 +86,7 @@ function Page() {
               className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
             >
               <option value="CDI">CDI</option>
-              <option value="NDVI">NDVI Anomaly</option>
+              <option value="VDI">NDVI Anomaly</option>
               <option value="Rainfall">Rainfall</option>
             </select>
             <button
