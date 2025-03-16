@@ -149,7 +149,7 @@ export default function Home() {
             {/* Map Container */}
             <div className="w-full h-full rounded-lg flex items-center justify-center">
               <UgandaMap
-                indicator={indicator}
+                indicator={"CDI"}
                 timerange={timerange}
                 month={month}
                 district={district}
