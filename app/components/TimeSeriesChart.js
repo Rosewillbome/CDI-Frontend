@@ -95,6 +95,9 @@ const TimeSeriesChart = ({
 
   useEffect(() => {
     Highcharts.stockChart(`${chart_id}`, {
+      chart: {
+        marginLeft: 5,
+      },
       exporting: {
         buttons: {
           contextButton: {
@@ -131,10 +134,10 @@ const TimeSeriesChart = ({
       yAxis: {
         title: {
           text: `${indicator?.toUpperCase()} Value`,
-          margin: 30,
+          margin: 5,
           rotation: 270,
           style: {
-            fontSize: "1.2em",
+            fontSize: "0.5 em",
           },
         },
         reversed: false,
@@ -151,6 +154,7 @@ const TimeSeriesChart = ({
             : indicator === "TDI"
             ? TDI_legend
             : [],
+            offset: 0,
         min: 0,
         tickInterval: 0.5,
         max: 3,
@@ -231,7 +235,15 @@ const TimeSeriesChart = ({
 
   return (
     <>
-      <div id={chart_id} style={{ height: "100%", minWidth: "100%" }}></div>
+      <div
+    id={chart_id}
+    style={{
+      width: "100%",
+      height: "100%", 
+      padding: "2px", 
+      boxSizing: "border-box", 
+    }}
+  ></div>
     </>
   );
 };
