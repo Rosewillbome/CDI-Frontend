@@ -2,6 +2,7 @@
 import React,{useState,useEffect} from "react";
 import Image from "next/image";
 import { FileText } from "lucide-react";
+import DownloadReport from "../ui/DownloadReport"
 import axios from "axios";
 
 function OverviewRightSection() {
@@ -28,7 +29,7 @@ function OverviewRightSection() {
     <>
       {/* Right Section */}
       <div className="fixed right-0 top-20 w-1/6 h-full flex flex-col gap-6 p-6 bg-transparent">
-        <button
+        {/* <button
           onClick={() => handleDownload("Methodology")}
           className="flex items-center justify-center bg-[#308DE0] text-white  py-2 rounded-full text-sm font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl relative"
         >
@@ -36,7 +37,8 @@ function OverviewRightSection() {
           <span className="px-2">Download Report</span>
           <FileText className="h-5 w-5 text-white" />
           <div className="absolute inset-0 bg-[#308DE0] opacity-20 blur-lg rounded-full"></div>
-        </button>
+        </button> */}
+        <DownloadReport/>
 
         {/* Assessment Section */}
         <div className="relative border border-[#308DE0] rounded-xl p-4 flex flex-col justify-between h-[calc(100%-80px)] mt-2 bg-[#F1F1F1]">
