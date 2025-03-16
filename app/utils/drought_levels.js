@@ -1,12 +1,13 @@
 export const CDI_legend = [
   {
-    labels: "> 1.0 No Drought",
+    labels: "normal",
     range: "> 1.0",
     color: "#D2FBD2",
     left_operator: "1.0>",
     right_operator: null,
     from: 1.0,
     to: 3.0,
+    Description: "No drought",
   },
   {
     labels: "Mild",
@@ -16,15 +17,18 @@ export const CDI_legend = [
     right_operator: "<=1.0",
     from: 0.8,
     to: 1.0,
+    Description:
+      "Going into drought, short term dryness slowing planting, growth of crops. Also coming out of a drought – water deficits, partial loss of crops and pasture",
   },
   {
     labels: "Moderate",
-    range: "< 0.8 - 0.6",
+    range: "0.6 - 0.8",
     color: "#E6987B",
     left_operator: "0.6>",
     right_operator: "<=0.8",
     from: 0.6,
     to: 0.8,
+    Description: "Damage to crops, pastures, drying of shallow reservoirs; voluntary water rationing",
   },
   {
     labels: "Severe",
@@ -34,6 +38,7 @@ export const CDI_legend = [
     right_operator: "<=0.6",
     from: 0.4,
     to: 0.6,
+    Description: "Wider scale of loss of crops and pastures, imposed water rationing and livestock migration",
   },
   {
     labels: "Extreme",
@@ -43,6 +48,7 @@ export const CDI_legend = [
     right_operator: "<=0.4",
     from: 0,
     to: 0.4,
+    Description: "Major loss of crops and pasture, extreme fire danger, total water shortages, drying of deep reservoirs and usage restrictions",
   },
 ];
 
@@ -55,6 +61,7 @@ export const PDI_legend = [
     right_operator: null,
     from: 1.0,
     to: 3.0,
+    Description: "Above average rainfall",
   },
   {
     labels: "Average rainfall",
@@ -64,6 +71,7 @@ export const PDI_legend = [
     right_operator: "<=1.0",
     from: 0.8,
     to: 1.0,
+    Description: "Average rainfall",
   },
   {
     labels: "Below average rainfall",
@@ -73,6 +81,7 @@ export const PDI_legend = [
     right_operator: "<=0.8",
     from: 0.4,
     to: 0.8,
+    Description: "Below average rainfall",
   },
 
   {
@@ -83,6 +92,7 @@ export const PDI_legend = [
     right_operator: "<=0.4",
     from: 0,
     to: 0.4,
+    Description: "Significantly below average rainfall",
   },
 ];
 
@@ -95,6 +105,7 @@ export const TDI_legend = [
     right_operator: null,
     from: 0.8,
     to: 3.0,
+    Description: "Normal to below normal temperatures",
   },
   {
     labels: "Average rainfall",
@@ -104,6 +115,7 @@ export const TDI_legend = [
     right_operator: "<=0.8",
     from: 0.4,
     to: 0.8,
+    Description: "Average rainfall",
   },
 
   {
@@ -114,6 +126,7 @@ export const TDI_legend = [
     right_operator: "<=0.4",
     from: 0,
     to: 0.4,
+    Description: "Exeptionally higher than normal temperatures",
   },
 ];
 

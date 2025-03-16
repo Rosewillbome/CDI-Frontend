@@ -231,7 +231,7 @@ const TimeSeriesChart = ({
         },
       ],
     });
-  }, [Hreload,data,filtered]);
+  }, [Hreload,data,filtered,indicator]);
 
   return (
     <>
