@@ -26,9 +26,9 @@ const TimeSeriesChart = ({
       axios
         .get(
           `${process.env.NEXT_PUBLIC_API}data/district/${
-            district === "All" || district === ""
-              ? `all/${indicator?.toLowerCase()}`
-              : `${indicator?.toLowerCase()}/${district?.toUpperCase()}`
+            district?.trim()?.toLowerCase() === "all" || district?.trim() === ""
+              ? `all/${indicator?.trim()?.toLowerCase()}`
+              : `${indicator?.trim()?.toLowerCase()}/${district?.trim()?.toUpperCase()}`
           }`
         )
         .then((response) => {

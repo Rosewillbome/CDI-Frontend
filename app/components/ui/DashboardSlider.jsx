@@ -15,7 +15,7 @@ function DashboardSlider() {
     event.preventDefault();
     const value = parseInt(event.target.value, 10);
     // Calculate year and month from the slider value (assuming slider value 0 corresponds to January 2001)
-    const year = 2001 + Math.floor(value / 12);
+    const year = 2002 + Math.floor(value / 12);
     const month = value % 12;
     setTimerange(year?.toString());
     setMonth(moth[month]);

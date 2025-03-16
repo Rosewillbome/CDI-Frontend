@@ -1,19 +1,23 @@
 "use client";
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FileText } from "lucide-react";
-import DownloadReport from "../ui/DownloadReport"
+import DownloadReport from "../ui/DownloadReport";
 import axios from "axios";
+import { useSideberStore } from "../../store/useSideberStore";
 
 function OverviewRightSection() {
-  const [assessment,setAssesment] = useState([])
+  const [assessment, setAssesment] = useState([]);
+  const [filtered, setfiltered] = useState([]);
+
+  const { timerange, month } = useSideberStore((state) => state);
   useEffect(() => {
     const fetchData = async () => {
       axios
         .get(`${process.env.NEXT_PUBLIC_API}data/district/assessment/count`)
         .then((response) => {
-          console.log("setAssesment",response?.data?.data[0])
-          setAssesment(response?.data?.data[0]);
+          console.log("setAssesment", response?.data?.data);
+          setAssesment(response?.data?.data);
         })
         .catch((error) => {
           console.error("comming error", error);
@@ -21,6 +25,24 @@ function OverviewRightSection() {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const filt = () => {
+      if (assessment?.length === 0) return;
+      let filters = [];
+      if (timerange?.trim()?.length !== 0 && month?.trim()?.length !== 0) {
+        const filterbypcu = assessment?.filter(
+          (assessment_data) =>
+            assessment_data[0]?.trim()?.toLowerCase() === month?.trim()?.toLowerCase() &&
+          assessment_data[1]?.trim() === timerange?.trim()?.toString()
+        );
+        console.log("filterbyassessment", filterbypcu[0]);
+        filters = filterbypcu[0];
+      }
+      setfiltered(filters);
+    };
+    filt();
+  }, [timerange, assessment, month]);
   const handleDownload = (tabName) => {
     alert(`Downloading ${tabName}...`);
   };
@@ -29,16 +51,7 @@ function OverviewRightSection() {
     <>
       {/* Right Section */}
       <div className="fixed right-0 top-20 w-1/6 h-full flex flex-col gap-6 p-6 bg-transparent">
-        {/* <button
-          onClick={() => handleDownload("Methodology")}
-          className="flex items-center justify-center bg-[#308DE0] text-white  py-2 rounded-full text-sm font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl relative"
-        >
-          
-          <span className="px-2">Download Report</span>
-          <FileText className="h-5 w-5 text-white" />
-          <div className="absolute inset-0 bg-[#308DE0] opacity-20 blur-lg rounded-full"></div>
-        </button> */}
-        <DownloadReport/>
+        <DownloadReport />
 
         {/* Assessment Section */}
         <div className="relative border border-[#308DE0] rounded-xl p-4 flex flex-col justify-between h-[calc(100%-80px)] mt-2 bg-[#F1F1F1]">
@@ -54,7 +67,9 @@ function OverviewRightSection() {
             <div>
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
                 <div className="w-16 bg-[#308DE0] p-2 border-r border-[#308DE0] rounded-l-lg flex items-center justify-center">
-                  <div className="text-2xl font-bold text-white">{assessment?.length === 0 ? 0 :assessment[0]}</div>
+                  <div className="text-2xl font-bold text-white">
+                    {filtered?.length === 0 ? 0 : filtered[3]}
+                  </div>
                 </div>
                 <div className="flex-1 flex items-center justify-between p-2">
                   <p className="text-xs text-gray-600">Extreme Severity</p>
@@ -83,7 +98,9 @@ function OverviewRightSection() {
             <div>
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
                 <div className="w-16 bg-[#308DE0] p-2 border-r border-[#308DE0] rounded-l-lg flex items-center justify-center">
-                  <div className="text-2xl font-bold text-white">{assessment?.length === 0 ? 0 :assessment[1]}</div>
+                  <div className="text-2xl font-bold text-white">
+                    {filtered?.length === 0 ? 0 : filtered[4]}
+                  </div>
                 </div>
                 <div className="flex-1 flex items-center justify-between p-2">
                   <p className="text-xs text-gray-600">Trending</p>
@@ -112,7 +129,9 @@ function OverviewRightSection() {
             <div>
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
                 <div className="w-16 bg-[#308DE0] p-2 border-r border-[#308DE0] rounded-l-lg flex items-center justify-center">
-                  <div className="text-2xl font-bold text-white">{assessment?.length === 0 ? 0 :assessment[2]}</div>
+                  <div className="text-2xl font-bold text-white">
+                    {filtered?.length === 0 ? 0 : filtered[5]}
+                  </div>
                 </div>
                 <div className="flex-1 flex items-center justify-between p-2">
                   <p className="text-xs text-gray-600">Improving</p>

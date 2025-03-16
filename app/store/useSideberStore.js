@@ -4,7 +4,7 @@ export const useSideberStore = create((set) => ({
   title: "Combined Drought Index",
   indicator: "PDI",
   timerange: "2024",
-  month: "January",
+  month: "December",
   district: "",
   districtOne: "MASAKA",
   districtTwo: "MASAKA",
