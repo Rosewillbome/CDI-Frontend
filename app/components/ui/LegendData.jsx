@@ -41,7 +41,12 @@ function LegendData() {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
+              />
             </svg>
             {/* Tooltip */}
             <span className="invisible group-hover:visible absolute z-10 bg-gray-700 text-white text-xs rounded py-1 px-2 bottom-full right-0 mb-1 whitespace-nowrap">
@@ -51,22 +56,54 @@ function LegendData() {
         </div>
         <h3 className="font-semibold mb-2">Legend</h3>
         <div className="space-y-1">
-          {legend?.map((level) => (
-            <div
-              key={level.range}
-              className="flex items-center space-x-2 p-1 cursor-pointer"
-              style={{ backgroundColor: level.color }}
-              onClick={(e) =>
-                setLevels([level.left_operator, level.right_operator])
-              }
-            >
-              <span className="text-xs">{level.labels}</span>
-              <span className="text-[8px] text-gray-600 ">({level.range})</span>
-            </div>
-          ))}
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-[#308DE0]">
+                <tr>
+                  <th className="px-2 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                    Color
+                  </th>
+                  <th className="px-2 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                    Value
+                  </th>
+                  {indicator === "PDI" || indicator === "TDI" ? null : (
+                    <th className="px-2 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                      Tag
+                    </th>
+                  )}
+                  <th className="px-2 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                    Description
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody className="bg-gray-50 divide-y divide-gray-200">
+                {legend?.map((item, index) => {
+                  //{getColor(item?.color)}
+                  return (
+                    <tr key={index}>
+                      <td style={{ backgroundColor: `${item?.color}` }}></td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {item?.range}
+                      </td>
+
+                      {indicator === "PDI" || indicator === "TDI" ? null : (
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                          {item?.labels}
+                        </td>
+                      )}
+
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {item?.Description}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      
     </div>
   );
 }

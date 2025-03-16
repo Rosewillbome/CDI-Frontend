@@ -7,7 +7,7 @@ import { useSideberStore } from "../store/useSideberStore";
 const TableView = () => {
   // Dummy data for table
   const [tableData, setTableData] = useState([]);
-  const [filterd, setfilterd] = useState([]);
+  const [filtable, setfilterd] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
@@ -30,59 +30,48 @@ const TableView = () => {
   }, []);
 
   useEffect(() => {
-    let filterd = [];
-    if (district?.trim()?.length !== 0 && district?.toLowerCase() !== "all") {
-      if (filterd?.length > 0) {
-        const filterbypcu = filterd?.filter(
-          (month_data) =>
-            month_data[0]?.toLowerCase() === district?.toLowerCase()
-        );
-        filterd = filterbypcu;
-      } else {
-        const filterbypcu = tableData?.filter(
-          (month_data) =>
-            month_data[0]?.toLowerCase() === district?.toLowerCase()
-        );
-        filterd = filterbypcu;
-      }
-    }
+    setfilterd(tableData);
+
+    // if (district?.trim()?.length !== 0 && district?.toLowerCase() !== "all") {
+    //   if (filterd?.length > 0) {
+    //     const filterbypcu = filterd?.filter(
+    //       (month_data) =>
+    //         month_data[0]?.toLowerCase() === district?.toLowerCase()
+    //     );
+    //     filterd = filterbypcu;
+    //   } else {
+    //     const filterbypcu = tableData?.filter(
+    //       (month_data) =>
+    //         month_data[0]?.toLowerCase() === district?.toLowerCase()
+    //     );
+    //     filterd = filterbypcu;
+    //   }
+    // }
 
     if (timerange?.trim()?.length !== 0) {
       function getYear(dateString) {
         // Split the string by spaces and get the second part (the year)
         return dateString.split(" ")[1];
       }
-      if (filterd?.length > 0) {
-        const filterbypcu = filterd?.filter(
-          (month_data) =>
-            month_data[2]?.toLowerCase() === getYear(timerange?.toLowerCase())
-        );
-        filterd = filterbypcu;
-      } else {
-        const filterbypcu = tableData?.filter(
-          (month_data) =>
-            month_data[2]?.toLowerCase() === getYear(timerange?.toLowerCase())
-        );
-        filterd = filterbypcu;
-      }
+
+      const filterbypcu = tableData?.filter(
+        (month_data) =>
+          getYear(month_data[2]?.toLowerCase()) === timerange?.toLowerCase()
+      );
+      setfilterd(filterbypcu);
+      // filterd = filterbypcu;
     }
 
     if (status?.trim()?.length !== 0 && status?.toLowerCase() !== "status") {
-      if (filterd?.length > 0) {
-        const filterbypcu = filterd?.filter(
-          (month_data) => month_data[7]?.toLowerCase() === status?.toLowerCase()
-        );
-        filterd = filterbypcu;
-      } else {
-        const filterbypcu = tableData?.filter(
-          (month_data) => month_data[7]?.toLowerCase() === status?.toLowerCase()
-        );
-        filterd = filterbypcu;
-      }
+      const filterbypcu = tableData?.filter(
+        (month_data) => month_data[7]?.toLowerCase() === status?.toLowerCase()
+      );
+      setfilterd(filterbypcu);
+      // filterd = filterbypcu;
     }
-    setfilterd(filterd);
-  }, [timerange, district, status]);
-  let filtable = filterd?.length > 0 ? filterd : tableData;
+  }, [timerange, status, tableData]);
+  // let filtable = filterd?.length > 0 ? filterd : tableData;
+  // let filtable = filterd;
   const totalPages = Math.ceil(filtable.length / rowsPerPage);
 
   const currentData = filtable.slice(
@@ -206,54 +195,58 @@ const TableView = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-gray-50 divide-y divide-gray-200">
-              {currentData.map((item, index) => {
-                return (
-                  <tr
-                    key={index}
-                    className={`hover:bg-gray-100 transition-colors ${
-                      item[7] === "Worsening"
-                        ? "bg-[#733635]"
-                        : item[7] === "Improving"
-                        ? "bg-[#ACE1AF]" //#6B8E23
-                        : "bg-[#D0F0C0]" // Default color for other cases
-                    }`}
-                  >
-                    <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 bg-blue-50 border-r border-white">
-                      {item[0]}
-                    </td>
-                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {/* {item[1]?.toFixed(2)} */}
-                      {parseFloat(item[1])?.toFixed(2)}
-                    </td>
-                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {item[2]}
-                    </td>
-                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {parseFloat(item[3])?.toFixed(2)}
-                    </td>
-                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {item[4]}
-                    </td>
-                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {parseFloat(item[5])?.toFixed(2)}
-                    </td>
-                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                      {parseFloat(item[6])?.toFixed(2)}
-                    </td>
-                    <td
-                      className={`px-4 py-2 whitespace-nowrap text-sm font-bold ${
+            {filtable?.length === 0 ? (
+             <></>
+            ) : (
+              <tbody className="bg-gray-50 divide-y divide-gray-200">
+                {currentData.map((item, index) => {
+                  return (
+                    <tr
+                      key={index}
+                      className={`hover:bg-gray-100 transition-colors ${
                         item[7] === "Worsening"
-                          ? "text-red-600"
-                          : "text-green-600"
+                          ? "bg-[#733635]"
+                          : item[7] === "Improving"
+                          ? "bg-[#ACE1AF]" //#6B8E23
+                          : "bg-[#D0F0C0]" // Default color for other cases
                       }`}
                     >
-                      {item[7]}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 bg-blue-50 border-r border-white">
+                        {item[0]}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {/* {item[1]?.toFixed(2)} */}
+                        {parseFloat(item[1])?.toFixed(2)}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {item[2]}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {parseFloat(item[3])?.toFixed(2)}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {item[4]}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {parseFloat(item[5])?.toFixed(2)}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {parseFloat(item[6])?.toFixed(2)}
+                      </td>
+                      <td
+                        className={`px-4 py-2 whitespace-nowrap text-sm font-bold ${
+                          item[7] === "Worsening"
+                            ? "text-red-600"
+                            : "text-green-600"
+                        }`}
+                      >
+                        {item[7]}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            )}
           </table>
         </div>
       </div>
