@@ -1,6 +1,6 @@
 "use client";
 import { useSideberStore } from "../../store/useSideberStore";
-import { CDI_legend, PDI_legend, TDI_legend } from "../../utils/drought_levels";
+import { CDI_legend, PDI_legend, TDI_legend,VDI_legend } from "../../utils/drought_levels";
 import React, { useEffect, useState } from "react";
 import KeyNote from "./KeyNote";
 
@@ -23,6 +23,9 @@ function LegendData() {
       setLegend(PDI_legend);
     } else if (indicator === "TDI") {
       setLegend(TDI_legend);
+    }
+    else if (indicator === "VDI") {
+      setLegend(VDI_legend);
     }
   }, [indicator]);
 
