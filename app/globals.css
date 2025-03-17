@@ -210,3 +210,12 @@ body {
     visibility: hidden; /* Hide after fading out */
   }
 }
+
+#maps-container {
+  position: relative;
+  z-index: 50;
+}
+
+.leaflet-container {
+  z-index: 10 !important;
+}
