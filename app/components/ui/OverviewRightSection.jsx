@@ -10,7 +10,7 @@ function OverviewRightSection() {
   const [assessment, setAssesment] = useState([]);
   const [filtered, setfiltered] = useState([]);
 
-  const { timerange, month } = useSideberStore((state) => state);
+  const { timerange, month,setSliderYear } = useSideberStore((state) => state);
   useEffect(() => {
     const fetchData = async () => {
       axios
@@ -18,6 +18,7 @@ function OverviewRightSection() {
         .then((response) => {
           console.log("setAssesment", response?.data?.data);
           setAssesment(response?.data?.data);
+          setSliderYear(response?.data?.data[response?.data?.data?.length - 1]?.[1])
         })
         .catch((error) => {
           console.error("comming error", error);

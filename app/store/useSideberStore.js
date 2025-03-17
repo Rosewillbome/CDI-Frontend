@@ -13,6 +13,7 @@ export const useSideberStore = create((set) => ({
   monthOne: "",
   monthTwo: "",
   filterBylegend: [],
+  sliderYear:"2022",
   setFilterBylegend: (newFilterBylegend) =>
     set((state) => ({ filterBylegend: newFilterBylegend })),
   setMonthTwo: (newMonthTwo) => set((state) => ({ monthTwo: newMonthTwo })),
@@ -30,4 +31,5 @@ export const useSideberStore = create((set) => ({
   setTimerange: (newTimerange) => set((state) => ({ timerange: newTimerange })),
   setMonth: (newMonth) => set((state) => ({ month: newMonth })),
   setDistrict: (newDistrict) => set((state) => ({ district: newDistrict })),
+  setSliderYear: (newsliderYear) => set((state) => ({ sliderYear: newsliderYear })),
 }));
