@@ -88,25 +88,25 @@ const UgandaMap = ({
       },
     }).addTo(mapRef.current);
 
-     // Function to toggle label visibility based on zoom level
-  const updateLabelVisibility = () => {
-    const currentZoom = mapRef.current.getZoom();
-    const minZoomForLabels = 8; // Set the minimum zoom level for showing labels
+    // Function to toggle label visibility based on zoom level
+    const updateLabelVisibility = () => {
+      const currentZoom = mapRef.current.getZoom();
+      const minZoomForLabels = 8; // Set the minimum zoom level for showing labels
 
-    districtLayerRef.current.eachLayer((layer) => {
-      if (currentZoom >= minZoomForLabels) {
-        layer.openTooltip(); // Show tooltip
-      } else {
-        layer.closeTooltip(); // Hide tooltip
-      }
-    });
-  };
+      districtLayerRef.current.eachLayer((layer) => {
+        if (currentZoom >= minZoomForLabels) {
+          layer.openTooltip(); // Show tooltip
+        } else {
+          layer.closeTooltip(); // Hide tooltip
+        }
+      });
+    };
 
-  // Add zoomend event listener to update label visibility
-  mapRef.current.on("zoomend", updateLabelVisibility);
+    // Add zoomend event listener to update label visibility
+    mapRef.current.on("zoomend", updateLabelVisibility);
 
-  // Initial check for label visibility
-  updateLabelVisibility();
+    // Initial check for label visibility
+    updateLabelVisibility();
     // mapRef.current.fitBounds(districtLayerRef.current.getBounds());
     districtLayerRef.current.bringToFront();
     mapRef.current.on("click", function (ev) {
@@ -304,7 +304,10 @@ const UgandaMap = ({
   useEffect(() => {
     if (geoData?.length === 0) return;
     if (getTheBounds?.trim()?.length === 0) return;
-    if (getTheBounds?.trim()?.toLowerCase() === "all" || getTheBounds?.trim() === "") {
+    if (
+      getTheBounds?.trim()?.toLowerCase() === "all" ||
+      getTheBounds?.trim() === ""
+    ) {
       if (boundaryLayer.current) {
         mapRef.current.removeLayer(boundaryLayer.current);
         boundaryLayer.current = null;
