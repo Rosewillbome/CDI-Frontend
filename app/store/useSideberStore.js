@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export const useSideberStore = create((set) => ({
   title: "Combined Drought Index",
-  indicator: "PDI",
+  indicator: "CDI",
   timerange: "2024",
   month: "December",
   district: "",
