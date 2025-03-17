@@ -121,7 +121,7 @@ function OverviewRightSection() {
                 </div>
               </div>
               <div className="mt-1 text-xs text-gray-600 pl-2 italic">
-                Districts with a long trend of severity - 6 months
+                Districts with a long trend of severity - 3 months
               </div>
             </div>
 

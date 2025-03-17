@@ -81,7 +81,9 @@ function LegendData() {
                 {legend?.map((item, index) => {
                   //{getColor(item?.color)}
                   return (
-                    <tr key={index}>
+                    <tr key={index} onClick={(e) =>
+                      setLevels([item.left_operator, item.right_operator])
+                    }>
                       <td style={{ backgroundColor: `${item?.color}` }}></td>
                       <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
                         {item?.range}
