@@ -50,10 +50,10 @@ function Page() {
   const handleDownload = (e, moth, yrs) => {
     e.preventDefault();
     const link = document.createElement("a");
-    link.href = `${process.env.NEXT_PUBLIC_API}uploaded/uploads/data/RFE/${
-      filter_static_data(Data, moth, yrs)[0]?.[3]
+    link.href = `${process.env.NEXT_PUBLIC_API}uploaded${
+      filter_static_data(Data, moth, yrs)[0]?.[4]
     }`;
-    link.download = ` ${filter_static_data(Data, moth, yrs)[0]?.[3]}`;
+    link.download = ` ${filter_static_data(Data, moth, yrs)[0]?.[4]}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -89,7 +89,10 @@ function Page() {
       <div className="w-full px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-[#4A8BD0] text-center w-full">
-            {selectedIndicator?.trim()?.toLowerCase() === "vdi" ? "NDVI Anomaly" : selectedIndicator} Maps
+            {selectedIndicator?.trim()?.toLowerCase() === "vdi"
+              ? "NDVI Anomaly"
+              : selectedIndicator}{" "}
+            Maps
           </h1>
           <div className="flex space-x-4">
             <select
@@ -159,7 +162,7 @@ function Page() {
                           <button
                             className="text-[#4A8BD0] hover:text-[#3870a8]"
                             onClick={(e) =>
-                              handleDownload(e, month[1], endYear)
+                              handleDownload(e, month[0], endYear)
                             }
                           >
                             <Download className="h-4 w-4" />
@@ -188,9 +191,15 @@ function Page() {
                     ))}
                   </div>
                 ) : endYear - startYear + 1 === 5 ? (
-                  <div id="maps-container" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 w-full">
+                  <div
+                    id="maps-container"
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 w-full"
+                  >
                     {getYears?.map((year) => (
-                      <div key={year} className="bg-white rounded-lg shadow-md overflow-hidden">
+                      <div
+                        key={year}
+                        className="bg-white rounded-lg shadow-md overflow-hidden"
+                      >
                         <div className="p-4 bg-[#4A8BD0] text-white">
                           <h3 className="text-lg font-semibold">{year}</h3>
                         </div>
@@ -207,7 +216,7 @@ function Page() {
                                 <button
                                   className="text-[#4A8BD0] hover:text-[#3870a8]"
                                   onClick={(e) =>
-                                    handleDownload(e, month[1], year)
+                                    handleDownload(e, month[0], year)
                                   }
                                 >
                                   <Download className="h-4 w-4" />
@@ -236,7 +245,9 @@ function Page() {
               </>
             ) : (
               <div className="text-center py-8">
-                <p className="text-lg font-semibold mb-4">No data at the moment!!!</p>
+                <p className="text-lg font-semibold mb-4">
+                  No data at the moment!!!
+                </p>
               </div>
             )}
           </>
