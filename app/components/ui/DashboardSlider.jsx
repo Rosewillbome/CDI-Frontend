@@ -3,7 +3,7 @@ import React, {useEffect } from "react";
 import { moth  } from "../../utils/selectYear";
 import { useSideberStore } from "../../store/useSideberStore";
 function DashboardSlider() {
-  let { timerange, month, setTimerange, setMonth } = useSideberStore(
+  let { timerange, month, setTimerange, setMonth,sliderYear } = useSideberStore(
     (state) => state
   );
 
@@ -30,15 +30,15 @@ function DashboardSlider() {
             {moth[moth.indexOf(month)]} {timerange}
           </h3>
           <span className="text-sm text-gray-500">
-            {2002} - {2025}
+            {2002} - {parseInt(sliderYear)}
           </span>
         </div>
         <input
           type="range"
           min={0}
-          max={(2025 - 2002) * 12 + 11}
+          max={(parseInt(sliderYear) - 2002) * 12 + 11}
           step={1}
-          value={(timerange - 2001) * 12 + moth.indexOf(month)}
+          value={(timerange - 2002) * 12 + moth.indexOf(month)}
           onChange={(event) => handleSliderChange(event)}
           className="w-full range-slider"
         />
