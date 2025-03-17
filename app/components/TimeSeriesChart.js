@@ -8,7 +8,7 @@ import {
   filterByYear,
   filterDataByLegend,
 } from "../utils/selectYear";
-import { CDI_legend, PDI_legend, TDI_legend } from "../utils/drought_levels";
+import { CDI_legend, PDI_legend, TDI_legend, VDI_legend, } from "../utils/drought_levels";
 
 const TimeSeriesChart = ({
   indicator,
@@ -153,6 +153,8 @@ const TimeSeriesChart = ({
             ? PDI_legend
             : indicator === "TDI"
             ? TDI_legend
+            : indicator === "VDI"
+            ? VDI_legend
             : [],
             offset: 0,
         min: 0,
@@ -205,12 +207,27 @@ const TimeSeriesChart = ({
               4
             )}<br><b>Temperature Level:</b> ${Temperature}`;
           };
+          const VDI_data_hover = (point) => {
+            let Vegetation = "Normal to below normal";
+            const value = point.y;
+            if (value <= 0.4) Temperature = "Exeptionally higher than normal";
+            else if (value <= 0.8)
+              Vegetation = "Higher than normal vegetation";
+            return `<b>Date:</b> ${Highcharts.dateFormat(
+              "%d %b %Y",
+              point.x
+            )}<br><b>PDI:</b> ${point.y.toFixed(
+              4
+            )}<br><b>Vegetation Level:</b> ${Vegetation}`;
+          };
           return indicator === "PDI"
             ? PDI_data_hover(this)
             : indicator === "CDI"
             ? CDI_data_hover(this)
             : indicator === "TDI"
             ? TDI_data_hover(this)
+            : indicator === "VDI"
+            ? VDI_data_hover(this)
             : "";
         },
       },
