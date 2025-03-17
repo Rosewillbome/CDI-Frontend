@@ -59,17 +59,95 @@ function Page() {
     document.body.removeChild(link);
   };
 
-  const handleDownloadAllMaps = () => {
+  const handleDownloadAllMaps = async () => {
     const element = document.getElementById("maps-container");
-    html2canvas(element).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = imgData;
-      link.download = `${selectedIndicator}_Maps_A3.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
+  
+    // Function to wait for all images to load
+    const waitForAllImagesToLoad = (container) => {
+      const images = Array.from(container.querySelectorAll("img"));
+      return Promise.all(
+        images.map((img) => {
+          if (img.complete) return Promise.resolve(); // If already loaded, resolve immediately
+          return new Promise((resolve) => {
+            img.onload = resolve; // Resolve when the image loads
+            img.onerror = resolve; // Resolve even if there's an error (to avoid hanging)
+          });
+        })
+      );
+    };
+  
+    try {
+      // Wait for all images to load
+      await waitForAllImagesToLoad(element);
+  
+      // Capture the screenshot after all images are loaded
+      html2canvas(element).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+  
+        // Display the screenshot to the user
+        const img = new Image();
+        img.src = imgData;
+        img.style.maxWidth = "100%";
+        img.style.height = "auto";
+  
+        const screenshotContainer = document.createElement("div");
+        screenshotContainer.style.position = "fixed";
+        screenshotContainer.style.top = "0";
+        screenshotContainer.style.left = "0";
+        screenshotContainer.style.width = "100%";
+        screenshotContainer.style.height = "100%";
+        screenshotContainer.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+        screenshotContainer.style.display = "flex";
+        screenshotContainer.style.justifyContent = "center";
+        screenshotContainer.style.alignItems = "center";
+        screenshotContainer.style.zIndex = "1000";
+  
+        const closeButton = document.createElement("button");
+        closeButton.innerText = "Close";
+        closeButton.style.position = "absolute";
+        closeButton.style.top = "20px";
+        closeButton.style.right = "20px";
+        closeButton.style.padding = "10px 20px";
+        closeButton.style.backgroundColor = "#4A8BD0";
+        closeButton.style.color = "white";
+        closeButton.style.border = "none";
+        closeButton.style.borderRadius = "5px";
+        closeButton.style.cursor = "pointer";
+  
+        closeButton.onclick = () => {
+          document.body.removeChild(screenshotContainer);
+        };
+  
+        const downloadButton = document.createElement("button");
+        downloadButton.innerText = "Download";
+        downloadButton.style.position = "absolute";
+        downloadButton.style.bottom = "20px";
+        downloadButton.style.right = "20px";
+        downloadButton.style.padding = "10px 20px";
+        downloadButton.style.backgroundColor = "#4A8BD0";
+        downloadButton.style.color = "white";
+        downloadButton.style.border = "none";
+        downloadButton.style.borderRadius = "5px";
+        downloadButton.style.cursor = "pointer";
+  
+        downloadButton.onclick = () => {
+          const link = document.createElement("a");
+          link.href = imgData;
+          link.download = `${selectedIndicator}_Maps_A3.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          document.body.removeChild(screenshotContainer);
+        };
+  
+        screenshotContainer.appendChild(img);
+        screenshotContainer.appendChild(closeButton);
+        screenshotContainer.appendChild(downloadButton);
+        document.body.appendChild(screenshotContainer);
+      });
+    } catch (error) {
+      console.error("Error capturing screenshot:", error);
+    }
   };
 
   return (
