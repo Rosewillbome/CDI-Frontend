@@ -28,7 +28,8 @@ export const CDI_legend = [
     right_operator: "<=0.8",
     from: 0.6,
     to: 0.8,
-    Description: "Damage to crops, pastures, drying of shallow reservoirs; voluntary water rationing",
+    Description:
+      "Damage to crops, pastures, drying of shallow reservoirs; voluntary water rationing",
   },
   {
     labels: "Severe",
@@ -38,7 +39,8 @@ export const CDI_legend = [
     right_operator: "<=0.6",
     from: 0.4,
     to: 0.6,
-    Description: "Wider scale of loss of crops and pastures, imposed water rationing and livestock migration",
+    Description:
+      "Wider scale of loss of crops and pastures, imposed water rationing and livestock migration",
   },
   {
     labels: "Extreme",
@@ -48,7 +50,8 @@ export const CDI_legend = [
     right_operator: "<=0.4",
     from: 0,
     to: 0.4,
-    Description: "Major loss of crops and pasture, extreme fire danger, total water shortages, drying of deep reservoirs and usage restrictions",
+    Description:
+      "Major loss of crops and pasture, extreme fire danger, total water shortages, drying of deep reservoirs and usage restrictions",
   },
 ];
 
@@ -95,6 +98,49 @@ export const PDI_legend = [
     Description: "Significantly below average rainfall",
   },
 ];
+export const VDI_legend = [
+  {
+    labels: "Above average vegetation conditions",
+    range: "> 1.0",
+    color: "#D2FBD2",
+    left_operator: "1.0>",
+    right_operator: null,
+    from: 1.0,
+    to: 3.0,
+    Description: "Above average vegetation conditions",
+  },
+  {
+    labels: "Average vegetation conditions",
+    range: "0.8 - 1.0",
+    color: "#FFFFBE",
+    left_operator: "0.8>",
+    right_operator: "<=1.0",
+    from: 0.8,
+    to: 1.0,
+    Description: "Average vegetation conditions",
+  },
+  {
+    labels: "Below average vegetation conditions",
+    range: "< 0.8 - 0.4",
+    color: "#E6987B",
+    left_operator: "0.4>",
+    right_operator: "<=0.8",
+    from: 0.4,
+    to: 0.8,
+    Description: "Below average vegetation conditions",
+  },
+
+  {
+    labels: "Significantly below average vegetation conditions",
+    range: "< 0.4",
+    color: "#940905",
+    left_operator: "0>",
+    right_operator: "<=0.4",
+    from: 0,
+    to: 0.4,
+    Description: "Significantly below average vegetation conditions",
+  },
+];
 
 export const TDI_legend = [
   {
@@ -137,5 +183,7 @@ export const getIndex = (data) => {
     return "Precipitation Drought Index (PDI)";
   } else if (data?.toLowerCase() === "tdi") {
     return "Temperature Drought Index (TDI)";
+  } else if (data?.toLowerCase() === "vdi") {
+    return "Vegetation Drought Index (VDI)";
   }
 };
