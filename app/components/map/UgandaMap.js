@@ -18,6 +18,7 @@ const UgandaMap = ({
   district,
 }) => {
   const [geoData, setGeoData] = useState(null);
+  const [geoRiver, setGeoRiver] = useState(null);
   const [Hreload, setHreload] = useState("");
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
@@ -26,6 +27,7 @@ const UgandaMap = ({
   const baseMapsRef = useRef(null);
   const districtLayerRef = useRef(null);
   const boundaryLayer = useRef(null);
+  const riverLayer = useRef(null);
   const geoServerUrl = `${process.env.NEXT_PUBLIC_WSM}`;
 
   // Fetch GeoJSON data
@@ -39,6 +41,16 @@ const UgandaMap = ({
       }
     };
 
+    const fetchRivermap = async () => {
+      try {
+        const response = await axios.get("/api/river");
+        setGeoRiver(JSON.parse(response?.data?.geojsondata));
+      } catch (error) {
+        console.error("Error fetching GeoJSON:", error);
+      }
+    };
+
+    fetchRivermap();
     fetchBasemap();
   }, []);
 
@@ -88,27 +100,36 @@ const UgandaMap = ({
       },
     }).addTo(mapRef.current);
 
-     // Function to toggle label visibility based on zoom level
-  const updateLabelVisibility = () => {
-    const currentZoom = mapRef.current.getZoom();
-    const minZoomForLabels = 8; // Set the minimum zoom level for showing labels
+    riverLayer.current = L.geoJSON(geoRiver, {
+      style: {
+        // color: "gray",
+        weight: 1,
+        fill: false,
+      },
+    }).addTo(mapRef.current);
+    riverLayer.current.bringToFront();
 
-    districtLayerRef.current.eachLayer((layer) => {
-      if (currentZoom >= minZoomForLabels) {
-        layer.openTooltip(); // Show tooltip
-      } else {
-        layer.closeTooltip(); // Hide tooltip
-      }
-    });
-  };
+    // Function to toggle label visibility based on zoom level
+    const updateLabelVisibility = () => {
+      const currentZoom = mapRef.current.getZoom();
+      const minZoomForLabels = 8; // Set the minimum zoom level for showing labels
 
-  // Add zoomend event listener to update label visibility
-  mapRef.current.on("zoomend", updateLabelVisibility);
+      districtLayerRef.current.eachLayer((layer) => {
+        if (currentZoom >= minZoomForLabels) {
+          layer.openTooltip(); // Show tooltip
+        } else {
+          layer.closeTooltip(); // Hide tooltip
+        }
+      });
+    };
 
-  // Initial check for label visibility
-  updateLabelVisibility();
+    // Add zoomend event listener to update label visibility
+    mapRef.current.on("zoomend", updateLabelVisibility);
+
+    // Initial check for label visibility
+    updateLabelVisibility();
     // mapRef.current.fitBounds(districtLayerRef.current.getBounds());
-    districtLayerRef.current.bringToFront();
+    // districtLayerRef.current.bringToFront();
     mapRef.current.on("click", function (ev) {
       let clickedFeature = null;
       // Iterate through the district layer to find the clicked feature
@@ -299,12 +320,29 @@ const UgandaMap = ({
     })
       .addTo(mapRef.current)
       .bringToBack();
-  }, [timerange, month, indicator, Hreload, district]);
+
+    if (riverLayer.current) {
+      mapRef.current.removeLayer(riverLayer.current);
+      riverLayer.current = null;
+    }
+
+    riverLayer.current = L.geoJSON(geoRiver, {
+      style: {
+        // color: "gray",
+        weight: 1,
+        fill: false,
+      },
+    }).addTo(mapRef.current);
+    riverLayer.current.bringToFront();
+  }, [timerange, month, indicator, Hreload, district,geoData]);
 
   useEffect(() => {
     if (geoData?.length === 0) return;
     if (getTheBounds?.trim()?.length === 0) return;
-    if (getTheBounds?.trim()?.toLowerCase() === "all" || getTheBounds?.trim() === "") {
+    if (
+      getTheBounds?.trim()?.toLowerCase() === "all" ||
+      getTheBounds?.trim() === ""
+    ) {
       if (boundaryLayer.current) {
         mapRef.current.removeLayer(boundaryLayer.current);
         boundaryLayer.current = null;
