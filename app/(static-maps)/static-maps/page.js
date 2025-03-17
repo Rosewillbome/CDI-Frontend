@@ -89,7 +89,7 @@ function Page() {
       <div className="w-full px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-[#4A8BD0] text-center w-full">
-            {selectedIndicator} Maps
+            {selectedIndicator?.trim()?.toLowerCase() === "vdi" ? "NDVI Anomaly" : selectedIndicator} Maps
           </h1>
           <div className="flex space-x-4">
             <select
