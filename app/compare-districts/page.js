@@ -78,12 +78,12 @@ export default function Home() {
       <div ref={reportRef} className="min-h-screen bg-white">
         {/* Header & Download Button */}
         {/* //max-w-7xl mx-auto flex justify-between items-center px-4 py-4 */}
-        <div className="mt-2 mb-2">
+        <div className="mt-2 mb-2 flex items-center justify-center">
           <div className="w-1/3"></div>
           <h1 className="text-3xl font-bold text-black text-center ">
             {selectedIndicator}
           </h1>
-          {/* <div className="w-1/3 flex justify-end">
+          <div className="w-1/3 flex justify-end">
             <button
               onClick={handleDownloadAllPdf}
               disabled={isDownloading}
@@ -102,7 +102,7 @@ export default function Home() {
                 ? "Downloading... Please Wait"
                 : "Download Comparison"}
             </button>
-          </div> */}
+          </div>
         </div>
 
         {/* Comparison Title */}

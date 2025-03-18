@@ -4,12 +4,12 @@ function ReactPrint({contentRef}) {
   //   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
   return (
-    <div className="my-4">
+    <div className="my-4 w-full">
       {/* <ReactToPrint
           trigger={() => ( */}
       <button
         onClick={() => reactToPrintFn()}
-        className="bg-[#308DE0] p-3 text-white rounded-md hover:text-[#308DE0] hover:bg-white transition-all duration-300 cursor-pointer tracking-tight leading-tight"
+        className="bg-[#308DE0] p-3 text-white rounded-md hover:text-[#308DE0] hover:bg-white transition-all duration-300 cursor-pointer tracking-tight leading-tight w-full"
       >
         Download report
       </button>

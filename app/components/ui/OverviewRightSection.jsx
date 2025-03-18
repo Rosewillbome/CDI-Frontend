@@ -52,7 +52,7 @@ function OverviewRightSection() {
     <>
       {/* Right Section */}
       <div className="fixed right-0 top-20 w-1/6 h-full flex flex-col gap-6 p-6 bg-transparent">
-        <DownloadReport />
+        {/* <DownloadReport /> */}
 
         {/* Assessment Section */}
         <div className="relative border border-[#308DE0] rounded-xl p-4 flex flex-col justify-between h-[calc(100%-80px)] mt-2 bg-[#F1F1F1]">
@@ -98,7 +98,7 @@ function OverviewRightSection() {
             {/* Trending */}
             <div>
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
-                <div className="w-16 bg-[#308DE0] p-2 border-r border-white rounded-l-lg flex items-center justify-center">
+                <div className="w-16 bg-[#58111A] p-2 border-r border-white rounded-l-lg flex items-center justify-center">
                   <div className="text-2xl font-bold text-white">
                     {filtered?.length === 0 ? 0 : filtered[4]}
                   </div>
@@ -107,7 +107,7 @@ function OverviewRightSection() {
                   <p className="text-xs text-gray-600">Trending</p>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-[#308DE0]"
+                    className="h-6 w-6 text-[#58111A]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
