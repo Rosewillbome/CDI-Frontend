@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Download } from "lucide-react";
 import {
   filter_static_data,
@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import ImageStatic from "../../components/ImageStatic";
 import html2canvas from "html2canvas";
+import StaticModal from "../../components/ui/statics/StaticModal"
 
 function Page() {
   const [selectedIndicator, setSelectedIndicator] = useState("CDI");
@@ -17,6 +18,8 @@ function Page() {
   const [loading, setLoading] = useState(false);
   const [endYear, setEndYear] = useState(new Date().getFullYear() - 1);
   const [startYear, setStartYear] = useState(endYear - 4);
+
+  const contentRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,35 +64,31 @@ function Page() {
 
   const handleDownloadAllMaps = async () => {
     const element = document.getElementById("maps-container");
-  
-    
+
     const waitForAllImagesToLoad = (container) => {
       const images = Array.from(container.querySelectorAll("img"));
       return Promise.all(
         images.map((img) => {
-          if (img.complete) return Promise.resolve(); 
+          if (img.complete) return Promise.resolve();
           return new Promise((resolve) => {
-            img.onload = resolve; 
-            img.onerror = resolve; 
+            img.onload = resolve;
+            img.onerror = resolve;
           });
         })
       );
     };
-  
+
     try {
-      
       await waitForAllImagesToLoad(element);
-  
-      
+
       html2canvas(element).then((canvas) => {
         const imgData = canvas.toDataURL("image/png");
-  
-        
+
         const img = new Image();
         img.src = imgData;
         img.style.maxWidth = "100%";
         img.style.height = "auto";
-  
+
         const screenshotContainer = document.createElement("div");
         screenshotContainer.style.position = "fixed";
         screenshotContainer.style.top = "0";
@@ -101,7 +100,7 @@ function Page() {
         screenshotContainer.style.justifyContent = "center";
         screenshotContainer.style.alignItems = "center";
         screenshotContainer.style.zIndex = "1000";
-  
+
         const closeButton = document.createElement("button");
         closeButton.innerText = "Close";
         closeButton.style.position = "absolute";
@@ -113,11 +112,11 @@ function Page() {
         closeButton.style.border = "none";
         closeButton.style.borderRadius = "5px";
         closeButton.style.cursor = "pointer";
-  
+
         closeButton.onclick = () => {
           document.body.removeChild(screenshotContainer);
         };
-  
+
         const downloadButton = document.createElement("button");
         downloadButton.innerText = "Download";
         downloadButton.style.position = "absolute";
@@ -129,7 +128,7 @@ function Page() {
         downloadButton.style.border = "none";
         downloadButton.style.borderRadius = "5px";
         downloadButton.style.cursor = "pointer";
-  
+
         downloadButton.onclick = () => {
           const link = document.createElement("a");
           link.href = imgData;
@@ -139,7 +138,7 @@ function Page() {
           document.body.removeChild(link);
           document.body.removeChild(screenshotContainer);
         };
-  
+
         screenshotContainer.appendChild(img);
         screenshotContainer.appendChild(closeButton);
         screenshotContainer.appendChild(downloadButton);
@@ -182,13 +181,14 @@ function Page() {
               <option value="VDI">NDVI Anomaly</option>
               <option value="Rainfall">Rainfall</option>
             </select>
-            <button
+            {/* <button
               onClick={handleDownloadAllMaps}
               className="flex items-center space-x-2 bg-[#4A8BD0] text-white px-4 py-2 rounded-md hover:bg-[#3870a8] transition-colors"
             >
               <Download className="h-5 w-5" />
               <span>Download All Maps</span>
-            </button>
+            </button> */}
+            <StaticModal data={Data} startYear={startYear} endYear={endYear} />
           </div>
         </div>
 
@@ -227,7 +227,10 @@ function Page() {
             {Data?.length > 0 ? (
               <>
                 {endYear - startYear === 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+                  <div
+                    className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6"
+                    ref={contentRef}
+                  >
                     {months.map((month) => (
                       <div
                         key={`${startYear}-${month[0]}`}
@@ -276,6 +279,7 @@ function Page() {
                     {getYears?.map((year) => (
                       <div
                         key={year}
+                        ref={contentRef}
                         className="bg-white rounded-lg shadow-md overflow-hidden"
                       >
                         <div className="p-4 bg-[#4A8BD0] text-white">

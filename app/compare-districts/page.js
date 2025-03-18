@@ -7,6 +7,7 @@ import { useSideberStore } from "../store/useSideberStore";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
+
 export default function Home() {
   let { districtTwo, districtOne } = useSideberStore((state) => state);
   const [selectedIndicator] = useState("Combined Drought Index (CDI)");
@@ -73,12 +74,13 @@ export default function Home() {
           </div>
         </div>
       )}
-
+    
       <div ref={reportRef} className="min-h-screen bg-white">
         {/* Header & Download Button */}
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-4">
+        {/* //max-w-7xl mx-auto flex justify-between items-center px-4 py-4 */}
+        <div className="mt-2 mb-2 flex items-center justify-center">
           <div className="w-1/3"></div>
-          <h1 className="text-3xl font-bold text-black text-center w-1/3">
+          <h1 className="text-3xl font-bold text-black text-center ">
             {selectedIndicator}
           </h1>
           <div className="w-1/3 flex justify-end">
