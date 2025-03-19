@@ -42,7 +42,7 @@ export default function Home() {
   return (
     <>
       {/* Loader Component */}
-      <Loader />
+      {/* <Loader /> */}
 
       <div className="min-h-screen bg-[#f1f1f1] p-8 sm:p-20 font-geist-sans flex flex-row gap-8 relative">
         {/* Sidebar Section */}

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { getIndex } from "../utils/drought_levels";
-import { FiDownload, FiMoreVertical } from "react-icons/fi";
+import { FiDownload, FiMoreVertical, FiInfo } from "react-icons/fi"; // Import FiInfo
 import { useSideberStore } from "../store/useSideberStore";
 import TimeSeriesChart from "../components/TimeSeriesChart";
 import DashboardSlider from "../components/ui/DashboardSlider";
@@ -35,7 +35,6 @@ const MapView = () => {
       clearTimeout(timeout);
     }
 
-    
     return () => clearTimeout(timeout);
   }, [isMapLoaded, isChartLoaded]);
 
@@ -128,9 +127,17 @@ const MapView = () => {
           className="relative w-full bg-white rounded-sm shadow-md p-4 flex flex-col"
         >
           <div className="flex justify-between items-center pb-2">
-            <h2 className="text-lg font-semibold text-gray-800 text-center flex-grow truncate">
-              {district ? district : "Select a District"}
-            </h2>
+            <div className="flex justify-center items-center space-x-2 flex-grow">
+              <h2 className="text-lg font-semibold text-gray-800 truncate">
+                {district ? district : "Select a District"}
+              </h2>
+              <div className="group relative">
+                <FiInfo className="text-gray-400 cursor-pointer" size={18} />
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                  Clear filters to view a range of years in the time series.
+                </div>
+              </div>
+            </div>
             <Menu as="div" className="relative">
               <Menu.Button className="p-2 rounded-lg text-gray-600 hover:bg-gray-100">
                 <FiMoreVertical size={24} />

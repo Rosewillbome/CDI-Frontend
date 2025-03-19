@@ -28,9 +28,9 @@ function StaticModal({data,endYear,startYear}) {
     <>
       <button
         onClick={handleOpen}
-        className="flex items-center justify-center bg-[#308DE0] text-white  py-2 rounded-full text-sm font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl relative"
+        className="flex items-center justify-center bg-[#308DE0] text-white  py-3 px-2 rounded-lg text-sm font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl relative"
       >
-        <span className="px-2">Download Report</span>
+        <span className="px-2">Download </span>
         <FileText className="h-5 w-5 text-white" />
         <div className="absolute inset-0 bg-[#308DE0] opacity-20 blur-lg rounded-full"></div>
       </button>
