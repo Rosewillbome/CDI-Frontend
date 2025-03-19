@@ -193,34 +193,37 @@ function Page() {
         </div>
 
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Filter Year Range</h2>
-          <div className="flex space-x-4">
-            <select
-              name="start"
-              value={startYear}
-              onChange={(e) => setStartYear(e.target.value)}
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
-            >
-              {showYears()?.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-            <select
-              name="end"
-              value={endYear}
-              onChange={(e) => setEndYear(e.target.value)}
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
-            >
-              {showYears()?.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+  <h2 className="text-xl font-semibold mb-4">Filter Year Range</h2>
+  <div className="flex space-x-4 items-center">
+    <select
+      name="start"
+      value={startYear}
+      onChange={(e) => setStartYear(e.target.value)}
+      className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
+    >
+      {showYears()?.map((year) => (
+        <option key={year} value={year}>
+          {year}
+        </option>
+      ))}
+    </select>
+    <select
+      name="end"
+      value={endYear}
+      onChange={(e) => setEndYear(e.target.value)}
+      className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
+    >
+      {showYears()?.map((year) => (
+        <option key={year} value={year}>
+          {year}
+        </option>
+      ))}
+    </select>
+    <span className="text-sm text-gray-500">
+      Please select either one year or a five-year range.
+    </span>
+  </div>
+</div>
 
         {!loading ? (
           <>
