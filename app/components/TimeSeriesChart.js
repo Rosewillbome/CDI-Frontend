@@ -190,7 +190,7 @@ const TimeSeriesChart = ({
             return `<b>Date:</b> ${Highcharts.dateFormat(
               "%d %b %Y",
               point.x
-            )}<br><b>PDI:</b> ${point.y.toFixed(
+            )}<br><b>CDI:</b> ${point.y.toFixed(
               4
             )}<br><b>Drought Level:</b> ${droughtLevel}`;
           };
@@ -203,7 +203,7 @@ const TimeSeriesChart = ({
             return `<b>Date:</b> ${Highcharts.dateFormat(
               "%d %b %Y",
               point.x
-            )}<br><b>PDI:</b> ${point.y.toFixed(
+            )}<br><b>TDI:</b> ${point.y.toFixed(
               4
             )}<br><b>Temperature Level:</b> ${Temperature}`;
           };
@@ -216,7 +216,7 @@ const TimeSeriesChart = ({
             return `<b>Date:</b> ${Highcharts.dateFormat(
               "%d %b %Y",
               point.x
-            )}<br><b>PDI:</b> ${point.y.toFixed(
+            )}<br><b>VDI:</b> ${point.y.toFixed(
               4
             )}<br><b>Vegetation Level:</b> ${Vegetation}`;
           };
