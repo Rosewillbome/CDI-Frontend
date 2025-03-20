@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import ImageStatic from "../../components/ImageStatic";
 import html2canvas from "html2canvas";
-import StaticModal from "../../components/ui/statics/StaticModal"
+import StaticModal from "../../components/ui/statics/StaticModal";
 
 function Page() {
   const [selectedIndicator, setSelectedIndicator] = useState("CDI");
@@ -163,8 +163,8 @@ function Page() {
         </div>
       )}
 
-      <div className="w-full px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
+      <div className="w-full px-4 py-8 ">
+        <div className="flex justify-between items-center mb-8 mt-[-25px]">
           <h1 className="text-3xl font-bold text-[#4A8BD0] text-center w-full">
             {selectedIndicator?.trim()?.toLowerCase() === "vdi"
               ? "NDVI Anomaly"
@@ -192,39 +192,38 @@ function Page() {
           </div>
         </div>
 
-        <div className="mb-8">
-  <h2 className="text-xl font-semibold mb-4">Filter Year Range</h2>
-  <div className="flex space-x-4 items-center">
-    <select
-      name="start"
-      value={startYear}
-      onChange={(e) => setStartYear(e.target.value)}
-      className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
-    >
-      {showYears()?.map((year) => (
-        <option key={year} value={year}>
-          {year}
-        </option>
-      ))}
-    </select>
-    <select
-      name="end"
-      value={endYear}
-      onChange={(e) => setEndYear(e.target.value)}
-      className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
-    >
-      {showYears()?.map((year) => (
-        <option key={year} value={year}>
-          {year}
-        </option>
-      ))}
-    </select>
-    <span className="text-sm text-gray-500">
-      Please select either one year or a five-year range.
-    </span>
-  </div>
-</div>
-
+        <div className="mb-2 flex items-center mt-[-70px]">
+          <h2 className="text-xl font-semibold mb-4 pr-2">Filter Year Range</h2>
+          <div className="flex space-x-4 items-center">
+            <select
+              name="start"
+              value={startYear}
+              onChange={(e) => setStartYear(e.target.value)}
+              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
+            >
+              {showYears()?.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+            <select
+              name="end"
+              value={endYear}
+              onChange={(e) => setEndYear(e.target.value)}
+              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
+            >
+              {showYears()?.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <span className="text-sm text-gray-500 mt-[-60px]">
+              Please select either one year or a five-year range.
+            </span>
         {!loading ? (
           <>
             {Data?.length > 0 ? (

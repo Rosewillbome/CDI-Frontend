@@ -44,7 +44,7 @@ export default function Home() {
       {/* Loader Component */}
       {/* <Loader /> */}
 
-      <div className="min-h-screen bg-[#f1f1f1] p-8 sm:p-20 font-geist-sans flex flex-row gap-8 relative">
+      <div className="min-h-screen bg-[#f1f1f1] p-8 sm:p-20 font-geist-sans flex flex-row gap-8 relative items-start">
         {/* Sidebar Section */}
         {sidebarOpen && (
           <div
@@ -95,12 +95,14 @@ export default function Home() {
             sidebarOpen ? "ml-[32%]" : "ml-0"
           }`}
           style={{
-            width: sidebarOpen ? "calc(100% - 32% - 16.67%)" : "calc(100% - 16.67%)",
+            width: sidebarOpen
+              ? "calc(100% - 32% - 16.67%)"
+              : "calc(100% - 16.67%)",
             marginRight: "16.67%",
           }}
         >
-          <div className="flex items-center gap-4">
-            <h2 className="text-2xl font-bold text-[#651d32]">
+          <div className="flex items-center justify-center gap-4 mt-[-70px]">
+            <h2 className="text-2xl font-bold text-[#651d32] md:text-base">
               How is Drought affecting your District?
             </h2>
             <div className="relative">
@@ -135,8 +137,8 @@ export default function Home() {
           </div>
 
           <div className="mt-8">
-            <div className="flex justify-center">
-              <h2 className="text-xl font-semibold text-[#308DE0] mb-6">
+            <div className="flex justify-center mt-[-30px]">
+              <h2 className="text-xl md:text-base font-semibold text-[#308DE0] mb-6">
                 {getActiveTabTitle()}
               </h2>
             </div>
@@ -160,29 +162,6 @@ export default function Home() {
               </div>
 
               {/* Legend */}
-              {/* <div className="absolute bottom-4 right-4 bg-white p-2 shadow-md z-[1000] border border-gray-300 rounded-sm">
-                <h3 className="text-sm text-black font-semibold mb-2">Legend</h3>
-                <div className="flex flex-col gap-1">
-                  <div
-                    className="px-2 py-1 text-sm text-gray-500"
-                    style={{ backgroundColor: "#E5E7EB" }}
-                  >
-                    Other
-                  </div>
-                  <div
-                    className="px-2 py-1 text-sm text-white"
-                    style={{ backgroundColor: "#D03A27" }}
-                  >
-                    Severe (0.4-0.6)
-                  </div>
-                  <div
-                    className="px-2 py-1 text-sm text-white"
-                    style={{ backgroundColor: "#940905" }}
-                  >
-                    Extreme (&lt;0.4)
-                  </div>
-                </div>
-              </div> */}
             </div>
 
             <DashboardSlider />

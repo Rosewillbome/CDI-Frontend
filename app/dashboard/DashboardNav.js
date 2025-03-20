@@ -7,7 +7,7 @@ const DashboardNav = ({ selectedTab, setSelectedTab }) => {
   ];
 
   return (
-    <div className="relative">
+    <div className="relative mt-[-10px]">
       <nav className="flex justify-center mt-6">
         {navItems.map((item, index) => (
           <button
