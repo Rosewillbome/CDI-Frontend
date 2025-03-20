@@ -21,7 +21,6 @@ const MapView = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [isChartLoaded, setIsChartLoaded] = useState(false);
-
   const chartContainerRef = useRef(null);
   const mapRef = useRef(null);
 
@@ -85,7 +84,7 @@ const MapView = () => {
       )}
 
       {/* Indicator Title */}
-      <div className="text-center">
+      <div className="text-center mt-[-50px]">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
           {getIndex(indicator)}
         </h1>
@@ -114,8 +113,8 @@ const MapView = () => {
             timerange={timerange}
             month={month}
             district={district}
-            zoom={7.4}
-            minZoom={7.4}
+            zoom={7.3}
+            minZoom={7.3}
             setDistrict={setDistrict}
             onLoad={() => setIsMapLoaded(true)}
           />
@@ -128,7 +127,7 @@ const MapView = () => {
         >
           <div className="flex justify-between items-center pb-2">
             <div className="flex justify-center items-center space-x-2 flex-grow">
-              <h2 className="text-lg font-semibold text-gray-800 truncate">
+              <h2 className="text-lg font-semibold text-gray-800 truncate ">
                 {district ? district : "Select a District"}
               </h2>
               <div className="group relative">
