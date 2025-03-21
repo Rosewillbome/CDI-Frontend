@@ -15,7 +15,7 @@ const UgandaMap = dynamic(() => import("../components/map/UgandaMap"), {
 });
 
 const MapView = () => {
-  const { indicator, timerange, month, district, filterBylegend, setDistrict } =
+  const { indicator, timerange, month, district, filterBylegend, setDistrict,setTimerange } =
     useSideberStore((state) => state);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -67,6 +67,14 @@ const MapView = () => {
     link.href = encodedUri;
     link.download = "chart_data.csv";
     link.click();
+  };
+  const clearFilters = (e) => {
+    e.preventDefault();
+    // setIndicator("CDI");
+    setTimerange("");
+    // setMonth("");
+    // setDistrict("All");
+    // setFilterBylegend([]);
   };
 
   return (
@@ -131,9 +139,15 @@ const MapView = () => {
                 {district ? district : "Select a District"}
               </h2>
               <div className="group relative">
-                <FiInfo className="text-gray-400 cursor-pointer" size={18} />
+                <FiInfo className="text-blue-500 cursor-pointer" size={18} />
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                  Clear filters to view a range of years in the time series.
+                  <button
+                    onClick={(e) => clearFilters(e)}
+                    className="bg-blue-500 p-1 rounded-xl mr-1"
+                  >
+                    Clear Filters
+                  </button>
+                  to view a range of years in the time series.
                 </div>
               </div>
             </div>
