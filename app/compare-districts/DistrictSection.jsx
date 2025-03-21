@@ -145,6 +145,13 @@ function DistrictSection() {
           // month={monthOne}
           district={districtOne}
         />
+        <Section
+          chart_id={"District_section_20980"}
+          indicator={"VDI"}
+          timerange={timerangeOne}
+          // month={monthOne}
+          district={districtOne}
+        />
       </div>
     </div>
   );
