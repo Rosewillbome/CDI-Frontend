@@ -1,6 +1,6 @@
 "use client";
 import { useSideberStore } from "../../store/useSideberStore";
-import { CDI_legend, PDI_legend, TDI_legend,VDI_legend } from "../../utils/drought_levels";
+import { CDI_legend, PDI_legend, TDI_legend, VDI_legend } from "../../utils/drought_levels";
 import React, { useEffect, useState } from "react";
 import KeyNote from "./KeyNote";
 
@@ -23,8 +23,7 @@ function LegendData() {
       setLegend(PDI_legend);
     } else if (indicator === "TDI") {
       setLegend(TDI_legend);
-    }
-    else if (indicator === "VDI") {
+    } else if (indicator === "VDI") {
       setLegend(VDI_legend);
     }
   }, [indicator]);
@@ -39,7 +38,7 @@ function LegendData() {
             {/* Inline SVG for the info icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4 text-gray-500"
+              className="w-4 h-4 text-blue-500"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -63,14 +62,14 @@ function LegendData() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-[#308DE0]">
                 <tr>
-                  <th className="px-2 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  <th className="sticky left-0 px-2 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white bg-[#308DE0] z-10">
                     Color
                   </th>
-                  <th className="px-2 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  <th className="sticky left-12 px-2 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white bg-[#308DE0] z-10">
                     Value
                   </th>
                   {indicator === "PDI" || indicator === "TDI" ? null : (
-                    <th className="px-2 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                    <th className="sticky left-24 px-2 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white bg-[#308DE0] z-10">
                       Tag
                     </th>
                   )}
@@ -82,18 +81,17 @@ function LegendData() {
 
               <tbody className="bg-gray-50 divide-y divide-gray-200">
                 {legend?.map((item, index) => {
-                  //{getColor(item?.color)}
                   return (
                     <tr key={index} onClick={(e) =>
                       setLevels([item.left_operator, item.right_operator])
                     }>
-                      <td style={{ backgroundColor: `${item?.color}` }}></td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                      <td style={{ backgroundColor: `${item?.color}` }} className="sticky left-0 bg-gray-50 z-10"></td>
+                      <td className="sticky left-12 px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white bg-gray-50 z-10">
                         {item?.range}
                       </td>
 
                       {indicator === "PDI" || indicator === "TDI" ? null : (
-                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        <td className="sticky left-24 px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white bg-gray-50 z-10">
                           {item?.labels}
                         </td>
                       )}

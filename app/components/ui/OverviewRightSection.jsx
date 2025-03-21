@@ -51,7 +51,7 @@ function OverviewRightSection() {
   return (
     <>
       {/* Right Section */}
-      <div className="fixed right-0 top-20 w-1/6 h-full flex flex-col gap-6 p-6 bg-transparent">
+      <div className="fixed right-0 top-20 w-1/5 h-full flex flex-col gap-6 p-6 bg-transparent">
         {/* <DownloadReport /> */}
 
         {/* Assessment Section */}
