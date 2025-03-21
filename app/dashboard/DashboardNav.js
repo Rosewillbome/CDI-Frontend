@@ -1,10 +1,19 @@
 "use client";
 import React from "react";
+import { useSideberStore } from "../store/useSideberStore";
 const DashboardNav = ({ selectedTab, setSelectedTab }) => {
   const navItems = [
     { path: "map-view", label: "Map View" },
     { path: "table-view", label: "Table View" },
   ];
+
+  const { setTabs } = useSideberStore((state) => state);
+  console.log("selectedTab ", selectedTab);
+  const selectTabs = (e, item) => {
+    e.preventDefault();
+    setTabs(item.path);
+    setSelectedTab(item.path);
+  };
 
   return (
     <div className="relative mt-[-10px]">
@@ -28,7 +37,7 @@ const DashboardNav = ({ selectedTab, setSelectedTab }) => {
               textAlign: "center",
               marginLeft: index !== 0 ? "-1px" : "0",
             }}
-            onClick={(e) => setSelectedTab(item.path)}
+            onClick={(e) => selectTabs(e,item)}
           >
             {item.label}
           </button>
