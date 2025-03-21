@@ -111,7 +111,7 @@ const MapView = () => {
                 className="p-2 bg-white border hover:bg-gray-100 rounded-2xl transition-colors shadow-lg"
                 onClick={handleDownloadMap}
               >
-                <FiDownload className="text-gray-600" size={20} />
+                <FiDownload className="text-blue-500" size={20} />
               </button>
             </div>
           )}

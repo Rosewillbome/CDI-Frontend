@@ -7,7 +7,6 @@ import { useSideberStore } from "../store/useSideberStore";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
-
 export default function Home() {
   let { districtTwo, districtOne } = useSideberStore((state) => state);
   const [selectedIndicator] = useState("Combined Drought Index (CDI)");
@@ -77,7 +76,6 @@ export default function Home() {
     
       <div ref={reportRef} className="min-h-screen bg-white">
         {/* Header & Download Button */}
-        {/* //max-w-7xl mx-auto flex justify-between items-center px-4 py-4 */}
         <div className="mt-2 mb-2 flex items-center justify-center">
           <div className="w-1/3"></div>
           <h1 className="text-3xl font-bold text-black text-center ">
@@ -110,6 +108,12 @@ export default function Home() {
           <h2 className="text-xl font-semibold text-[#e03030]">
             Comparing: {districtOne} vs {districtTwo}
           </h2>
+          {/* Moving Text */}
+          <div className="mt-2 overflow-hidden whitespace-nowrap">
+            <p className="inline-block animate-marquee text-lg text-gray-600">
+              Select on Year and month to see the respective map and select district to see the time series visualization.
+            </p>
+          </div>
         </div>
 
         {/* District Comparison Sections */}
@@ -122,6 +126,19 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/*  animation */}
+      <style jsx>{`
+        @keyframes marquee {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+          display: inline-block;
+          padding-left: 100%;
+          animation: marquee 20s linear infinite;
+        }
+      `}</style>
     </>
   );
 }
