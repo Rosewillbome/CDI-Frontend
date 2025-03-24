@@ -8,7 +8,12 @@ import {
   filterByYear,
   filterDataByLegend,
 } from "../utils/selectYear";
-import { CDI_legend, PDI_legend, TDI_legend, VDI_legend, } from "../utils/drought_levels";
+import {
+  CDI_legend,
+  PDI_legend,
+  TDI_legend,
+  VDI_legend,
+} from "../utils/drought_levels";
 
 const TimeSeriesChart = ({
   indicator,
@@ -28,7 +33,9 @@ const TimeSeriesChart = ({
           `${process.env.NEXT_PUBLIC_API}data/district/${
             district?.trim()?.toLowerCase() === "all" || district?.trim() === ""
               ? `all/${indicator?.trim()?.toLowerCase()}`
-              : `${indicator?.trim()?.toLowerCase()}/${district?.trim()?.toUpperCase()}`
+              : `${indicator?.trim()?.toLowerCase()}/${district
+                  ?.trim()
+                  ?.toUpperCase()}`
           }`
         )
         .then((response) => {
@@ -130,6 +137,7 @@ const TimeSeriesChart = ({
         },
         type: "datetime",
         opposite: false,
+        
       },
       yAxis: {
         title: {
@@ -156,7 +164,7 @@ const TimeSeriesChart = ({
             : indicator === "VDI"
             ? VDI_legend
             : [],
-            offset: 0,
+        offset: 0,
         min: 0,
         tickInterval: 0.5,
         max: 3,
@@ -211,8 +219,7 @@ const TimeSeriesChart = ({
             let Vegetation = "Normal to below normal";
             const value = point.y;
             if (value <= 0.4) Temperature = "Exeptionally higher than normal";
-            else if (value <= 0.8)
-              Vegetation = "Higher than normal vegetation";
+            else if (value <= 0.8) Vegetation = "Higher than normal vegetation";
             return `<b>Date:</b> ${Highcharts.dateFormat(
               "%d %b %Y",
               point.x
@@ -248,19 +255,19 @@ const TimeSeriesChart = ({
         },
       ],
     });
-  }, [Hreload,data,filtered,indicator]);
+  }, [Hreload, data, filtered, indicator]);
 
   return (
     <>
       <div
-    id={chart_id}
-    style={{
-      width: "100%",
-      height: "100%", 
-      padding: "2px", 
-      boxSizing: "border-box", 
-    }}
-  ></div>
+        id={chart_id}
+        style={{
+          width: "100%",
+          height: "100%",
+          padding: "2px",
+          boxSizing: "border-box",
+        }}
+      ></div>
     </>
   );
 };
