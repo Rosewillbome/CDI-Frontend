@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -20,20 +20,30 @@ const style = {
   overflowY: "scroll",
 };
 
-function StaticModal({data,endYear,startYear}) {
+function StaticModal({ data, endYear, startYear, selectedIndicator }) {
   const [open, setOpen] = React.useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <>
-      <button
-        onClick={handleOpen}
-        className="flex items-center justify-center bg-[#308DE0] text-white  py-3 px-2 rounded-lg text-sm font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl relative"
-      >
-        <span className="px-2">Download </span>
-        <FileText className="h-5 w-5 text-white" />
+      <div className="flex items-center justify-center">
+        <select
+          value={selectedOption}
+          onChange={(e) => setSelectedOption(e.target.value)}
+          className="p-2 border rounded-md bg-white focus:ring-2 focus:ring-[#308DE0] focus:border-[#308DE0] transition-colors"
+        >
+          <option className="">download</option>
+          <option value="selected_option" className="">
+            filtered option
+          </option>
+          <option value="all_data" className="">
+            all data
+          </option>
+        </select>
+        <FileText className="h-5 w-5 text-[#308DE0] ml-2" onClick={handleOpen} />
         <div className="absolute inset-0 bg-[#308DE0] opacity-20 blur-lg rounded-full"></div>
-      </button>
+      </div>
       <Modal
         open={open}
         onClose={handleClose}
@@ -41,7 +51,13 @@ function StaticModal({data,endYear,startYear}) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <DownloadStaticFiles data={data} startYear={startYear} endYear={endYear}/>
+          <DownloadStaticFiles
+            data={data}
+            startYear={startYear}
+            endYear={endYear}
+            selectedIndicator={selectedIndicator}
+            selectedOption={selectedOption}
+          />
         </Box>
       </Modal>
     </>

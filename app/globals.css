@@ -219,3 +219,14 @@ body {
 .leaflet-container {
   z-index: 10 !important;
 }
+
+@media print {
+  .page-break {
+    page-break-before: always; /* Force a page break before this element */
+  }
+
+  .printable-content {
+    margin: 0;
+    padding: 0;
+  }
+}

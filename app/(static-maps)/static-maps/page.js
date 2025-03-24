@@ -9,7 +9,6 @@ import {
 } from "../../utils/selectYear";
 import axios from "axios";
 import ImageStatic from "../../components/ImageStatic";
-import html2canvas from "html2canvas";
 import StaticModal from "../../components/ui/statics/StaticModal";
 
 function Page() {
@@ -62,93 +61,6 @@ function Page() {
     document.body.removeChild(link);
   };
 
-  const handleDownloadAllMaps = async () => {
-    const element = document.getElementById("maps-container");
-
-    const waitForAllImagesToLoad = (container) => {
-      const images = Array.from(container.querySelectorAll("img"));
-      return Promise.all(
-        images.map((img) => {
-          if (img.complete) return Promise.resolve();
-          return new Promise((resolve) => {
-            img.onload = resolve;
-            img.onerror = resolve;
-          });
-        })
-      );
-    };
-
-    try {
-      await waitForAllImagesToLoad(element);
-
-      html2canvas(element).then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-
-        const img = new Image();
-        img.src = imgData;
-        img.style.maxWidth = "100%";
-        img.style.height = "auto";
-
-        const screenshotContainer = document.createElement("div");
-        screenshotContainer.style.position = "fixed";
-        screenshotContainer.style.top = "0";
-        screenshotContainer.style.left = "0";
-        screenshotContainer.style.width = "100%";
-        screenshotContainer.style.height = "100%";
-        screenshotContainer.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
-        screenshotContainer.style.display = "flex";
-        screenshotContainer.style.justifyContent = "center";
-        screenshotContainer.style.alignItems = "center";
-        screenshotContainer.style.zIndex = "1000";
-
-        const closeButton = document.createElement("button");
-        closeButton.innerText = "Close";
-        closeButton.style.position = "absolute";
-        closeButton.style.top = "20px";
-        closeButton.style.right = "20px";
-        closeButton.style.padding = "10px 20px";
-        closeButton.style.backgroundColor = "#4A8BD0";
-        closeButton.style.color = "white";
-        closeButton.style.border = "none";
-        closeButton.style.borderRadius = "5px";
-        closeButton.style.cursor = "pointer";
-
-        closeButton.onclick = () => {
-          document.body.removeChild(screenshotContainer);
-        };
-
-        const downloadButton = document.createElement("button");
-        downloadButton.innerText = "Download";
-        downloadButton.style.position = "absolute";
-        downloadButton.style.bottom = "20px";
-        downloadButton.style.right = "20px";
-        downloadButton.style.padding = "10px 20px";
-        downloadButton.style.backgroundColor = "#4A8BD0";
-        downloadButton.style.color = "white";
-        downloadButton.style.border = "none";
-        downloadButton.style.borderRadius = "5px";
-        downloadButton.style.cursor = "pointer";
-
-        downloadButton.onclick = () => {
-          const link = document.createElement("a");
-          link.href = imgData;
-          link.download = `${selectedIndicator}_Maps_A3.png`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          document.body.removeChild(screenshotContainer);
-        };
-
-        screenshotContainer.appendChild(img);
-        screenshotContainer.appendChild(closeButton);
-        screenshotContainer.appendChild(downloadButton);
-        document.body.appendChild(screenshotContainer);
-      });
-    } catch (error) {
-      console.error("Error capturing screenshot:", error);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-white relative">
       {/* Loader */}
@@ -181,14 +93,8 @@ function Page() {
               <option value="VDI">NDVI Anomaly</option>
               <option value="Rainfall">Rainfall</option>
             </select>
-            {/* <button
-              onClick={handleDownloadAllMaps}
-              className="flex items-center space-x-2 bg-[#4A8BD0] text-white px-4 py-2 rounded-md hover:bg-[#3870a8] transition-colors"
-            >
-              <Download className="h-5 w-5" />
-              <span>Download All Maps</span>
-            </button> */}
-            <StaticModal data={Data} startYear={startYear} endYear={endYear} />
+           
+            <StaticModal data={Data} startYear={startYear} endYear={endYear} selectedIndicator={selectedIndicator} />
           </div>
         </div>
 
@@ -222,8 +128,8 @@ function Page() {
           </div>
         </div>
         <span className="text-sm text-gray-500 mt-[-60px]">
-              Please select either one year or a five-year range.
-            </span>
+          Please select either one year or a five-year range.
+        </span>
         {!loading ? (
           <>
             {Data?.length > 0 ? (
