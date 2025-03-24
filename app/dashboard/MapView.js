@@ -111,7 +111,7 @@ const MapView = () => {
                 className="p-2 bg-white border hover:bg-gray-100 rounded-2xl transition-colors shadow-lg"
                 onClick={handleDownloadMap}
               >
-                <FiDownload className="text-gray-600" size={20} />
+                <FiDownload className="text-blue-500" size={20} />
               </button>
             </div>
           )}
@@ -152,36 +152,36 @@ const MapView = () => {
               </div>
             </div>
             <Menu as="div" className="relative">
-              <Menu.Button className="p-2 rounded-lg text-gray-600 hover:bg-gray-100">
-                <FiMoreVertical size={24} />
-              </Menu.Button>
-              <Menu.Items className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={handleDownloadChartPNG}
-                      className={`w-full text-left px-1 text-sm ${
-                        active ? "bg-gray-200" : ""
-                      }`}
-                    >
-                      📸 Download PNG
-                    </button>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={handleDownloadChartCSV}
-                      className={`w-full text-left px-1 text-sm ${
-                        active ? "bg-gray-200" : ""
-                      }`}
-                    >
-                      📊 Download CSV
-                    </button>
-                  )}
-                </Menu.Item>
-              </Menu.Items>
-            </Menu>
+  <Menu.Button className="p-2 rounded-lg text-blue-500 hover:bg-gray-100">
+    <FiDownload size={24} /> 
+  </Menu.Button>
+  <Menu.Items className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">
+    <Menu.Item>
+      {({ active }) => (
+        <button
+          onClick={handleDownloadChartPNG}
+          className={`w-full text-left px-1 text-sm ${
+            active ? "bg-gray-200" : ""
+          }`}
+        >
+          📸 Download PNG
+        </button>
+      )}
+    </Menu.Item>
+    <Menu.Item>
+      {({ active }) => (
+        <button
+          onClick={handleDownloadChartCSV}
+          className={`w-full text-left px-1 text-sm ${
+            active ? "bg-gray-200" : ""
+          }`}
+        >
+          📊 Download CSV
+        </button>
+      )}
+    </Menu.Item>
+  </Menu.Items>
+</Menu>
           </div>
 
           {/* Time Series Chart */}

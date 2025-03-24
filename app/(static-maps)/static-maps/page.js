@@ -128,8 +128,9 @@ function Page() {
           </div>
         </div>
         <span className="text-sm text-gray-500 mt-[-60px]">
-          Please select either one year or a five-year range.
-        </span>
+        For a one-year range, select the same year for both fields (e.g., 2020 – 2020).
+For a five-year range, select the first and last year, ensuring both are inclusive (e.g., 2020 – 2024)
+            </span>
         {!loading ? (
           <>
             {Data?.length > 0 ? (

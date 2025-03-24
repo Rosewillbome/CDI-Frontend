@@ -8,10 +8,8 @@ const TableView = () => {
   // Dummy data for table
   const [tableData, setTableData] = useState([]);
   const [filtable, setfilterd] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
-  const rowsPerPage = 20;
   const { district, timerange } = useSideberStore((state) => state);
 
   useEffect(() => {
@@ -32,22 +30,6 @@ const TableView = () => {
   useEffect(() => {
     setfilterd(tableData);
 
-    // if (district?.trim()?.length !== 0 && district?.toLowerCase() !== "all") {
-    //   if (filterd?.length > 0) {
-    //     const filterbypcu = filterd?.filter(
-    //       (month_data) =>
-    //         month_data[0]?.toLowerCase() === district?.toLowerCase()
-    //     );
-    //     filterd = filterbypcu;
-    //   } else {
-    //     const filterbypcu = tableData?.filter(
-    //       (month_data) =>
-    //         month_data[0]?.toLowerCase() === district?.toLowerCase()
-    //     );
-    //     filterd = filterbypcu;
-    //   }
-    // }
-
     if (timerange?.trim()?.length !== 0) {
       function getYear(dateString) {
         // Split the string by spaces and get the second part (the year)
@@ -59,7 +41,6 @@ const TableView = () => {
           getYear(month_data[2]?.toLowerCase()) === timerange?.toLowerCase()
       );
       setfilterd(filterbypcu);
-      // filterd = filterbypcu;
     }
 
     if (status?.trim()?.length !== 0 && status?.toLowerCase() !== "status") {
@@ -67,29 +48,8 @@ const TableView = () => {
         (month_data) => month_data[7]?.toLowerCase() === status?.toLowerCase()
       );
       setfilterd(filterbypcu);
-      // filterd = filterbypcu;
     }
   }, [timerange, status, tableData]);
-  // let filtable = filterd?.length > 0 ? filterd : tableData;
-  // let filtable = filterd;
-  const totalPages = Math.ceil(filtable.length / rowsPerPage);
-
-  const currentData = filtable.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
-  );
-
-  const handleNextPage = () => {
-    if (currentPage < filtable?.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
 
   const handleDownloadTableData = async (e) => {
     e.preventDefault();
@@ -121,8 +81,6 @@ const TableView = () => {
       if (!response.ok) throw new Error("Network response was not ok");
 
       const blob = await response.blob();
-      // let url:string = ''
-      // let url = window.URL.createObjectURL(blob);
       let url;
       if (typeof window !== "undefined") {
         url = window.URL.createObjectURL(blob);
@@ -136,12 +94,12 @@ const TableView = () => {
     } catch (error) {
       console.error("Error downloading the file:", error);
     } finally {
-      // setLoading(false); // Hide loader
       setLoading(false);
     }
   };
+
   return (
-    <div className="space-y-6 pl-7">
+    <div className="space-y-3 pl-7">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900">Table View</h1>
 
@@ -156,9 +114,9 @@ const TableView = () => {
 
       {/* Table Section */}
       <div className="bg-[#308DE0] rounded-sm shadow-lg overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" style={{ maxHeight: "700px", overflowY: "auto" }}>
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-[#308DE0]">
+            <thead className="bg-[#308DE0] sticky top-0 z-10">
               <tr>
                 <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
                   District
@@ -167,13 +125,13 @@ const TableView = () => {
                   Current CDI
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
-                  Month & Year
+                  Year
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
                   Previous CDI
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
-                  Previous Month & Year
+                  Previous Year
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
                   Deviation from Previous
@@ -196,10 +154,10 @@ const TableView = () => {
               </tr>
             </thead>
             {filtable?.length === 0 ? (
-             <></>
+              <></>
             ) : (
               <tbody className="bg-gray-50 divide-y divide-gray-200">
-                {currentData.map((item, index) => {
+                {filtable.map((item, index) => {
                   return (
                     <tr
                       key={index}
@@ -215,7 +173,6 @@ const TableView = () => {
                         {item[0]}
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                        {/* {item[1]?.toFixed(2)} */}
                         {parseFloat(item[1])?.toFixed(2)}
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
@@ -249,27 +206,6 @@ const TableView = () => {
             )}
           </table>
         </div>
-      </div>
-
-      {/* Pagination Controls */}
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handlePreviousPage}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-        >
-          Previous
-        </button>
-        <span className="text-sm text-gray-700">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-        >
-          Next
-        </button>
       </div>
     </div>
   );
