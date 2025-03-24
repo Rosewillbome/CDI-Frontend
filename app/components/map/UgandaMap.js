@@ -5,7 +5,7 @@ import L from "leaflet";
 import axios from "axios";
 import { v4 } from "uuid";
 import { capitalize } from "../../utils/selectYear";
-import { useSideberStore } from "../../store/useSideberStore";
+import { usePathname } from "next/navigation";
 
 const UgandaMap = ({
   indicator,
@@ -17,6 +17,7 @@ const UgandaMap = ({
   getTheBounds,
   district,
 }) => {
+  const pathname = usePathname();
   const [geoData, setGeoData] = useState(null);
   const [geoRiver, setGeoRiver] = useState(null);
   const [Hreload, setHreload] = useState("");
@@ -29,7 +30,7 @@ const UgandaMap = ({
   const boundaryLayer = useRef(null);
   const riverLayer = useRef(null);
   const geoServerUrl = `${process.env.NEXT_PUBLIC_WSM}`;
-
+  console.log("pathname", pathname);
   // Fetch GeoJSON data
   useEffect(() => {
     const fetchBasemap = async () => {
@@ -199,9 +200,10 @@ const UgandaMap = ({
     rasterLayerRef.current = L.tileLayer
       .wms(geoServerUrl, {
         layers: newWmsLayerName,
+        styles: pathname === "/" ? "cdi_home_style" : "",
         format: "image/png",
         transparent: true,
-        opacity: 0.7,
+        opacity: 1.0,
       })
       .addTo(mapRef.current);
 
@@ -334,7 +336,7 @@ const UgandaMap = ({
       },
     }).addTo(mapRef.current);
     riverLayer.current.bringToFront();
-  }, [timerange, month, indicator, Hreload, district,geoData]);
+  }, [timerange, month, indicator, Hreload, district, geoData]);
 
   useEffect(() => {
     if (geoData?.length === 0) return;
