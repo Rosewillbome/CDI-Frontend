@@ -18,7 +18,7 @@ function DownloadStaticFiles({
 }) {
   const [count, setCount] = useState();
   let getYears = returnYears(startYear, endYear);
-  console.log("getYears ", getYears);
+  console.log("getYears ", getYears);F
   const contentRef = useRef(null);
   const imgRefs = useRef(null);
 
