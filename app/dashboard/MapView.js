@@ -15,12 +15,20 @@ const UgandaMap = dynamic(() => import("../components/map/UgandaMap"), {
 });
 
 const MapView = () => {
-  const { indicator, timerange, month, district, filterBylegend, setDistrict,setTimerange } =
-    useSideberStore((state) => state);
+  const {
+    indicator,
+    timerange,
+    month,
+    district,
+    filterBylegend,
+    setDistrict,
+    setTimerange,
+  } = useSideberStore((state) => state);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [isChartLoaded, setIsChartLoaded] = useState(false);
+  const [hideElement, sethideElement] = useState(false);
   const chartContainerRef = useRef(null);
   const mapRef = useRef(null);
 
@@ -49,12 +57,14 @@ const MapView = () => {
   };
 
   const handleDownloadChartPNG = () => {
+    sethideElement(true)
     if (chartContainerRef.current) {
       html2canvas(chartContainerRef.current).then((canvas) => {
         const link = document.createElement("a");
         link.href = canvas.toDataURL("image/png");
         link.download = "time_series.png";
         link.click();
+        sethideElement(false)
       });
     }
   };
@@ -70,11 +80,7 @@ const MapView = () => {
   };
   const clearFilters = (e) => {
     e.preventDefault();
-    // setIndicator("CDI");
     setTimerange("");
-    // setMonth("");
-    // setDistrict("All");
-    // setFilterBylegend([]);
   };
 
   return (
@@ -138,7 +144,11 @@ const MapView = () => {
               <h2 className="text-lg font-semibold text-gray-800 truncate ">
                 {district ? district : "Select a District"}
               </h2>
-              <div className="group relative">
+              <div
+                className={`group relative ${
+                  hideElement ? `hide-element` : ""
+                }`}
+              >
                 <FiInfo className="text-blue-500 cursor-pointer" size={18} />
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                   <button
@@ -151,37 +161,40 @@ const MapView = () => {
                 </div>
               </div>
             </div>
-            <Menu as="div" className="relative">
-  <Menu.Button className="p-2 rounded-lg text-blue-500 hover:bg-gray-100">
-    <FiDownload size={24} /> 
-  </Menu.Button>
-  <Menu.Items className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">
-    <Menu.Item>
-      {({ active }) => (
-        <button
-          onClick={handleDownloadChartPNG}
-          className={`w-full text-left px-1 text-sm ${
-            active ? "bg-gray-200" : ""
-          }`}
-        >
-          📸 Download PNG
-        </button>
-      )}
-    </Menu.Item>
-    <Menu.Item>
-      {({ active }) => (
-        <button
-          onClick={handleDownloadChartCSV}
-          className={`w-full text-left px-1 text-sm ${
-            active ? "bg-gray-200" : ""
-          }`}
-        >
-          📊 Download CSV
-        </button>
-      )}
-    </Menu.Item>
-  </Menu.Items>
-</Menu>
+            <Menu
+              as="div"
+              className={`relative ${hideElement ? `hide-element` : ""}`}
+            >
+              <Menu.Button className="p-2 rounded-lg text-blue-500 hover:bg-gray-100">
+                <FiDownload size={24} />
+              </Menu.Button>
+              <Menu.Items className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      onClick={handleDownloadChartPNG}
+                      className={`w-full text-left px-1 text-sm ${
+                        active ? "bg-gray-200" : ""
+                      }`}
+                    >
+                      📸 Download PNG
+                    </button>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      onClick={handleDownloadChartCSV}
+                      className={`w-full text-left px-1 text-sm ${
+                        active ? "bg-gray-200" : ""
+                      }`}
+                    >
+                      📊 Download CSV
+                    </button>
+                  )}
+                </Menu.Item>
+              </Menu.Items>
+            </Menu>
           </div>
 
           {/* Time Series Chart */}

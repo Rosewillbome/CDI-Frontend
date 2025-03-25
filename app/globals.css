@@ -230,3 +230,7 @@ body {
     padding: 0;
   }
 }
+
+.hide-element{
+  display: none;
+}
