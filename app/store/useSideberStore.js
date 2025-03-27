@@ -5,7 +5,7 @@ export const useSideberStore = create((set) => ({
   indicator: "CDI",
   timerange: "2024",
   month: "December",
-  district: "",
+  district: "MASAKA",
   districtOne: "MASAKA",
   districtTwo: "MASAKA",
   timerangeOne: "",
@@ -13,8 +13,13 @@ export const useSideberStore = create((set) => ({
   monthOne: "",
   monthTwo: "",
   filterBylegend: [],
-  sliderYear:"2022",
-  tabs:"map-view",
+  sliderYear: "2022",
+  tabs: "map-view",
+  endYear: 2024,
+  startYear: 2020,
+  setEndYear: (newEndYear) => set((state) => ({ endYear: newEndYear })),
+  setStartYear: (newStartYear) => set((state) => ({ startYear: newStartYear })),
+
   setFilterBylegend: (newFilterBylegend) =>
     set((state) => ({ filterBylegend: newFilterBylegend })),
   setMonthTwo: (newMonthTwo) => set((state) => ({ monthTwo: newMonthTwo })),
@@ -32,6 +37,7 @@ export const useSideberStore = create((set) => ({
   setTimerange: (newTimerange) => set((state) => ({ timerange: newTimerange })),
   setMonth: (newMonth) => set((state) => ({ month: newMonth })),
   setDistrict: (newDistrict) => set((state) => ({ district: newDistrict })),
-  setSliderYear: (newsliderYear) => set((state) => ({ sliderYear: newsliderYear })),
+  setSliderYear: (newsliderYear) =>
+    set((state) => ({ sliderYear: newsliderYear })),
   setTabs: (tabss) => set((state) => ({ tabs: tabss })),
 }));

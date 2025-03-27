@@ -10,13 +10,17 @@ import {
 import axios from "axios";
 import ImageStatic from "../../components/ImageStatic";
 import StaticModal from "../../components/ui/statics/StaticModal";
+import { useSideberStore } from "../../store/useSideberStore";
 
 function Page() {
+  const { endYear, setEndYear, setStartYear, startYear } = useSideberStore(
+    (state) => state
+  );
   const [selectedIndicator, setSelectedIndicator] = useState("CDI");
   const [Data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [endYear, setEndYear] = useState(new Date().getFullYear() - 1);
-  const [startYear, setStartYear] = useState(endYear - 4);
+  // const [endYear, setEndYear] = useState(new Date().getFullYear() - 1);
+  // const [startYear, setStartYear] = useState(endYear - 4);
 
   const contentRef = useRef(null);
 
@@ -93,44 +97,56 @@ function Page() {
               <option value="VDI">NDVI Anomaly</option>
               <option value="Rainfall">Rainfall</option>
             </select>
-           
-            <StaticModal data={Data} startYear={startYear} endYear={endYear} selectedIndicator={selectedIndicator} />
+
+            <StaticModal
+              data={Data}
+              startYear={startYear}
+              endYear={endYear}
+              selectedIndicator={selectedIndicator}
+            />
           </div>
         </div>
 
         <div className="mb-2 flex items-center mt-[-70px]">
           <h2 className="text-xl font-semibold mb-4 pr-2">Filter Year Range</h2>
           <div className="flex space-x-4 items-center">
-            <select
-              name="start"
-              value={startYear}
-              onChange={(e) => setStartYear(e.target.value)}
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
-            >
-              {showYears()?.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-            <select
-              name="end"
-              value={endYear}
-              onChange={(e) => setEndYear(e.target.value)}
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
-            >
-              {showYears()?.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
+            <div>
+              <select
+                // name="start"
+                id="start"
+                value={startYear}
+                onChange={(e) => setStartYear(e.target.value)}
+                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
+              >
+                {showYears()?.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <select
+                // name="end"
+                id="end"
+                value={endYear}
+                onChange={(e) => setEndYear(e.target.value)}
+                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
+              >
+                {showYears()?.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
         <span className="text-sm text-gray-500 mt-[-60px]">
-        For a one-year range, select the same year for both fields (e.g., 2020 – 2020).
-For a five-year range, select the first and last year, ensuring both are inclusive (e.g., 2020 – 2024)
-            </span>
+          For a one-year range, select the same year for both fields (e.g., 2020
+          – 2020). For a five-year range, select the first and last year,
+          ensuring both are inclusive (e.g., 2020 – 2024)
+        </span>
         {!loading ? (
           <>
             {Data?.length > 0 ? (
