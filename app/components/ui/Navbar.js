@@ -8,6 +8,7 @@ function Navbar() {
     { path: "/dashboard", label: "Dashboard" },
     { path: "/compare-districts", label: "Comparison" },
     { path: "/static-maps", label: "Maps" },
+    { path: "/help", label: "Help Center" },
   ];
 
   return (
