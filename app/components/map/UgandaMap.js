@@ -7,7 +7,7 @@ import { v4 } from "uuid";
 import { capitalize } from "../../utils/selectYear";
 import { usePathname } from "next/navigation";
 import { geoData } from "../../utils/geodata"; // Adjust the path to your GeoJSON file
-import { geoRiver } from "../../utils/rainfalldata"; // Adjust the path to your GeoJSON file
+import { waterAreas } from "../../utils/waterAreas"; // Adjust the path to your GeoJSON file
 const UgandaMap = ({
   indicator,
   timerange,
@@ -38,7 +38,8 @@ const UgandaMap = ({
 
     baseMapsRef.current = {
       OpenStreetMap: L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
       ),
     };
 
@@ -76,15 +77,6 @@ const UgandaMap = ({
         }
       },
     }).addTo(mapRef.current);
-
-    riverLayer.current = L.geoJSON(geoRiver, {
-      style: {
-        // color: "gray",
-        weight: 1,
-        fill: false,
-      },
-    }).addTo(mapRef.current);
-    riverLayer.current.bringToFront();
 
     // Function to toggle label visibility based on zoom level
     const updateLabelVisibility = () => {
@@ -304,14 +296,30 @@ const UgandaMap = ({
       riverLayer.current = null;
     }
 
-    riverLayer.current = L.geoJSON(geoRiver, {
+    riverLayer.current = L.geoJSON(waterAreas, {
       style: {
-        // color: "gray",
-        weight: 1,
-        fill: false,
+        color: "d2efff",
+        weight: 0.1,
+        // fill: false,
+        fillColor: "#d2efff",
+        fillOpacity: 1.0,
+      },
+      onEachFeature: function (feature, layer) {
+        const waterAreaName = feature.properties?.NAME || "Unknown";
+
+        if (waterAreaName !== "Unknown") {
+          layer
+            .bindTooltip(waterAreaName, {
+              permanent: true,
+              direction: "center",
+              className: "waterAreas-label",
+            })
+            // .openTooltip();
+          layer.bringToFront();
+        }
       },
     }).addTo(mapRef.current);
-    riverLayer.current.bringToFront();
+    riverLayer.current.bringToBack();
   }, [timerange, month, indicator, Hreload, district, geoData]);
 
   useEffect(() => {
