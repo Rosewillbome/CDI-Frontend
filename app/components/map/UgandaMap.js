@@ -6,7 +6,8 @@ import axios from "axios";
 import { v4 } from "uuid";
 import { capitalize } from "../../utils/selectYear";
 import { usePathname } from "next/navigation";
-
+import { geoData } from "../../utils/geodata"; // Adjust the path to your GeoJSON file
+import { geoRiver } from "../../utils/rainfalldata"; // Adjust the path to your GeoJSON file
 const UgandaMap = ({
   indicator,
   timerange,
@@ -18,8 +19,7 @@ const UgandaMap = ({
   district,
 }) => {
   const pathname = usePathname();
-  const [geoData, setGeoData] = useState(null);
-  const [geoRiver, setGeoRiver] = useState(null);
+  // const [geoRiver, setGeoRiver] = useState(null);
   const [Hreload, setHreload] = useState("");
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
@@ -30,34 +30,10 @@ const UgandaMap = ({
   const boundaryLayer = useRef(null);
   const riverLayer = useRef(null);
   const geoServerUrl = `${process.env.NEXT_PUBLIC_WSM}`;
-  console.log("pathname", pathname);
-  // Fetch GeoJSON data
-  useEffect(() => {
-    const fetchBasemap = async () => {
-      try {
-        const response = await axios.get("/api/geojson");
-        setGeoData(JSON.parse(response?.data?.geojsondata));
-      } catch (error) {
-        console.error("Error fetching GeoJSON:", error);
-      }
-    };
-
-    const fetchRivermap = async () => {
-      try {
-        const response = await axios.get("/api/river");
-        setGeoRiver(JSON.parse(response?.data?.geojsondata));
-      } catch (error) {
-        console.error("Error fetching GeoJSON:", error);
-      }
-    };
-
-    fetchRivermap();
-    fetchBasemap();
-  }, []);
 
   // Initialize the map when geoData is available
   useEffect(() => {
-    if (typeof window === "undefined" || !geoData || mapRef.current) return;
+    if (typeof window === "undefined" || mapRef.current) return;
     //|| mapRef.current
 
     baseMapsRef.current = {

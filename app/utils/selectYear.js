@@ -290,3 +290,8 @@ export const handleDownload = (Data, month, endYear) => {
   };
   fts()
 };
+
+export const getDistrictsFromGeoson = (data) => {
+  const propertyNames = data.features.map(feature => feature.properties?.name);
+  return propertyNames;
+};
