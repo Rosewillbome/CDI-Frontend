@@ -5,7 +5,7 @@ export const useSideberStore = create((set) => ({
   indicator: "CDI",
   timerange: "2024",
   month: "December",
-  district: "MASAKA",
+  district: "APAC",
   districtOne: "MASAKA",
   districtTwo: "MASAKA",
   timerangeOne: "",

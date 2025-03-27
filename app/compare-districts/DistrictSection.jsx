@@ -2,10 +2,11 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Info } from "lucide-react";
-import { showYears, months, districts } from "../utils/selectYear";
+import { showYears, months, districts, getDistrictsFromGeoson } from "../utils/selectYear";
 import Section from "../components/ui/Section";
 import { useSideberStore } from "../store/useSideberStore";
 import dynamic from "next/dynamic";
+import { geoData } from "../utils/geodata";
 const UgandaMap = dynamic(() => import("../components/map/UgandaMap"), {
   loading: () => <p>Loading Map...</p>,
   ssr: false,
@@ -105,8 +106,8 @@ function DistrictSection() {
             onChange={(e) => setDistrictOne(e.target.value)}
             className="p-2 border rounded-md bg-white focus:ring-2 focus:ring-[#308DE0] focus:border-[#308DE0] transition-colors"
           >
-            <option className="bg-[#2c5d8a]">All</option>
-            {districts?.map((district) => (
+            {/* <option className="bg-[#2c5d8a]">All</option> */}
+            {getDistrictsFromGeoson(geoData)?.map((district) => (
               <option key={district} value={district}>
                 {district}
               </option>
