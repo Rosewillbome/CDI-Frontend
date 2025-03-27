@@ -73,7 +73,7 @@ export default function Home() {
           </div>
         </div>
       )}
-    
+
       <div ref={reportRef} className="min-h-screen bg-white">
         {/* Header & Download Button */}
         <div className="mt-2 mb-2 flex items-center justify-center">
@@ -111,7 +111,8 @@ export default function Home() {
           {/* Moving Text */}
           <div className="mt-2 overflow-hidden whitespace-nowrap">
             <p className="inline-block animate-marquee text-lg text-gray-600">
-              Select on Year and month to see the respective map and select district to see the time series visualization.
+              Select on Year and month to see the respective map and select
+              district to see the time series visualization.
             </p>
           </div>
         </div>
@@ -129,14 +130,31 @@ export default function Home() {
 
       {/*  animation */}
       <style jsx>{`
-        @keyframes marquee {
-          0% { transform: translateX(100%); }
-          100% { transform: translateX(-100%); }
+        @keyframes delayed-marquee {
+          0%,
+          14.2857% {
+            /* 5s delay / 35s half-cycle = ~14.2857% */
+            transform: translateX(0);
+            padding-left: 0;
+            left: 100%;
+            position: relative;
+          }
+          14.2858% {
+            left: auto;
+            position: static;
+            padding-left: 100%;
+          }
+          100% {
+            transform: translateX(-100%);
+            padding-left: 100%;
+          }
         }
+
         .animate-marquee {
           display: inline-block;
-          padding-left: 100%;
-          animation: marquee 20s linear infinite;
+          white-space: nowrap;
+          animation: delayed-marquee 70s linear infinite;
+          animation-delay: -10s; /* Start immediately but stay centered for first 5s */
         }
       `}</style>
     </>

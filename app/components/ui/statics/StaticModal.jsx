@@ -12,12 +12,13 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   height: "90%",
-  width: "70%",
+  width: "90%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
   overflowY: "scroll",
+  overflowX: "scroll",
 };
 
 function StaticModal({ data, endYear, startYear, selectedIndicator }) {
