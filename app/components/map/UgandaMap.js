@@ -54,7 +54,7 @@ const UgandaMap = ({
     districtLayerRef.current = L.geoJSON(geoData, {
       style: {
         color: "gray",
-        weight: 1,
+        weight: 0.3,
         fill: false,
       },
       onEachFeature: function (feature, layer) {
