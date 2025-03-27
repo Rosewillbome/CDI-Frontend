@@ -104,6 +104,16 @@ body {
   text-align: center;
 }
 
+.leaflet-tooltip.waterAreas-label {
+  font-size: 8px;
+  font-weight: bold;
+  color: #A8D4EB;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  text-align: center;
+}
 .custom-control {
   display: none !important;
 }
