@@ -240,7 +240,7 @@ const TimeSeriesChart = ({
       },
       series: [
         {
-          name: `${indicator?.toUpperCase()} Uganda`,
+          name: `Uganda ${indicator?.toUpperCase()}`,
           data:
             // filteredLegend?.length > 0
             //   ? filteredLegend
