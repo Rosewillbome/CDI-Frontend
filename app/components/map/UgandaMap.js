@@ -305,16 +305,15 @@ const UgandaMap = ({
         fillOpacity: 1.0,
       },
       onEachFeature: function (feature, layer) {
-        const waterAreaName = feature.properties?.NAME || "Unknown";
+        const waterAreaName = feature.properties?.NAME;
 
-        if (waterAreaName !== "Unknown") {
-          layer
-            .bindTooltip(waterAreaName, {
-              permanent: true,
-              direction: "center",
-              className: "waterAreas-label",
-            })
-            // .openTooltip();
+        if (waterAreaName) {
+          layer.bindTooltip(waterAreaName, {
+            permanent: true,
+            direction: "center",
+            className: "waterAreas-label",
+          });
+          // .openTooltip();
           layer.bringToFront();
         }
       },
