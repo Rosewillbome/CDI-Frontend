@@ -128,16 +128,15 @@ export default function Home() {
         </div>
       </div>
 
-      {/*  animation */}
+      {/* Animation */}
       <style jsx>{`
         @keyframes delayed-marquee {
           0%,
           14.2857% {
-            /* 5s delay / 35s half-cycle = ~14.2857% */
-            transform: translateX(0);
-            padding-left: 0;
-            left: 100%;
+            transform: translateX(-50%);
+            left: 50%;
             position: relative;
+            padding-left: 0;
           }
           14.2858% {
             left: auto;
@@ -154,7 +153,6 @@ export default function Home() {
           display: inline-block;
           white-space: nowrap;
           animation: delayed-marquee 70s linear infinite;
-          animation-delay: -10s; /* Start immediately but stay centered for first 5s */
         }
       `}</style>
     </>

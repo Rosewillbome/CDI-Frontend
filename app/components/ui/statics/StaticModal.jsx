@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
-
-import { FileText } from "lucide-react";
+import IconButton from "@mui/material/IconButton";
+import { Download, ChevronDown, X } from "lucide-react"; 
 import DownloadStaticFiles from "./DownloadStaticFiles";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -23,28 +25,66 @@ const style = {
 
 function StaticModal({ data, endYear, startYear, selectedIndicator }) {
   const [open, setOpen] = React.useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [downloadOption, setDownloadOption] = useState("filtered");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const menuOpen = Boolean(anchorEl);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDownloadClick = (option) => {
+    setDownloadOption(option);
+    handleMenuClose();
+    handleOpen();
+  };
+
   return (
     <>
-      <div className="flex items-center justify-center">
-        <select
-          value={selectedOption}
-          onChange={(e) => setSelectedOption(e.target.value)}
-          className="p-2 border rounded-md bg-white focus:ring-2 focus:ring-[#308DE0] focus:border-[#308DE0] transition-colors"
-        >
-          <option className="">download</option>
-          <option value="selected_option" className="">
-            filtered option
-          </option>
-          <option value="all_data" className="">
-            all data
-          </option>
-        </select>
-        <FileText className="h-5 w-5 text-[#308DE0] ml-2" onClick={handleOpen} />
-        <div className="absolute inset-0 bg-[#308DE0] opacity-20 blur-lg rounded-full"></div>
+      <div className="flex items-center w-full gap-2">
+        <div>
+          <Button
+            variant="contained"
+            startIcon={<Download size={16} />}
+            endIcon={<ChevronDown size={16} />}
+            onClick={handleMenuClick}
+            sx={{
+              backgroundColor: "#308DE0",
+              "&:hover": { backgroundColor: "#2a7ec9" },
+              py: 1.5,
+              minWidth: "200px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Download Data
+          </Button>
+          <Menu
+            anchorEl={anchorEl}
+            open={menuOpen}
+            onClose={handleMenuClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            <MenuItem onClick={() => handleDownloadClick("filtered")}>
+              Download Filtered Data
+            </MenuItem>
+            <MenuItem onClick={() => handleDownloadClick("all")}>
+              Download All Data
+            </MenuItem>
+          </Menu>
+        </div>
+
+      
       </div>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -52,12 +92,24 @@ function StaticModal({ data, endYear, startYear, selectedIndicator }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <X className="text-red-600" size={20} />
+          </IconButton>
           <DownloadStaticFiles
             data={data}
             startYear={startYear}
             endYear={endYear}
             selectedIndicator={selectedIndicator}
-            selectedOption={selectedOption}
+            selectedOption={downloadOption === "filtered" ? "selected_option" : "all_data"}
           />
         </Box>
       </Modal>
