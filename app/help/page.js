@@ -17,7 +17,7 @@ const FAQPage = () => {
   // Chatbot knowledge base with enhanced responses
   const chatbotKnowledge = {
     greetings: [
-      "Hello! I'm your virtual assistant but still under development. How can I help you though?😊",
+      "Hello! I'm your virtual assistant under development... How can I help you though?😊",
       "Welcome to the Drought Monitoring System support. What would you like to know?",
       "Hi there! I can answer questions about drought data, alerts, and the monitoring system."
     ],
