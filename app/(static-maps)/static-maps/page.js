@@ -232,7 +232,7 @@ function Page() {
                                   <Download className="h-4 w-4" />
                                 </button>
                               </div>
-                              <div className="relative aspect-w-4 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
+                              <div className="relative aspect-w-6 aspect-h-3 bg-gray-100 rounded-lg h-[300px]">
                                 <ImageStatic
                                   Data={Data}
                                   month={month[0]}
