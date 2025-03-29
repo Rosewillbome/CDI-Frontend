@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
+// import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
-import IconButton from "@mui/material/IconButton";
-import { Download, ChevronDown, X } from "lucide-react"; 
+import { Menu } from "@headlessui/react";
+import { FileText, X } from "lucide-react";
+import { Download, Loader } from "lucide-react";
 import DownloadStaticFiles from "./DownloadStaticFiles";
+import { IconButton } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -25,64 +27,55 @@ const style = {
 
 function StaticModal({ data, endYear, startYear, selectedIndicator }) {
   const [open, setOpen] = React.useState(false);
-  const [downloadOption, setDownloadOption] = useState("filtered");
+  // const [downloadOption, setDownloadOption] = useState("filtered");
+  const [selectedOption, setSelectedOption] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleOpenModal = (e, slctd) => {
+    e.preventDefault();
+    setSelectedOption(slctd);
+    setOpen(true);
   };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleDownloadClick = (option) => {
-    setDownloadOption(option);
-    handleMenuClose();
-    handleOpen();
-  };
-
   return (
     <>
-      <div className="flex items-center w-full gap-2">
-        <div>
-          <Button
-            variant="contained"
-            startIcon={<Download size={16} />}
-            endIcon={<ChevronDown size={16} />}
-            onClick={handleMenuClick}
-            sx={{
-              backgroundColor: "#308DE0",
-              "&:hover": { backgroundColor: "#2a7ec9" },
-              py: 1.5,
-              minWidth: "200px",
-              whiteSpace: "nowrap",
-            }}
-          >
-            Download Data
-          </Button>
-          <Menu
-            anchorEl={anchorEl}
-            open={menuOpen}
-            onClose={handleMenuClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-          >
-            <MenuItem onClick={() => handleDownloadClick("filtered")}>
-              Download Filtered Data
-            </MenuItem>
-            <MenuItem onClick={() => handleDownloadClick("all")}>
-              Download All Data
-            </MenuItem>
-          </Menu>
-        </div>
-
-      
+      <div className="flex items-center justify-center">
+        <Menu as="div" className={`relative`}>
+          <Menu.Button className="p-0 rounded-lg text-blue-500 hover:bg-gray-100">
+            {/* <FiDownload size={24} /> */}
+            <div className="flex items-center gap-2 p-2 bg-[#308DE0] text-white rounded-lg">
+              <Download size={18} /> <span>Download Report</span>
+            </div>
+          </Menu.Button>
+          <Menu.Items className="absolute right-0 m-2 w-40 bg-white border rounded-lg shadow-lg z-50">
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  onClick={(e) => handleOpenModal(e, "selected_option")}
+                  className={`w-full text-left px-1 text-sm ${
+                    active ? "bg-gray-200" : ""
+                  }`}
+                >
+                  Current Selection
+                </button>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  onClick={(e) => handleOpenModal(e, "all_data")}
+                  className={`w-full text-left px-1 text-sm ${
+                    active ? "bg-gray-200" : ""
+                  }`}
+                >
+                  All Maps
+                </button>
+              )}
+            </Menu.Item>
+          </Menu.Items>
+        </Menu>
       </div>
 
       <Modal
@@ -109,7 +102,8 @@ function StaticModal({ data, endYear, startYear, selectedIndicator }) {
             startYear={startYear}
             endYear={endYear}
             selectedIndicator={selectedIndicator}
-            selectedOption={downloadOption === "filtered" ? "selected_option" : "all_data"}
+            // selectedOption={downloadOption === "filtered" ? "selected_option" : "all_data"}
+            selectedOption={selectedOption}
           />
         </Box>
       </Modal>

@@ -6,8 +6,10 @@ import {
   showYears,
   months,
   returnYears,
+  refactorStaticMapData,
 } from "../../../utils/selectYear";
 import ReactPrint from "../../ui/ReactPrint";
+import TableStatic from "./TableStatic";
 
 function DownloadStaticFiles({
   data,
@@ -22,6 +24,7 @@ function DownloadStaticFiles({
   const contentRef = useRef(null);
   const imgRefs = useRef(null);
 
+  const { yrs, groupedData } = refactorStaticMapData(data, startYear, endYear,selectedOption);
   // Run only once after the component mounts // Run only once after the component mounts
   return (
     <>
@@ -69,18 +72,14 @@ function DownloadStaticFiles({
             ))}
           </div>
         ) : (
-          <div
-            id="maps-container"
-            ref={contentRef}
-            className="w-full flex items-start mt-6 justify-between"
-          >
+          <div id="maps-container" ref={contentRef} className="w-full ">
             {/* <h1 className="text-3xl font-bold text-[#4A8BD0] text-center w-full">
               {selectedIndicator?.trim()?.toLowerCase() === "vdi"
                 ? "NDVI Anomaly"
                 : selectedIndicator}{" "}
               Maps
             </h1> */}
-            {selectedOption === "selected_option"
+            {/* {selectedOption === "selected_option"
               ? getYears?.map((year, index) => (
                   <div
                     key={year}
@@ -176,7 +175,8 @@ function DownloadStaticFiles({
                       ))}
                     </div>
                   </div>
-                ))}
+                ))} */}
+            <TableStatic years ={yrs} groupedData={groupedData} selectedOption={selectedOption}/>
           </div>
         )}
       </div>

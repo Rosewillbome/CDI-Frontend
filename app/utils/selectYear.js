@@ -232,21 +232,13 @@ export const filter_static_data = (data, month, year) => {
   // );
   const static_data = data?.filter(
     (static_dataa) =>
-      static_dataa[0]?.toString()?.trim()?.toLowerCase() === month?.toString()?.trim()?.toLowerCase() &&
+      static_dataa[0]?.toString()?.trim()?.toLowerCase() ===
+        month?.toString()?.trim()?.toLowerCase() &&
       static_dataa[1]?.toString()?.trim() === year?.toString().trim()
   );
   // console.log("static_data", static_data[0]?.[4]);
   return static_data;
 };
-
-// export const getYearsList = () => {
-//   let startYear = 2001;
-//   const currentYear = new Date().getFullYear();
-//   return Array.from(
-//     { length: currentYear - startYear + 1 },
-//     (_, i) => startYear + i
-//   );
-// };
 
 export const returnYears = (startYear, endYear) => {
   let data = [];
@@ -288,10 +280,56 @@ export const handleDownload = (Data, month, endYear) => {
       console.error("Download failed:", error);
     }
   };
-  fts()
+  fts();
 };
 
 export const getDistrictsFromGeoson = (data) => {
-  const propertyNames = data.features.map(feature => feature.properties?.name);
+  const propertyNames = data.features.map(
+    (feature) => feature.properties?.name
+  );
   return propertyNames;
+};
+
+export const refactorStaticMapData = (
+  data,
+  startYear,
+  endYear,
+  selectedOption
+) => {
+  let getFilteredData;
+  if (selectedOption?.trim() === "selected_option") {
+    let getYears = returnYears(startYear, endYear);
+    getFilteredData = data?.filter((static_dataa) =>
+      getYears?.includes(parseInt(static_dataa[1]))
+    );
+  } else {
+    getFilteredData = data;
+  }
+
+  let yrs = [];
+  getFilteredData?.map((item) => {
+    if (!yrs.includes(parseInt(item[1]))) {
+      yrs.push(parseInt(item[1]));
+    }
+  });
+
+  function groupByMonth(data) {
+    return data.reduce((acc, entry) => {
+      const month = entry[0].trim().toLowerCase();
+      const existingGroup = acc.find(
+        (group) => group[0][0].trim().toLowerCase() === month
+      );
+
+      if (existingGroup) {
+        existingGroup.push(entry);
+      } else {
+        acc.push([entry]);
+      }
+
+      return acc;
+    }, []);
+  }
+  const groupedData = groupByMonth(getFilteredData);
+  console.log("yearListFromData", groupByMonth(getFilteredData));
+  return { yrs, groupedData };
 };
