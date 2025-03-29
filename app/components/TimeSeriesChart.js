@@ -55,7 +55,8 @@ const TimeSeriesChart = ({
       setHreload(v4());
       return;
     }
-    let filtered = [];
+    let filtered = data;
+    // setFiltered(data);
 
     if (timerange?.trim()?.length !== 0) {
       if (filtered?.length > 0) {
@@ -63,11 +64,13 @@ const TimeSeriesChart = ({
           (month_data) => filterByYear(month_data) === parseInt(timerange)
         );
         filtered = filterbypcu;
+        // setFiltered(filterbypcu);
       } else {
         const filterbypcu = data?.filter(
           (month_data) => filterByYear(month_data) === parseInt(timerange)
         );
         filtered = filterbypcu;
+        // setFiltered(filterbypcu);
       }
     }
 
@@ -90,10 +93,14 @@ const TimeSeriesChart = ({
     if (filterBylegend?.length > 0) {
       if (filtered?.length > 0) {
         const filteredbylegend = filterDataByLegend(filterBylegend, filtered);
+        console.log("filteredbylegend", filteredbylegend);
         filtered = filteredbylegend;
+        // setFiltered(filteredbylegend);
       } else {
         const filteredbylegend_two = filterDataByLegend(filterBylegend, data);
+        console.log("filteredbylegend_two", filteredbylegend_two);
         filtered = filteredbylegend_two;
+        // setFiltered(filteredbylegend_two);
       }
     }
     setFiltered(filtered);
@@ -137,7 +144,6 @@ const TimeSeriesChart = ({
         },
         type: "datetime",
         opposite: false,
-        
       },
       yAxis: {
         title: {
@@ -248,7 +254,8 @@ const TimeSeriesChart = ({
             //   ? filtered
             //   : data,
 
-            filtered?.length > 0 ? filtered : data,
+            // filtered?.length > 0 ? filtered : data,
+            filtered,
           color: "#2f7ed8",
           lineWidth: 2.5,
           marker: { enabled: false, radius: 4 },
