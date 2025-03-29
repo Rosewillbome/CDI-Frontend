@@ -10,7 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useSideberStore } from "../store/useSideberStore";
-import { showYears, months, districts, getDistrictsFromGeoson } from "../utils/selectYear";
+import { showYears, months, districts, getDistrictsFromGeoson, capitalize } from "../utils/selectYear";
 import { geoData } from "../utils/geodata";
 
 const Sidebar = () => {
@@ -175,7 +175,7 @@ const Sidebar = () => {
                         <label className="text-sm font-medium">District</label>
                       </div>
                       <select
-                        value={district}
+                        value={capitalize(district?.toLowerCase())}
                         onChange={(e) => setDistrict(e.target.value)}
                         className="w-full px-3 py-2 border border-white rounded-lg text-gray-700"
                       >
