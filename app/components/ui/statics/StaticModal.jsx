@@ -3,8 +3,9 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-
+import { Menu } from "@headlessui/react";
 import { FileText } from "lucide-react";
+import { Download, Loader } from "lucide-react";
 import DownloadStaticFiles from "./DownloadStaticFiles";
 const style = {
   position: "absolute",
@@ -26,24 +27,48 @@ function StaticModal({ data, endYear, startYear, selectedIndicator }) {
   const [selectedOption, setSelectedOption] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleOpenModal = (e, slctd) => {
+    e.preventDefault();
+    setSelectedOption(slctd);
+    setOpen(true);
+  };
   return (
     <>
       <div className="flex items-center justify-center">
-        <select
-          value={selectedOption}
-          onChange={(e) => setSelectedOption(e.target.value)}
-          className="p-2 border rounded-md bg-white focus:ring-2 focus:ring-[#308DE0] focus:border-[#308DE0] transition-colors"
-        >
-          <option className="">download</option>
-          <option value="selected_option" className="">
-            filtered option
-          </option>
-          <option value="all_data" className="">
-            all data
-          </option>
-        </select>
-        <FileText className="h-5 w-5 text-[#308DE0] ml-2" onClick={handleOpen} />
-        <div className="absolute inset-0 bg-[#308DE0] opacity-20 blur-lg rounded-full"></div>
+        <Menu as="div" className={`relative`}>
+          <Menu.Button className="p-0 rounded-lg text-blue-500 hover:bg-gray-100">
+            {/* <FiDownload size={24} /> */}
+            <div className="flex items-center gap-2 p-2 bg-[#308DE0] text-white rounded-lg">
+              <Download size={18} /> <span>Download Report</span>
+            </div>
+          </Menu.Button>
+          <Menu.Items className="absolute right-0 m-2 w-40 bg-white border rounded-lg shadow-lg z-50">
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  onClick={(e) => handleOpenModal(e, "selected_option")}
+                  className={`w-full text-left px-1 text-sm ${
+                    active ? "bg-gray-200" : ""
+                  }`}
+                >
+                  Current Selection
+                </button>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  onClick={(e) => handleOpenModal(e, "all_data")}
+                  className={`w-full text-left px-1 text-sm ${
+                    active ? "bg-gray-200" : ""
+                  }`}
+                >
+                  All Maps
+                </button>
+              )}
+            </Menu.Item>
+          </Menu.Items>
+        </Menu>
       </div>
       <Modal
         open={open}

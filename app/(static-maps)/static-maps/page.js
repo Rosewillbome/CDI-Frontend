@@ -79,15 +79,54 @@ function Page() {
         </div>
       )}
 
-      <div className="w-full px-4 py-8 ">
-        <div className="flex justify-between items-center mb-8 mt-[-25px]">
-          <h1 className="text-3xl font-bold text-[#4A8BD0] text-center w-full">
-            {selectedIndicator?.trim()?.toLowerCase() === "vdi"
-              ? "NDVI Anomaly"
-              : selectedIndicator}{" "}
-            Maps
-          </h1>
-          <div className="flex space-x-4">
+      <div className="w-full px-4 py-3 ">
+        <div className="w-full flex items-center mb-4 justify-evenly pb-4">
+          <div className=" flex items-center w-full ">
+            <h2 className="text-xl font-semibold mb-4 pr-2">
+              Filter Year Range
+            </h2>
+            <div className="flex space-x-4 items-center">
+              <div>
+                <select
+                  // name="start"
+                  id="start"
+                  value={startYear}
+                  onChange={(e) => setStartYear(e.target.value)}
+                  className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
+                >
+                  {showYears()?.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  // name="end"
+                  id="end"
+                  value={endYear}
+                  onChange={(e) => setEndYear(e.target.value)}
+                  className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
+                >
+                  {showYears()?.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-between items-center w-full ">
+            <h1 className="text-3xl font-bold text-[#4A8BD0] text-center w-full">
+              {selectedIndicator?.trim()?.toLowerCase() === "vdi"
+                ? "NDVI Anomaly"
+                : selectedIndicator}{" "}
+              Maps
+            </h1>
+          </div>
+          <div className="flex items-start justify-between w-full">
             <select
               value={selectedIndicator}
               onChange={(e) => setSelectedIndicator(e.target.value)}
@@ -104,42 +143,6 @@ function Page() {
               endYear={endYear}
               selectedIndicator={selectedIndicator}
             />
-          </div>
-        </div>
-
-        <div className="mb-2 flex items-center mt-[-70px]">
-          <h2 className="text-xl font-semibold mb-4 pr-2">Filter Year Range</h2>
-          <div className="flex space-x-4 items-center">
-            <div>
-              <select
-                // name="start"
-                id="start"
-                value={startYear}
-                onChange={(e) => setStartYear(e.target.value)}
-                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
-              >
-                {showYears()?.map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <select
-                // name="end"
-                id="end"
-                value={endYear}
-                onChange={(e) => setEndYear(e.target.value)}
-                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#4A8BD0]"
-              >
-                {showYears()?.map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
-            </div>
           </div>
         </div>
         <span className="text-sm text-gray-500 mt-[-60px]">
