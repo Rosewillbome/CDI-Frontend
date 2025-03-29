@@ -162,6 +162,32 @@ export default function Home() {
               </div>
 
               {/* Legend */}
+              <div className="absolute bottom-4 right-4 z-50 bg-white p-4 rounded-lg shadow-lg shadow-gray-100 border border-gray-200">
+                <div className="flex flex-col space-y-2">
+                  <h3 className="font-bold text-sm text-gray-700 mb-1">Legend</h3>
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 bg-[#940905] mr-2"></div>
+                    <span className="text-xs">Extreme </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 bg-[#D03A27] mr-2"></div>
+                    <span className="text-xs">Severe </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 bg-[#E6987B] mr-2"></div>
+                    <span className="text-xs">Moderate</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 bg-[#FFFFBE] mr-2"></div>
+                    <span className="text-xs">Mild </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 bg-[#D2FBD2] mr-2 border border-gray-300"></div>
+                    <span className="text-xs">Normal</span>
+                  </div>
+                 
+                </div>
+              </div>
             </div>
 
             <DashboardSlider />
