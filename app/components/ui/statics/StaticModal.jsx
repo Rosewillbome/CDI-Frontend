@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
+// import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
 import { Menu } from "@headlessui/react";
-import { FileText } from "lucide-react";
+import { FileText, X } from "lucide-react";
 import { Download, Loader } from "lucide-react";
 import DownloadStaticFiles from "./DownloadStaticFiles";
+import { IconButton } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -26,7 +27,8 @@ const style = {
 
 function StaticModal({ data, endYear, startYear, selectedIndicator }) {
   const [open, setOpen] = React.useState(false);
-  const [downloadOption, setDownloadOption] = useState("filtered");
+  // const [downloadOption, setDownloadOption] = useState("filtered");
+  const [selectedOption, setSelectedOption] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
 
@@ -100,7 +102,8 @@ function StaticModal({ data, endYear, startYear, selectedIndicator }) {
             startYear={startYear}
             endYear={endYear}
             selectedIndicator={selectedIndicator}
-            selectedOption={downloadOption === "filtered" ? "selected_option" : "all_data"}
+            // selectedOption={downloadOption === "filtered" ? "selected_option" : "all_data"}
+            selectedOption={selectedOption}
           />
         </Box>
       </Modal>
