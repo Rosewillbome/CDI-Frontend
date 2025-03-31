@@ -58,47 +58,95 @@ const UgandaMap = ({
         weight: 0.3,
         fill: false,
       },
-      onEachFeature: function (feature, layer) {
-        const districtName =
-          feature.properties?.DISTRICT ||
-          feature.properties?.NAME_1 ||
-          feature.properties?.name ||
-          "Unknown";
+      // onEachFeature: function (feature, layer) {
+      //   const districtName =
+      //     feature.properties?.DISTRICT ||
+      //     feature.properties?.NAME_1 ||
+      //     feature.properties?.name ||
+      //     "Unknown";
 
-        if (districtName !== "Unknown") {
-          layer
-            .bindTooltip(districtName, {
-              permanent: true,
-              direction: "center",
-              className: "district-label",
-            })
-            .openTooltip();
-          layer.bringToFront();
-        }
-      },
+      //   if (districtName !== "Unknown") {
+      //     layer
+      //       .bindTooltip(districtName, {
+      //         permanent: true,
+      //         direction: "center",
+      //         className: "district-label",
+      //       })
+      //       .openTooltip();
+      //     layer.bringToFront();
+      //   }
+      // },
     }).addTo(mapRef.current);
 
     // Function to toggle label visibility based on zoom level
     const updateLabelVisibility = () => {
-      const currentZoom = mapRef.current.getZoom();
-      const minZoomForLabels = 8; // Set the minimum zoom level for showing labels
+      function doesNameFitInLeafletBoundary(
+        geoJsonLayer,
+        name,
+        map,
+        options = {}
+      ) {
+        const {
+          fontSize = 14,
+          fontFamily = "sans-serif",
+          padding = 5,
+        } = options;
 
-      districtLayerRef.current.eachLayer((layer) => {
-        if (currentZoom >= minZoomForLabels) {
-          layer.openTooltip(); // Show tooltip
-        } else {
-          layer.closeTooltip(); // Hide tooltip
-        }
-      });
+        // 1. Get the feature's bounds
+        const bounds = geoJsonLayer.getBounds();
+
+        // 2. Convert bounds to pixel coordinates at current zoom level
+        const topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
+        const bottomRight = map.latLngToLayerPoint(bounds.getSouthEast());
+
+        // 3. Calculate available width and height in pixels
+        const availableWidth = bottomRight.x - topLeft.x;
+        const availableHeight = bottomRight.y - topLeft.y;
+
+        // 4. Create temporary canvas to measure text
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        ctx.font = `${fontSize}px ${fontFamily}`;
+
+        // 5. Measure text (more accurate than simple approximation)
+        const textWidth = ctx.measureText(name).width;
+        const textHeight = fontSize; // Approximate height
+
+        // 6. Add padding
+        const paddedWidth = textWidth + padding * 2;
+        const paddedHeight = textHeight + padding * 2;
+
+        // 7. Compare dimensions
+        return paddedWidth <= availableWidth && paddedHeight <= availableHeight;
+      }
+      districtLayerRef.current
+        .eachLayer((layer) => {
+          layer.closeTooltip();
+          let tf = doesNameFitInLeafletBoundary(
+            layer,
+            layer.feature.properties?.name,
+            mapRef.current,
+            { fontSize: 14 }
+          );
+
+          if (layer.feature.properties?.name && tf) {
+            layer
+              .bindTooltip(layer.feature.properties?.name, {
+                permanent: true,
+                direction: "center",
+                className: "district-label",
+              })
+              .openTooltip();
+            layer.bringToFront();
+          }
+        })
+        .addTo(mapRef.current);
     };
 
     // Add zoomend event listener to update label visibility
     mapRef.current.on("zoomend", updateLabelVisibility);
-
     // Initial check for label visibility
     updateLabelVisibility();
-    // mapRef.current.fitBounds(districtLayerRef.current.getBounds());
-    // districtLayerRef.current.bringToFront();
     mapRef.current.on("click", function (ev) {
       let clickedFeature = null;
       // Iterate through the district layer to find the clicked feature
