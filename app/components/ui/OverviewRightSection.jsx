@@ -153,7 +153,7 @@ function OverviewRightSection() {
                 </div>
               </div>
               <div className="mt-1 text-xs text-gray-600 pl-2 italic">
-                Districts showing improvement over time - 6 months
+                Districts showing improvement over time - 3 months
               </div>
             </div>
           </div>
