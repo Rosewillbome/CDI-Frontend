@@ -1,84 +1,77 @@
 "use client";
 import axios from "axios";
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { FiDownload } from "react-icons/fi";
 import { useSideberStore } from "../store/useSideberStore";
 
 const TableView = () => {
+  // Dummy data for table
   const [tableData, setTableData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [downloadLoading, setDownloadLoading] = useState(false);
+  const [filtable, setfilterd] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
   const { district, timerange } = useSideberStore((state) => state);
 
-  // Memoize the filtered data to avoid unnecessary recalculations
-  const filtable = useMemo(() => {
-    if (!tableData.length) return [];
-
-    let filteredData = [...tableData];
-
-    if (timerange?.trim()?.length) {
-      const getYear = (dateString) => dateString.split(" ")[1]?.toLowerCase();
-      const targetYear = timerange.toLowerCase();
-      filteredData = filteredData.filter(
-        (month_data) => getYear(month_data[2]) === targetYear
-      );
-    }
-
-    if (status?.trim()?.length && status.toLowerCase() !== "status") {
-      filteredData = filteredData.filter(
-        (month_data) => month_data[7]?.toLowerCase() === status.toLowerCase()
-      );
-    }
-
-    return filteredData;
-  }, [timerange, status, tableData]);
-
-  // Fetch data with cleanup
   useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
     const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API}data/district/table/cdi`,
-          { signal: controller.signal }
-        );
-        if (isMounted) {
-          setTableData(response?.data?.data || []);
-        }
-      } catch (error) {
-        if (isMounted && !axios.isCancel(error)) {
-          console.error("Error fetching data:", error);
-        }
-      } finally {
-        if (isMounted) setLoading(false);
-      }
+      axios
+        .get(`${process.env.NEXT_PUBLIC_API}data/district/table/cdi`)
+        .then((response) => {
+          console.log("table", response?.data?.data);
+          setTableData(response?.data?.data);
+        })
+        .catch((error) => {
+          console.error("comming error", error);
+        });
     };
-
     fetchData();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
   }, []);
 
-  // Optimized download handler with useCallback
-  const handleDownloadTableData = useCallback(async (e) => {
+  useEffect(() => {
+    setfilterd(tableData);
+
+    if (timerange?.trim()?.length !== 0) {
+      function getYear(dateString) {
+        // Split the string by spaces and get the second part (the year)
+        return dateString.split(" ")[1];
+      }
+
+      const filterbypcu = tableData?.filter(
+        (month_data) =>
+          getYear(month_data[2]?.toLowerCase()) === timerange?.toLowerCase()
+      );
+      setfilterd(filterbypcu);
+    }
+
+    if (status?.trim()?.length !== 0 && status?.toLowerCase() !== "status") {
+      const filterbypcu = tableData?.filter(
+        (month_data) => month_data[7]?.toLowerCase() === status?.toLowerCase()
+      );
+      setfilterd(filterbypcu);
+    }
+  }, [timerange, status, tableData]);
+
+  const handleDownloadTableData = async (e) => {
     e.preventDefault();
-    setDownloadLoading(true);
+    setLoading(true);
     try {
-      const requestData = {
+      let requestData;
+      let filename;
+
+      // Prepare request data for XLSX
+      requestData = {
         reportType: "xlsx",
         reportData: {
           tableView: filtable,
         },
       };
-      const filename = "CDI.xlsx";
+      filename = "CDI.xlsx";
 
+      if (!filename) {
+        throw new Error("Invalid report type selected");
+      }
+
+      // Make the POST request to the API endpoint
       const response = await fetch("/api/tableViewReport", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -88,136 +81,132 @@ const TableView = () => {
       if (!response.ok) throw new Error("Network response was not ok");
 
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      let url;
+      if (typeof window !== "undefined") {
+        url = window.URL.createObjectURL(blob);
+      }
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", filename);
+      link.setAttribute("download", filename); // Use the appropriate filename based on report type
       document.body.appendChild(link);
       link.click();
-      link.parentNode.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      link.remove();
     } catch (error) {
       console.error("Error downloading the file:", error);
     } finally {
-      setDownloadLoading(false);
+      setLoading(false);
     }
-  }, [filtable]);
-
-  // Table headers memoized to prevent unnecessary re-renders
-  const tableHeaders = useMemo(() => [
-    "District",
-    "Current CDI",
-    "Month & Year",
-    "Previous CDI",
-    "Previous Month & Year",
-    "Deviation from Previous",
-    "Deviation from Long-Term Mean",
-    "Status"
-  ], []);
+  };
 
   return (
     <div className="space-y-3 pl-7">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900">Table View</h1>
+
         <button
-          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors disabled:opacity-50"
-          onClick={handleDownloadTableData}
-          disabled={downloadLoading || !filtable.length}
+          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors"
+          onClick={(e) => handleDownloadTableData(e)}
         >
-          {downloadLoading ? "Processing please wait..." : "Download CSV"}
+          {`${loading ? "Proccessing please wait..." : `Download CSV`}`}{" "}
           <FiDownload className="ml-2" size={20} />
         </button>
       </div>
 
-      {/* Loading state */}
-      {loading && (
-        <div className="flex justify-center items-center py-10">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-          <span className="ml-3 text-gray-700">Fetching data...</span>
-        </div>
-      )}
-
       {/* Table Section */}
-      {!loading && (
-        <div className="bg-[#308DE0] rounded-sm shadow-lg overflow-hidden">
-          <div className="overflow-x-auto" style={{ maxHeight: "700px", overflowY: "auto" }}>
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-[#308DE0] sticky top-0 z-10">
-                <tr>
-                  {tableHeaders.map((header, index) => (
-                    <th
-                      key={index}
-                      className={`px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider ${
-                        index < tableHeaders.length - 1 ? "border-r border-white" : ""
-                      }`}
-                    >
-                      {header === "Status" ? (
-                        <select
-                          value={status}
-                          onChange={(e) => setStatus(e.target.value)}
-                          className="w-full px-3 py-2 border border-white rounded-lg text-gray-700 "
-                        >
-                          <option value="">Status</option>
-                          <option value="Improving">Improving</option>
-                          <option value="Normal">Normal</option>
-                          <option value="Worsening">Worsening</option>
-                        </select>
-                      ) : (
-                        header
-                      )}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
+      <div className="bg-[#308DE0] rounded-sm shadow-lg overflow-hidden">
+        <div className="overflow-x-auto" style={{ maxHeight: "700px", overflowY: "auto" }}>
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-[#308DE0] sticky top-0 z-10">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  District
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Current CDI
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Year
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Previous CDI
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Previous Year
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Deviation from Previous
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider border-r border-white">
+                  Deviation from Long-Term Mean
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="w-full px-3 py-2 border border-white rounded-lg text-gray-700"
+                  >
+                    <option className="bg-[#2c5d8a]">Status</option>
+                    <option className="bg-[#2c5d8a]">Improving</option>
+                    <option className="bg-[#2c5d8a]">Normal</option>
+                    <option className="bg-[#2c5d8a]">Worsening</option>
+                  </select>
+                </th>
+              </tr>
+            </thead>
+            {filtable?.length === 0 ? (
+              <></>
+            ) : (
               <tbody className="bg-gray-50 divide-y divide-gray-200">
-                {filtable.length ? (
-                  filtable.map((item, index) => (
+                {filtable.map((item, index) => {
+                  return (
                     <tr
                       key={index}
                       className={`hover:bg-gray-100 transition-colors ${
                         item[7] === "Worsening"
                           ? "bg-[#733635]"
                           : item[7] === "Improving"
-                          ? "bg-[#ACE1AF]"
-                          : "bg-[#D0F0C0]"
+                          ? "bg-[#ACE1AF]" //#6B8E23
+                          : "bg-[#D0F0C0]" // Default color for other cases
                       }`}
                     >
-                      {item.map((cell, cellIndex) => (
-                        <td
-                          key={cellIndex}
-                          className={`px-4 py-2 whitespace-nowrap text-sm ${
-                            cellIndex === 0
-                              ? "font-medium text-gray-900 bg-blue-50"
-                              : "text-gray-900"
-                          } ${
-                            cellIndex < item.length - 1 ? "border-r border-white" : ""
-                          } ${
-                            cellIndex === item.length - 1
-                              ? item[7] === "Worsening"
-                                ? "text-red-600 font-bold"
-                                : "text-green-600 font-bold"
-                              : ""
-                          }`}
-                        >
-                          {typeof cell === "number"
-                            ? parseFloat(cell).toFixed(2)
-                            : cell}
-                        </td>
-                      ))}
+                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 bg-blue-50 border-r border-white">
+                        {item[0]}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {parseFloat(item[1])?.toFixed(2)}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {item[2]}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {parseFloat(item[3])?.toFixed(2)}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {item[4]}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {parseFloat(item[5])?.toFixed(2)}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                        {parseFloat(item[6])?.toFixed(2)}
+                      </td>
+                      <td
+                        className={`px-4 py-2 whitespace-nowrap text-sm font-bold ${
+                          item[7] === "Worsening"
+                            ? "text-red-600"
+                            : "text-green-600"
+                        }`}
+                      >
+                        {item[7]}
+                      </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={tableHeaders.length} className="px-4 py-4 text-center text-gray-500">
-                      {tableData.length ? "No matching records found" : "No data available"}
-                    </td>
-                  </tr>
-                )}
+                  );
+                })}
               </tbody>
-            </table>
-          </div>
+            )}
+          </table>
         </div>
-      )}
+      </div>
     </div>
   );
 };
