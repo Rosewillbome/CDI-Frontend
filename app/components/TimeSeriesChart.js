@@ -14,6 +14,7 @@ import {
   TDI_legend,
   VDI_legend,
 } from "../utils/drought_levels";
+import { ToastContainer, toast } from "react-toastify";
 
 const TimeSeriesChart = ({
   indicator,
@@ -26,6 +27,9 @@ const TimeSeriesChart = ({
   const [data, setData] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [Hreload, setHreload] = useState("");
+
+  const errorAdding = () => toast.error("No data available for current filter");
+
   useEffect(() => {
     const fetchData = async () => {
       axios
@@ -65,12 +69,14 @@ const TimeSeriesChart = ({
         );
         filtered = filterbypcu;
         // setFiltered(filterbypcu);
+        filterbypcu?.length === 0 && errorAdding();
       } else {
         const filterbypcu = data?.filter(
           (month_data) => filterByYear(month_data) === parseInt(timerange)
         );
         filtered = filterbypcu;
         // setFiltered(filterbypcu);
+        filterbypcu?.length === 0 && errorAdding();
       }
     }
 
@@ -96,11 +102,13 @@ const TimeSeriesChart = ({
         console.log("filteredbylegend", filteredbylegend);
         filtered = filteredbylegend;
         // setFiltered(filteredbylegend);
+        filteredbylegend?.length === 0 && errorAdding();
       } else {
         const filteredbylegend_two = filterDataByLegend(filterBylegend, data);
         console.log("filteredbylegend_two", filteredbylegend_two);
         filtered = filteredbylegend_two;
         // setFiltered(filteredbylegend_two);
+        filteredbylegend_two?.length === 0 && errorAdding();
       }
     }
     setFiltered(filtered);
@@ -275,6 +283,7 @@ const TimeSeriesChart = ({
           boxSizing: "border-box",
         }}
       ></div>
+      <ToastContainer />
     </>
   );
 };

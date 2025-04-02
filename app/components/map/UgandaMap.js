@@ -2,12 +2,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
 import L from "leaflet";
-import axios from "axios";
 import { v4 } from "uuid";
 import { capitalize } from "../../utils/selectYear";
 import { usePathname } from "next/navigation";
 import { geoData } from "../../utils/geodata"; // Adjust the path to your GeoJSON file
 import { waterAreas } from "../../utils/waterAreas"; // Adjust the path to your GeoJSON file
+import html2canvas from "html2canvas";
+import { FiDownload } from "react-icons/fi";
+
 const UgandaMap = ({
   indicator,
   timerange,
@@ -19,7 +21,6 @@ const UgandaMap = ({
   district,
 }) => {
   const pathname = usePathname();
-  // const [geoRiver, setGeoRiver] = useState(null);
   const [Hreload, setHreload] = useState("");
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
@@ -38,7 +39,6 @@ const UgandaMap = ({
 
     baseMapsRef.current = {
       OpenStreetMap: L.tileLayer(
-        // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
       ),
     };
@@ -58,24 +58,6 @@ const UgandaMap = ({
         weight: 0.3,
         fill: false,
       },
-      // onEachFeature: function (feature, layer) {
-      //   const districtName =
-      //     feature.properties?.DISTRICT ||
-      //     feature.properties?.NAME_1 ||
-      //     feature.properties?.name ||
-      //     "Unknown";
-
-      //   if (districtName !== "Unknown") {
-      //     layer
-      //       .bindTooltip(districtName, {
-      //         permanent: true,
-      //         direction: "center",
-      //         className: "district-label",
-      //       })
-      //       .openTooltip();
-      //     layer.bringToFront();
-      //   }
-      // },
     }).addTo(mapRef.current);
 
     // Function to toggle label visibility based on zoom level
@@ -420,16 +402,49 @@ const UgandaMap = ({
     }
   }, [getTheBounds, geoData]);
 
+  const handleDownloadMap = () => {
+    if (!mapContainerRef.current) return;
+
+    // Add these options for better results
+    html2canvas(mapContainerRef.current, {
+      scale: 2, // Higher quality
+      useCORS: true, // Handle CORS if needed
+      logging: true, // Helpful for debugging
+      allowTaint: true, // If you're using third-party tiles
+    })
+      .then((canvas) => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = `map-${new Date().toISOString()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((err) => {
+        console.error("Error generating map image:", err);
+      });
+  };
+
   return (
-    <div
-      ref={mapContainerRef}
-      style={{
-        position: "relative",
-        height: "100%",
-        width: "100%",
-        background: "#f0f0f0",
-      }}
-    />
+    <>
+      <div
+        ref={mapContainerRef}
+        style={{
+          position: "relative",
+          height: "100%",
+          width: "100%",
+          background: "#f0f0f0",
+        }}
+      />
+      <div className="absolute top-4 right-4 z-[1000]">
+        <button
+          className="p-2 bg-white border hover:bg-gray-100 rounded-2xl transition-colors shadow-lg"
+          onClick={handleDownloadMap}
+        >
+          <FiDownload className="text-blue-500" size={20} />
+        </button>
+      </div>
+    </>
   );
 };
 
