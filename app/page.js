@@ -7,10 +7,11 @@ import OverviewIntro from "./components/ui/OverviewIntro";
 import OverviewRightSection from "./components/ui/OverviewRightSection";
 import { useRouter } from "next/navigation";
 import { useSideberStore } from "./store/useSideberStore";
-import { districts } from "./utils/selectYear";
+import { districts, getDistrictsFromGeoson } from "./utils/selectYear";
 import Image from "next/image";
 import DashboardSlider from "./components/ui/DashboardSlider";
 import Loader from "./components/Loader"; // Import the Loader component
+import { geoData } from "./utils/geodata";
 
 const UgandaMap = dynamic(() => import("./components/map/UgandaMap"), {
   loading: () => <p>Loading Map..</p>,
@@ -110,8 +111,7 @@ export default function Home() {
                 onChange={(e) => handleDistrictChange(e)}
                 className="appearance-none bg-white border border-[#308DE0] rounded-lg px-8 py-2 pr-10 text-sm font-semibold text-[#308DE0] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#308DE0]"
               >
-                <option value="All">All</option>
-                {districts?.map((district) => (
+                {getDistrictsFromGeoson(geoData)?.map((district) => (
                   <option key={district} value={district}>
                     {district}
                   </option>
@@ -164,7 +164,9 @@ export default function Home() {
               {/* Legend */}
               <div className="absolute bottom-4 right-4 z-50 bg-white p-4 rounded-lg shadow-lg shadow-gray-100 border border-gray-200">
                 <div className="flex flex-col space-y-2">
-                  <h3 className="font-bold text-sm text-gray-700 mb-1">Legend</h3>
+                  <h3 className="font-bold text-sm text-gray-700 mb-1">
+                    Legend
+                  </h3>
                   <div className="flex items-center">
                     <div className="w-4 h-4 bg-[#940905] mr-2"></div>
                     <span className="text-xs">Extreme </span>
@@ -185,7 +187,6 @@ export default function Home() {
                     <div className="w-4 h-4 bg-[#D2FBD2] mr-2 border border-gray-300"></div>
                     <span className="text-xs">Normal</span>
                   </div>
-                 
                 </div>
               </div>
             </div>

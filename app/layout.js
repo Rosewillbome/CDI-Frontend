@@ -2,7 +2,7 @@ import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/ui/Navbar";
 import Footer from "./components/ui/Footer";
-
+import 'react-toastify/dist/ReactToastify.css';
 const nunitoSans = Nunito_Sans({
   variable: "--font-nunito-sans",
   subsets: ["latin"],

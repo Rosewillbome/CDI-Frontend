@@ -111,7 +111,7 @@ const MapView = () => {
           ref={mapRef}
           className="relative w-full bg-white rounded-sm shadow-lg p-4"
         >
-          {!isLoading && (
+          {/* {!isLoading && (
             <div className="absolute top-4 right-4 z-[1000]">
               <button
                 className="p-2 bg-white border hover:bg-gray-100 rounded-2xl transition-colors shadow-lg"
@@ -120,7 +120,7 @@ const MapView = () => {
                 <FiDownload className="text-blue-500" size={20} />
               </button>
             </div>
-          )}
+          )} */}
 
           <UgandaMap
             indicator={indicator}
@@ -161,7 +161,7 @@ const MapView = () => {
                 </div>
               </div>
             </div>
-            <Menu
+            {/* <Menu
               as="div"
               className={`relative ${hideElement ? `hide-element` : ""}`}
             >
@@ -194,7 +194,7 @@ const MapView = () => {
                   )}
                 </Menu.Item>
               </Menu.Items>
-            </Menu>
+            </Menu> */}
           </div>
 
           {/* Time Series Chart */}
