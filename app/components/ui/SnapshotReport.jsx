@@ -184,7 +184,7 @@ function SnapshotReport() {
                 <div className="page-break" style={{ pageBreakBefore: 'always' }}></div>
                 <section className="mb-10">
                     <h3 className="text-lg font-semibold text-gray-700 mb-3 border-b pb-2">NDVI Anomaly Performance</h3>
-                    <p className="text-gray-600 mb-4">During this period the vegetation greenness across the districts is shown below. The data is derived from Modified MODIS data.</p>
+                    <p className="text-gray-600 mb-4">During this period the vegetation condition change as compared to the long-term average is shown below. The data is derived from Modified MODIS data.</p>
                     
                     <div className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
                         <div className="p-4 flex justify-center bg-gray-50">
