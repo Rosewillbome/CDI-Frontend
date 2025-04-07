@@ -44,16 +44,10 @@ function SnapshotTable({ currentData }) {
                   </td>
 
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
-                    {parseFloat(item[6])?.toFixed(2)}
+                    {parseFloat(item[5])?.toFixed(2)}
                   </td>
-                  <td
-                    className={`px-4 py-2 whitespace-nowrap text-sm font-bold ${
-                      item[7] === "Worsening"
-                        ? "text-red-600"
-                        : "text-green-600"
-                    }`}
-                  >
-                    {item[7]}
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-white">
+                    {parseFloat(item[6])?.toFixed(2)}
                   </td>
                 </tr>
               );

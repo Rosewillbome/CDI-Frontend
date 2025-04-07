@@ -18,7 +18,7 @@ const style = {
   p: 4,
   overflowY: "scroll",
 };
-function DownloadReport() {
+function DownloadReport({assessment}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -40,7 +40,7 @@ function DownloadReport() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        <SnapshotReport/>
+        <SnapshotReport assessment={assessment}/>
         </Box>
       </Modal>
     </>
