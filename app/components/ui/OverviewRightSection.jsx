@@ -52,7 +52,7 @@ function OverviewRightSection() {
     <>
       {/* Right Section */}
       <div className="fixed right-0 top-20 w-1/5 h-full flex flex-col gap-6 p-6 bg-transparent">
-        <DownloadReport />
+        <DownloadReport assessment={filtered} />
 
         {/* Assessment Section */}
         <div className="relative border border-[#308DE0] rounded-xl p-4 flex flex-col justify-between h-[calc(100%-80px)] mt-2 bg-[#F1F1F1]">

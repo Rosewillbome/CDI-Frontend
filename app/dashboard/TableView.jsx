@@ -10,7 +10,7 @@ const TableView = () => {
   const [tableLoading, setTableLoading] = useState(false);
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [status, setStatus] = useState("");
-  const { district, timerange } = useSideberStore((state) => state);
+  const { timerange } = useSideberStore((state) => state);
 
   // Memoized filtered data to optimize rendering
   const filtable = useMemo(() => {
@@ -18,16 +18,16 @@ const TableView = () => {
     
     let filteredData = [...tableData];
 
-    if (timerange?.trim()?.length !== 0) {
-      function getYear(dateString) {
-        return dateString.split(" ")[1];
-      }
+    // if (timerange?.trim()?.length !== 0) {
+    //   function getYear(dateString) {
+    //     return dateString.split(" ")[1];
+    //   }
 
-      filteredData = filteredData.filter(
-        (month_data) =>
-          getYear(month_data[2]?.toLowerCase()) === timerange?.toLowerCase()
-      );
-    }
+    //   filteredData = filteredData.filter(
+    //     (month_data) =>
+    //       getYear(month_data[2]?.toLowerCase()) === timerange?.toLowerCase()
+    //   );
+    // }
 
     if (status?.trim()?.length !== 0 && status?.toLowerCase() !== "status") {
       filteredData = filteredData.filter(
@@ -36,14 +36,14 @@ const TableView = () => {
     }
 
     return filteredData;
-  }, [timerange, status, tableData]);
+  }, [timerange, status, tableData]); 
 
   useEffect(() => {
     const fetchData = async () => {
       setTableLoading(true);
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API}data/district/table/cdi`
+          `${process.env.NEXT_PUBLIC_API}data/district/table/${timerange}`
         );
         setTableData(response?.data?.data || []);
       } catch (error) {
@@ -54,7 +54,7 @@ const TableView = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [timerange]);
 
   const handleDownloadTableData = async (e) => {
     e.preventDefault();
