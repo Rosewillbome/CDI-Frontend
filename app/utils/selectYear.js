@@ -287,6 +287,7 @@ export const getDistrictsFromGeoson = (data) => {
   const propertyNames = data.features.map(
     (feature) => feature.properties?.name
   );
+  console.log("propertyNames",propertyNames?.length)
   return propertyNames;
 };
 

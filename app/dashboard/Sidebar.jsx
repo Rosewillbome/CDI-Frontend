@@ -10,7 +10,13 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useSideberStore } from "../store/useSideberStore";
-import { showYears, months, districts, getDistrictsFromGeoson, capitalize } from "../utils/selectYear";
+import {
+  showYears,
+  months,
+  districts,
+  getDistrictsFromGeoson,
+  capitalize,
+} from "../utils/selectYear";
 import { geoData } from "../utils/geodata";
 
 const Sidebar = () => {
@@ -40,6 +46,7 @@ const Sidebar = () => {
     setDistrict("All");
     setFilterBylegend([]);
   };
+ 
 
   return (
     <div className="relative">
@@ -101,12 +108,12 @@ const Sidebar = () => {
                     onChange={(e) => setIndicator(e.target.value)}
                     className="w-full px-3 py-2 border border-white rounded-lg text-gray-700"
                   >
-                    <option className="bg-[#2c5d8a]">CDI</option>
+                    <option className="bg-whute-700">CDI</option>
                     {tabs?.trim() === "table-view" ? null : (
                       <>
-                        <option className="bg-[#2c5d8a]">PDI</option>
-                        <option className="bg-[#2c5d8a]">TDI</option>
-                        <option className="bg-[#2c5d8a]">VDI</option>
+                        <option className="bg-whute-700">PDI</option>
+                        <option className="bg-[#e9edf0]">TDI</option>
+                        <option className="bg-[#f6f7f7]">VDI</option>
                       </>
                     )}
                   </select>
@@ -130,9 +137,9 @@ const Sidebar = () => {
                         onChange={(e) => setTimerange(e.target.value)}
                         className="w-full px-3 py-2 border border-white rounded-lg text-gray-700"
                       >
-                        <option className="bg-[#2c5d8a]">Select Year</option>
+                        <option className="bg-[#f8f9f9]">Select Year</option>
                         {showYears()?.map((year, index) => (
-                          <option key={index} className="bg-[#2c5d8a]">
+                          <option key={index} className="bg-[#f8fafb]">
                             {year}
                           </option>
                         ))}
@@ -153,7 +160,7 @@ const Sidebar = () => {
                               Select Month
                             </option>
                             {months?.map((month, index) => (
-                              <option key={index} className="bg-[#2c5d8a]">
+                              <option key={index} className="bg-[#f4f5f6]">
                                 {month[0]}
                               </option>
                             ))}
@@ -182,11 +189,13 @@ const Sidebar = () => {
                         {/* <option className="bg-[#2c5d8a]" value={"All"}>
                           All
                         </option> */}
-                        {getDistrictsFromGeoson(geoData)?.map((district) => (
-                          <option key={district} value={district}>
-                            {district}
-                          </option>
-                        ))}
+                        {getDistrictsFromGeoson(geoData)?.map(
+                          (district, index) => (
+                            <option key={district} value={district}>
+                              {district}
+                            </option>
+                          )
+                        )}
                       </select>
                     </div>
                   </>

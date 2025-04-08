@@ -100,7 +100,7 @@ function OverviewRightSection() {
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
                 <div className="w-16 bg-[#58111A] p-2 border-r border-white rounded-l-lg flex items-center justify-center">
                   <div className="text-2xl font-bold text-white">
-                    {filtered?.length === 0 ? 0 : filtered[4]}
+                    {filtered?.length === 0 ? 0 : filtered[6]}
                   </div>
                 </div>
                 <div className="flex-1 flex items-center justify-between p-2">
@@ -131,7 +131,7 @@ function OverviewRightSection() {
               <div className="flex items-center bg-[#E0E0E0] rounded-lg border">
                 <div className="w-16 bg-green-600 p-2 border-r border-white rounded-l-lg flex items-center justify-center">
                   <div className="text-2xl font-bold text-white">
-                    {filtered?.length === 0 ? 0 : filtered[5]}
+                    {filtered?.length === 0 ? 0 : filtered[12]}
                   </div>
                 </div>
                 <div className="flex-1 flex items-center justify-between p-2">

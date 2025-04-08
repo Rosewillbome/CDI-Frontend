@@ -25,56 +25,11 @@ function SnapshotReport({ assessment }) {
   let list_Of_Districts_Trending = JSON.parse(assessment[14]);
   let list_Of_Districts_Improving = JSON.parse(assessment[15]);
 
+  let severe = assessment[3];
+  let trending_assessment = assessment[6];
+  let improving_assessment = assessment[12];
+
   useEffect(() => {
-    const fetchCdi = async () => {
-      await axios
-        .get(`${process.env.NEXT_PUBLIC_API}data/all/cdi`)
-        .then((response) => {
-          let filteredCdi = response?.data?.data?.filter(
-            (cdi_assessment_data) =>
-              cdi_assessment_data[2] ===
-              `Raw_CDI_${month?.toLowerCase()}_${timerange}_map`
-          );
-          console.log("filteredCdi", filteredCdi[0]?.[4]);
-          setCdi(filteredCdi);
-        })
-        .catch((error) => {
-          console.error("comming error", error);
-        });
-    };
-    const fetchRfe = async () => {
-      await axios
-        .get(`${process.env.NEXT_PUBLIC_API}data/all/rfe`)
-        .then((response) => {
-          let filteredrfe = response?.data?.data?.filter(
-            (rfe_assessment_data) =>
-              rfe_assessment_data[2] ===
-              `rainfall_${month?.toLowerCase()}_${timerange}_map.jpg`
-          );
-
-          setRfe(filteredrfe);
-        })
-        .catch((error) => {
-          console.error("comming error", error);
-        });
-    };
-    const fetchNdvi = async () => {
-      await axios
-        .get(`${process.env.NEXT_PUBLIC_API}data/all/vdi`)
-        .then((response) => {
-          let filteredVdi = response?.data?.data?.filter(
-            (vdi_assessment_data) =>
-              vdi_assessment_data[2] ===
-              `Raw_NDVI_Anomaly_${month?.toLowerCase()}_${timerange}_map.jpg`
-          );
-          //Raw_NDVI_Anomaly_february_2002_map.jpg
-          setNdvi(filteredVdi);
-        })
-        .catch((error) => {
-          console.error("comming error", error);
-        });
-    };
-
     const fetchTableCdi = async () => {
       await axios
         .get(`${process.env.NEXT_PUBLIC_API}data/district/table/${timerange}`)
@@ -114,11 +69,72 @@ function SnapshotReport({ assessment }) {
           console.error("comming error", error);
         });
     };
-    fetchCdi();
-    fetchRfe();
-    fetchNdvi();
+
+    const fetchData = async () => {
+      try {
+        const [cdiResponse, rfeResponse, ndviResponse] = await Promise.all([
+          axios.get(`${process.env.NEXT_PUBLIC_API}data/all/cdi`),
+          axios.get(`${process.env.NEXT_PUBLIC_API}data/all/rfe`),
+          axios.get(`${process.env.NEXT_PUBLIC_API}data/all/vdi`),
+        ]);
+
+        // Filter and set CDI data
+        const filteredCdi = cdiResponse?.data?.data?.filter(
+          (cdi) => cdi[2] === `Raw_CDI_${month?.toLowerCase()}_${timerange}_map`
+        );
+        setCdi(filteredCdi);
+
+        // Filter and set RFE data
+        const filteredRfe = rfeResponse?.data?.data?.filter(
+          (rfe) =>
+            rfe[2] === `rainfall_${month?.toLowerCase()}_${timerange}_map.jpg`
+        );
+        setRfe(filteredRfe);
+
+        // Filter and set NDVI data
+        const filteredNdvi = ndviResponse?.data?.data?.filter(
+          (ndvi) =>
+            ndvi[2] ===
+            `Raw_NDVI_Anomaly_${month?.toLowerCase()}_${timerange}_map.jpg`
+        );
+        setNdvi(filteredNdvi);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
     fetchTableCdi();
   }, [timerange]);
+
+  const checks = () => {
+    if (severe === 0) {
+      return (
+        <div className="bg-blue-50 p-4 rounded-lg mb-6">
+          <p className="text-gray-700">
+            Drought continues to affect various district(s) in Uganda. However
+            the drought conditions are largely moderate, mild or normal based on
+            the combined drought index classification system. This conditions
+            are best exemplified in the CDI maps below.
+          </p>
+        </div>
+      );
+    } else {
+      return (
+        <div className="bg-blue-50 p-4 rounded-lg mb-6">
+          <p className="text-gray-700">
+            Drought continues to affect various district(s) in Uganda.{" "}A total of {" "}
+            <span className="font-bold text-red-600">
+              {severe?.length === 0 ? 0 : severe}
+            </span> {" "}
+            district(s) have location(s) that are classified under Severe and
+            Extreme Drought condition(s) and may require immediate humanitarian
+            assistance in the coming days or month.
+          </p>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -165,90 +181,70 @@ function SnapshotReport({ assessment }) {
           </h2>
           <h3 className="text-lg font-semibold text-gray-700 mb-3">Overview</h3>
 
-          <div className="bg-blue-50 p-4 rounded-lg mb-6">
-            <p className="text-gray-700">
-              The drought continues to affect various districts in Uganda. A
-              total of{" "}
-              <span className="font-bold text-red-600">
-                {assessment?.length === 0 ? 0 : assessment[3]}
-              </span>{" "}
-              districts have locations that are classified under Severe and
-              Extreme Drought conditions and may require immediate humanitarian
-              assistance in the coming days or month.
-            </p>
-          </div>
+          {checks()}
 
-          {/* CDI Map container */}
-          <div className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden mb-8">
-            <div className="bg-gray-100 px-4 py-2 border-b">
-              <h4 className="font-bold text-gray-700">
-                CDI Extreme/Severe Overview Map
-              </h4>
-            </div>
-            <div className="p-4 flex justify-center bg-gray-50">
-              {/* Replace with actual Image component */}
-              <div className="w-[50%] h-[50%] bg-gray-200 flex items-center justify-center text-gray-500">
-                <img
-                  src={`${process.env.NEXT_PUBLIC_API}uploaded${cdi[0]?.[4]}`}
-                  alt={cdi[0]?.[2]}
-                  className="static_image"
-                />
-              </div>
-            </div>
-          </div>
+         
 
           {/* Severe districts table */}
-          <div className="mb-8">
-            <h4 className="font-medium text-gray-700 mb-2">
-              These districts are:
-            </h4>
-            <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-              <SnapshotTable currentData={cdiTable} />
+          {severe !== 0 && (
+            <div className="mb-8">
+              <h4 className="font-medium text-gray-700 mb-2">
+                These districts are:
+              </h4>
+              <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <SnapshotTable currentData={cdiTable} />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Extended severe districts */}
-          <div className="bg-yellow-50 p-4 rounded-lg mb-6">
-            <p className="text-gray-700">
-              Additionally,{" "}
-              <span className="font-bold text-orange-600">
-                {assessment?.length === 0 ? 0 : assessment[4]}
-              </span>{" "}
-              districts have experienced severe and extreme drought conditions
-              for an extended period.
-            </p>
-          </div>
-
-          <div className="mb-8">
-            <h4 className="font-medium text-gray-700 mb-2">
-              These districts are:
-            </h4>
-            <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-              <SnapshotTable currentData={trending} />
-            </div>
-          </div>
+          {trending_assessment !== 0 && (
+            <>
+              <div className="bg-yellow-50 p-4 rounded-lg mb-6">
+                <p className="text-gray-700">
+                  Additionally,{" "}
+                  <span className="font-bold text-orange-600">
+                    {trending_assessment}
+                  </span>{" "}
+                  district(s) have experienced severe and extreme drought
+                  conditions for an extended period.
+                </p>
+              </div>
+              <div className="mb-8">
+                <h4 className="font-medium text-gray-700 mb-2">
+                  These districts are:
+                </h4>
+                <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                  <SnapshotTable currentData={trending} />
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Recovering districts */}
-          <div className="bg-green-50 p-4 rounded-lg mb-6">
-            <p className="text-gray-700">
-              Finally,{" "}
-              <span className="font-bold text-green-600">
-                {assessment?.length === 0 ? 0 : assessment[5]}
-              </span>{" "}
-              districts are showing signs of recovery. Ongoing interventions
-              should be maintained or expanded to ensure full restoration of
-              livelihoods.
-            </p>
-          </div>
-
-          <div className="mb-8">
-            <h4 className="font-medium text-gray-700 mb-2">
-              These districts are:
-            </h4>
-            <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-              <SnapshotTable currentData={improving} />
-            </div>
-          </div>
+          {improving_assessment !== 0 && (
+            <>
+              <div className="bg-green-50 p-4 rounded-lg mb-6">
+                <p className="text-gray-700">
+                  Finally,{" "}
+                  <span className="font-bold text-green-600">
+                    {improving_assessment}
+                  </span>{" "}
+                  districts are showing signs of recovery. Ongoing interventions
+                  should be maintained or expanded to ensure full restoration of
+                  livelihoods.
+                </p>
+              </div>
+              <div className="mb-8">
+                <h4 className="font-medium text-gray-700 mb-2">
+                  These districts are:
+                </h4>
+                <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                  <SnapshotTable currentData={improving} />
+                </div>
+              </div>
+            </>
+          )}
         </section>
 
         {/* Combined Drought Index section */}
@@ -265,7 +261,7 @@ function SnapshotReport({ assessment }) {
           <div className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
             <div className="p-4 flex justify-center bg-gray-50">
               {/* Replace  */}
-              <div className="w-[50%] h-[50%] bg-gray-200 flex items-center justify-center text-gray-500">
+              <div className="w-[100%] h-[100%] bg-gray-200 flex items-center justify-center text-gray-500">
                 <img
                   src={`${process.env.NEXT_PUBLIC_API}uploaded${cdi[0]?.[4]}`}
                   alt={cdi[0]?.[2]}
@@ -290,7 +286,7 @@ function SnapshotReport({ assessment }) {
           <div className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
             <div className="p-4 flex justify-center bg-gray-50">
               {/* Replace */}
-              <div className="w-[50%] h-[50%] bg-gray-200 flex items-center justify-center text-gray-500">
+              <div className="w-[100%] h-[100%] bg-gray-200 flex items-center justify-center text-gray-500">
                 <img
                   src={`${process.env.NEXT_PUBLIC_API}uploaded${rfe[0]?.[4]}`}
                   alt={rfe[0]?.[2]}
@@ -316,7 +312,7 @@ function SnapshotReport({ assessment }) {
           <div className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
             <div className="p-4 flex justify-center bg-gray-50">
               {/* Replace with Map David */}
-              <div className="w-[50%] h-[50%] bg-gray-200 flex items-center justify-center text-gray-500">
+              <div className="w-[100%] h-[100%] bg-gray-200 flex items-center justify-center text-gray-500">
                 <img
                   src={`${process.env.NEXT_PUBLIC_API}uploaded${ndvi[0]?.[4]}`}
                   alt={ndvi[0]?.[2]}
