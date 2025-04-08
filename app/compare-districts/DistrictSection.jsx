@@ -84,7 +84,7 @@ function DistrictSection() {
           >
             <option className="bg-[#2c5d8a]">select Year</option>
             {showYears()?.map((year, index) => (
-              <option key={index} className="bg-[#2c5d8a]">
+              <option key={index} className="bg-[#f6f6f6]">
                 {year}
               </option>
             ))}
@@ -96,7 +96,7 @@ function DistrictSection() {
           >
             <option className="bg-[#2c5d8a]">select Month</option>
             {months?.map((month, index) => (
-              <option key={index} className="bg-[#2c5d8a]">
+              <option key={index} className="bg-[#f3f5f6]">
                 {month[0]}
               </option>
             ))}
