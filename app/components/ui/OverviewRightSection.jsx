@@ -60,7 +60,7 @@ function OverviewRightSection() {
             <h3 className="text-md text-[#308DE0] font-bold">Assessment</h3>
           </div>
           <p className="text-sm text-black text-center mt-4">
-            This section provides an overview of the assessment.
+          This section provides a summary of the drought conditions across the districts as per the assessment period, <b>{month?.toUpperCase()},{timerange}</b>
           </p>
 
           <div className="space-y-4">
