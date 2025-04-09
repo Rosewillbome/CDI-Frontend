@@ -35,7 +35,7 @@ const MapView = () => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoading(false);
-    }, 5000);
+    }, 1000);
 
     if (isMapLoaded && isChartLoaded) {
       setIsLoading(false);
@@ -57,14 +57,14 @@ const MapView = () => {
   };
 
   const handleDownloadChartPNG = () => {
-    sethideElement(true)
+    sethideElement(true);
     if (chartContainerRef.current) {
       html2canvas(chartContainerRef.current).then((canvas) => {
         const link = document.createElement("a");
         link.href = canvas.toDataURL("image/png");
         link.download = "time_series.png";
         link.click();
-        sethideElement(false)
+        sethideElement(false);
       });
     }
   };
@@ -91,7 +91,7 @@ const MapView = () => {
           <div className="flex flex-col items-center space-y-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
             <p className="text-lg font-semibold text-gray-900">
-              Fetching data, please wait...
+              Fetching Data, please wait...
             </p>
           </div>
         </div>
@@ -198,7 +198,9 @@ const MapView = () => {
           </div>
 
           {/* Time Series Chart */}
-          <div className="flex-1 flex flex-col justify-center bg-gradient-to-br from-gray-50 to-gray-100 w-full">
+          <div
+            className={`flex-1 flex flex-col justify-center bg-gradient-to-br from-gray-50 to-gray-100 w-full `}
+          >
             <TimeSeriesChart
               indicator={indicator}
               timerange={timerange}
@@ -207,6 +209,7 @@ const MapView = () => {
               chart_id={"Dasboard_time_series"}
               filterBylegend={filterBylegend}
               onLoad={() => setIsChartLoaded(true)}
+              
             />
           </div>
 
