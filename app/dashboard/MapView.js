@@ -84,7 +84,7 @@ const MapView = () => {
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col h-full p-6 space-y-6 relative">
+    <div className="bg-gray-50 flex flex-col h-full p-6 space-y-6">
       {/* Loader */}
       {isLoading && (
         <div className="fixed inset-0 bg-white bg-opacity-75 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
@@ -109,7 +109,7 @@ const MapView = () => {
         {/* Map Section */}
         <div
           ref={mapRef}
-          className="relative w-full bg-white rounded-sm shadow-lg p-4"
+          className=" w-full bg-white rounded-sm shadow-lg p-4"
         >
           {/* {!isLoading && (
             <div className="absolute top-4 right-4 z-[1000]">
