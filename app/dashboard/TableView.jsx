@@ -3,6 +3,8 @@ import axios from "axios";
 import React, { useState, useEffect, useMemo } from "react";
 import { FiDownload } from "react-icons/fi";
 import { useSideberStore } from "../store/useSideberStore";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const TableView = () => {
   const [tableData, setTableData] = useState([]);
@@ -15,7 +17,7 @@ const TableView = () => {
   // Memoized filtered data to optimize rendering
   const filtable = useMemo(() => {
     if (!tableData.length) return [];
-    
+
     let filteredData = [...tableData];
 
     // if (timerange?.trim()?.length !== 0) {
@@ -36,7 +38,7 @@ const TableView = () => {
     }
 
     return filteredData;
-  }, [timerange, status, tableData]); 
+  }, [timerange, status, tableData]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,10 +100,7 @@ const TableView = () => {
         {[...Array(10)].map((_, i) => (
           <div key={i} className="flex space-x-2 animate-pulse">
             {[...Array(8)].map((_, j) => (
-              <div
-                key={j}
-                className="h-10 bg-gray-200 rounded flex-1"
-              ></div>
+              <div key={j} className="h-10 bg-gray-200 rounded flex-1"></div>
             ))}
           </div>
         ))}
@@ -112,7 +111,9 @@ const TableView = () => {
   return (
     <div className="space-y-3 pl-7">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Table View</h1>
+        <h1 className="text-2xl font-bold text-gray-900">
+          Combined Drought Index Timeseries
+        </h1>
         <button
           className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors disabled:opacity-50"
           onClick={handleDownloadTableData}
@@ -124,14 +125,18 @@ const TableView = () => {
       </div>
 
       {/* Table Section */}
-      <div className="bg-[#308DE0] rounded-sm shadow-lg overflow-hidden">
-        <div 
-          className="overflow-x-auto relative" 
+      <div className="rounded-sm shadow-lg overflow-hidden">
+        <div
+          className="overflow-x-auto relative"
           style={{ maxHeight: "700px", overflowY: "auto" }}
         >
           {tableLoading ? (
-            <div className="p-4">
-              {renderLoadingSkeleton()}
+            <div className="p-4 w-full flex items-center justify-center">
+              {/* {renderLoadingSkeleton()} */}
+              <Box sx={{ display: "flex" }}>
+                <CircularProgress />
+              </Box>
+              <p className="ml-2">Fetching Data, Please Wait...</p>
             </div>
           ) : (
             <table className="min-w-full divide-y divide-gray-200">
