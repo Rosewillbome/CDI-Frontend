@@ -314,8 +314,8 @@ const FAQPage = () => {
           <p>For technical issues or data inquiries:</p>
           <div className="bg-blue-50 p-3 rounded-md">
             <p className="font-medium">Drought Monitoring Support Team</p>
-            <p>Email: info@ndekaobad.co.ke</p>
-            <p>Phone: +254 734 525 907</p>
+            <p>Email: </p>
+            <p>Phone: </p>
             <p className="text-sm mt-1">Available Monday-Friday, 8:00-17:00 EAT</p>
           </div>
           <p className="text-sm text-gray-600">For urgent matters during non-working hours, please use the emergency contact number provided above.</p>
@@ -353,7 +353,7 @@ const FAQPage = () => {
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
             Frequently Asked Questions ( FAQ )
             </h1>
-            <a className='text-white ' href="/Documentation.pdf" download="Uganda Drought Monitoring System User Documentation">Click here to Download User Documentation</a>
+            <a className='text-white bg-blue-400 rounded-md px-4' href="/doc.pdf" download="Uganda Drought Monitoring System User Documentation">Click here to Download User Documentation</a>
           </div>
           
           <div className="relative max-w-2xl mx-auto">
