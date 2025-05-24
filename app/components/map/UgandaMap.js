@@ -7,9 +7,7 @@ import { capitalize } from "../../utils/selectYear";
 import { usePathname } from "next/navigation";
 import { geoData } from "../../utils/geodata"; // Adjust the path to your GeoJSON file
 import { waterAreas } from "../../utils/waterAreas"; // Adjust the path to your GeoJSON file
-import html2canvas from "html2canvas";
-import { FiDownload } from "react-icons/fi";
-
+import "leaflet-simple-map-screenshoter";
 const UgandaMap = ({
   indicator,
   timerange,
@@ -172,6 +170,7 @@ const UgandaMap = ({
     });
 
     resizeObserver.observe(mapContainerRef.current);
+    L.simpleMapScreenshoter().addTo(mapRef.current);
     setHreload(v4());
   }, [geoData]);
 
@@ -402,29 +401,6 @@ const UgandaMap = ({
     }
   }, [getTheBounds, geoData]);
 
-  const handleDownloadMap = () => {
-    if (!mapContainerRef.current) return;
-
-    // Add these options for better results
-    html2canvas(mapContainerRef.current, {
-      scale: 2, // Higher quality
-      useCORS: true, // Handle CORS if needed
-      logging: true, // Helpful for debugging
-      allowTaint: true, // If you're using third-party tiles
-    })
-      .then((canvas) => {
-        const link = document.createElement("a");
-        link.href = canvas.toDataURL("image/png");
-        link.download = `map-${new Date().toISOString()}.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      })
-      .catch((err) => {
-        console.error("Error generating map image:", err);
-      });
-  };
-
   return (
     <>
       <div
@@ -436,14 +412,7 @@ const UgandaMap = ({
           background: "#f0f0f0",
         }}
       />
-      <div className="absolute top-4 right-4 z-[1000]">
-        <button
-          className="p-2 bg-white border hover:bg-gray-100 rounded-2xl transition-colors shadow-lg"
-          onClick={handleDownloadMap}
-        >
-          <FiDownload className="text-blue-500" size={20} />
-        </button>
-      </div>
+     
     </>
   );
 };
