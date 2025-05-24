@@ -12,7 +12,6 @@ export default function Home() {
   const [selectedIndicator] = useState("Combined Drought Index (CDI)");
   const reportRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [mapsLoaded, setMapsLoaded] = useState(false);
 
   useEffect(() => {
     const footer = document.querySelector("footer");
@@ -27,8 +26,9 @@ export default function Home() {
       const checkMaps = () => {
         // Add your map loaded detection logic here
         // For example, check if map tiles are visible
-        const mapTiles = document.querySelectorAll('.leaflet-tile-loaded');
-        if (mapTiles.length >= 4) { // Assuming at least 4 tiles need to load
+        const mapTiles = document.querySelectorAll(".leaflet-tile-loaded");
+        if (mapTiles.length >= 4) {
+          // Assuming at least 4 tiles need to load
           resolve(true);
         } else {
           setTimeout(checkMaps, 500);
@@ -39,76 +39,31 @@ export default function Home() {
   };
 
   const handleDownloadAllPdf = async () => {
-    if (!reportRef.current) {
-      console.error("Report section not found!");
-      return;
-    }
-
-    setIsDownloading(true);
-    setMapsLoaded(false);
-
     try {
-      // Wait for maps to fully load
-      await waitForMapsToLoad();
-      setMapsLoaded(true);
-
-      // Additional delay to ensure everything renders
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Scroll to top to ensure we capture everything
-      window.scrollTo(0, 0);
+      setIsDownloading(true);
+      const canvas = await html2canvas(reportRef.current, {
+        useCORS: true,
+        scrollY: -window.scrollY, // optional: to handle fixed headers or current scroll
+        windowWidth: document.body.scrollWidth,
+        windowHeight: document.body.scrollHeight,
+      });
+      const dataURL = canvas.toDataURL("image/png");
 
       const pdf = new jsPDF("p", "mm", "a4");
-      const canvas = await html2canvas(reportRef.current, {
-        scale: 3, // Increased scale for better quality
-        windowWidth: reportRef.current.scrollWidth,
-        windowHeight: reportRef.current.scrollHeight,
-        useCORS: true, // Enable cross-origin requests for map tiles
-        allowTaint: true, // Allow tainted canvas
-        logging: true, // Helpful for debugging
-        backgroundColor: '#FFFFFF', // Ensure white background
-        ignoreElements: (element) => {
-          // Ignore elements that might interfere with capture
-          return element.classList.contains('leaflet-control-container') || 
-                 element.classList.contains('leaflet-interactive');
-        },
-        onclone: (clonedDoc) => {
-          // Make sure all map containers are fully visible
-          const mapContainers = clonedDoc.querySelectorAll('.map-container, .leaflet-container');
-          mapContainers.forEach(container => {
-            container.style.visibility = 'visible';
-            container.style.opacity = '1';
-            container.style.zIndex = '9999';
-          });
-          
-          // Hide any interactive elements that might interfere
-          const controls = clonedDoc.querySelectorAll('.leaflet-control-container');
-          controls.forEach(control => control.style.display = 'none');
-        }
-      });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
 
-      const imgData = canvas.toDataURL("image/png", 1.0); // Use PNG for better quality
-      const imgWidth = 210; // A4 width in mm
-      const pageHeight = 297; // A4 height in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      
-      let heightLeft = imgHeight;
-      let position = 0;
+      const imgProps = pdf.getImageProperties(dataURL);
+      const imgWidth = pageWidth;
+      const imgHeight = (imgProps.height * pageWidth) / imgProps.width;
 
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      // Center vertically if smaller than the page
+      const yOffset = imgHeight < pageHeight ? (pageHeight - imgHeight) / 2 : 0;
 
-      // Add new pages as needed
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-
-      pdf.save(`Drought_Comparison_${districtOne}_vs_${districtTwo}.pdf`);
+      pdf.addImage(dataURL, "PNG", 0, yOffset, imgWidth, imgHeight);
+      pdf.save("report.pdf");
     } catch (error) {
-      console.error("Error generating PDF:", error);
+      console.error("Screenshot failed:", error);
     } finally {
       setIsDownloading(false);
     }
@@ -122,13 +77,14 @@ export default function Home() {
           <div className="flex flex-col items-center space-y-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
             <p className="text-lg font-semibold text-gray-900">
-              {mapsLoaded ? "Generating PDF..." : "Loading map data..."}
+              {/* {mapsLoaded ? "Generating PDF..." : "Loading map data..."} */}
+              Generating PDF...
             </p>
           </div>
         </div>
       )}
 
-      <div ref={reportRef} className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white">
         {/* Header & Download Button */}
         <div className="mt-2 mb-2 flex items-center justify-center">
           <div className="w-1/3"></div>
@@ -150,11 +106,7 @@ export default function Home() {
               ) : (
                 <Download size={18} />
               )}
-              {isDownloading
-                ? mapsLoaded 
-                  ? "Generating PDF..." 
-                  : "Loading map data..."
-                : "Download Comparison"}
+              {"Download Report"}
             </button>
           </div>
         </div>
@@ -174,7 +126,10 @@ export default function Home() {
         </div>
 
         {/* District Comparison Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full mx-auto px-4">
+        <div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full mx-auto px-4"
+          ref={reportRef}
+        >
           <div className="h-screen w-full">
             <DistrictSection />
           </div>
@@ -212,7 +167,8 @@ export default function Home() {
         }
 
         /* Ensure map containers are properly sized */
-        .map-container, .leaflet-container {
+        .map-container,
+        .leaflet-container {
           width: 100% !important;
           height: 100% !important;
           position: relative !important;
