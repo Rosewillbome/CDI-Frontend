@@ -1,0 +1,99 @@
+/* Ensure this is imported only for print: use @import in a print-specific media query or link in _app.css */
+
+/* Base print rules */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  /* Hide elements that shouldn't appear in print (e.g. buttons, navs) */
+  button,
+  .no-print,
+  .react-to-print__action {
+    display: none !important;
+  }
+
+  /* Page setup */
+  @page {
+    size: A4 portrait;
+    margin: 1cm;
+  }
+
+  /* Prevent layout shifts */
+  .bg-gray-50,
+  .bg-white,
+  .shadow-lg,
+  .shadow-md,
+  .shadow-sm {
+    box-shadow: none !important;
+    background: white !important;
+  }
+  .print-body {
+    margin: 10px !important;
+  }
+
+  /* Tables and sections */
+  table {
+    width: 100% !important;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    font-size: 11pt;
+  }
+
+  /* Force page breaks */
+  .page-break {
+    page-break-before: always;
+  }
+
+  /* Prevent image cutoff and ensure scaling */
+  .cdi-image {
+    height: 75% !important;
+    width: 75% !important;
+  }
+  .static_image {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* Override Tailwind paddings/margins that could mess up layout */
+  .p-4,
+  .p-6,
+  .px-6,
+  .py-3,
+  .mb-6,
+  .mb-8,
+  .mt-8,
+  .pt-6,
+  .pb-6,
+  .pb-2 {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Clean headers */
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: black !important;
+    font-weight: bold;
+  }
+
+  /* No text shadow or transitions */
+  * {
+    text-shadow: none !important;
+    transition: none !important;
+  }
+}
