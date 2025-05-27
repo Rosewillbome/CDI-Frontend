@@ -6,6 +6,7 @@ import { useReactToPrint } from "react-to-print";
 import { useSideberStore } from "../../store/useSideberStore";
 import axios from "axios";
 import { capitalize, moth } from "../../utils/selectYear";
+import "../../../app/snapshot.css"; // Import your custom CSS for styling
 
 function SnapshotReport({ assessment }) {
   const contentRef = useRef(null);
@@ -107,6 +108,25 @@ function SnapshotReport({ assessment }) {
     fetchTableCdi();
   }, [timerange]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (
+        improving_assessment === 0 &&
+        trending_assessment === 0 &&
+        severe === 0
+      ) {
+        const pagebreak = document.getElementById("pgbleak");
+        pagebreak.classList.remove("page-break");
+
+        const cd_img = document.getElementById("cdi-image");
+        cd_img.classList.add("cdi-image");
+      } else {
+        const pagebreak = document.getElementById("pgbleak");
+        pagebreak.classList.add("page-break");
+      }
+    }
+  }, []);
+
   const checks = () => {
     if (severe === 0) {
       return (
@@ -123,10 +143,11 @@ function SnapshotReport({ assessment }) {
       return (
         <div className="bg-blue-50 p-4 rounded-lg mb-6">
           <p className="text-gray-700">
-            Drought continues to affect various district(s) in Uganda.{" "}A total of {" "}
+            Drought continues to affect various district(s) in Uganda. A total
+            of{" "}
             <span className="font-bold text-red-600">
               {severe?.length === 0 ? 0 : severe}
-            </span> {" "}
+            </span>{" "}
             district(s) have location(s) that are classified under Severe and
             Extreme Drought condition(s) and may require immediate humanitarian
             assistance in the coming days or month.
@@ -150,7 +171,7 @@ function SnapshotReport({ assessment }) {
 
       {/* Report content */}
       <div
-        className="w-full max-w-6xl mx-auto p-6 bg-white shadow-lg"
+        className="w-full max-w-6xl mx-auto p-6 bg-white shadow-lg print-body"
         ref={contentRef}
       >
         {/* Header */}
@@ -173,7 +194,6 @@ function SnapshotReport({ assessment }) {
             </h2>
           </div>
         </div>
-
         {/* Overview section */}
         <section className="mb-10">
           <h2 className="text-xl font-bold text-gray-800 mb-4 border-b pb-2">
@@ -182,8 +202,6 @@ function SnapshotReport({ assessment }) {
           <h3 className="text-lg font-semibold text-gray-700 mb-3">Overview</h3>
 
           {checks()}
-
-         
 
           {/* Severe districts table */}
           {severe !== 0 && (
@@ -246,9 +264,8 @@ function SnapshotReport({ assessment }) {
             </>
           )}
         </section>
-
         {/* Combined Drought Index section */}
-        <div className="page-break" style={{ pageBreakBefore: "always" }}></div>
+        <div id="pgbleak"></div>
         <section className="mb-10">
           <h3 className="text-lg font-semibold text-gray-700 mb-3 border-b pb-2">
             Combined Drought Index {currentMonthYear}
@@ -266,12 +283,12 @@ function SnapshotReport({ assessment }) {
                   src={`${process.env.NEXT_PUBLIC_API}uploaded${cdi[0]?.[4]}`}
                   alt={cdi[0]?.[2]}
                   className="static_image"
+                  id="cdi-image"
                 />
               </div>
             </div>
           </div>
         </section>
-
         {/* Rainfall Performance section */}
         <div className="page-break" style={{ pageBreakBefore: "always" }}></div>
         <section className="mb-10">
@@ -296,7 +313,6 @@ function SnapshotReport({ assessment }) {
             </div>
           </div>
         </section>
-
         {/* NDVI Anomaly Performance section */}
         <div className="page-break" style={{ pageBreakBefore: "always" }}></div>
         <section className="mb-10">
@@ -322,7 +338,6 @@ function SnapshotReport({ assessment }) {
             </div>
           </div>
         </section>
-
         {/* Footer */}
         <section className="mt-8 pt-6 border-t">
           <p className="text-sm text-gray-600 mb-4">

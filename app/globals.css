@@ -285,6 +285,12 @@ body {
   background-color: #4a8bd0 !important;
 }
 /* table */
+
+
+.hide-element {
+  display: none;
+}
+
 @media print {
   @page {
     size: A0 portrait; /* Paper size and orientation (portrait/landscape) */
@@ -365,8 +371,4 @@ body {
     max-width: 1200px !important;
   }
   /* table */
-}
-
-.hide-element {
-  display: none;
 }
