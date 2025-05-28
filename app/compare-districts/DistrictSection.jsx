@@ -2,7 +2,12 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Info } from "lucide-react";
-import { showYears, months, districts, getDistrictsFromGeoson } from "../utils/selectYear";
+import {
+  showYears,
+  months,
+  districts,
+  getDistrictsFromGeoson,
+} from "../utils/selectYear";
 import Section from "../components/ui/Section";
 import { useSideberStore } from "../store/useSideberStore";
 import dynamic from "next/dynamic";
@@ -24,6 +29,8 @@ const UgandaMapp = ({ district, month, timerange }) => {
           zoom={6.2}
           minZoom={6.2}
           getTheBounds={district}
+          imageCintainerId={"district-section-one-map-img"}
+          mapConatinerId={"district-section-one-map"}
         />
       </div>
     </div>

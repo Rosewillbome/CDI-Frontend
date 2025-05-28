@@ -7,7 +7,11 @@ import OverviewIntro from "./components/ui/OverviewIntro";
 import OverviewRightSection from "./components/ui/OverviewRightSection";
 import { useRouter } from "next/navigation";
 import { useSideberStore } from "./store/useSideberStore";
-import { capitalize, districts, getDistrictsFromGeoson } from "./utils/selectYear";
+import {
+  capitalize,
+  districts,
+  getDistrictsFromGeoson,
+} from "./utils/selectYear";
 import Image from "next/image";
 import DashboardSlider from "./components/ui/DashboardSlider";
 import Loader from "./components/Loader"; // Import the Loader component
@@ -108,7 +112,7 @@ export default function Home() {
             </h2>
             <div className="relative">
               <select
-              value= {capitalize(district?.toLowerCase())}
+                value={capitalize(district?.toLowerCase())}
                 onChange={(e) => handleDistrictChange(e)}
                 className="appearance-none bg-white border border-[#308DE0] rounded-lg px-8 py-2 pr-10 text-sm font-semibold text-[#308DE0] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#308DE0]"
               >
@@ -159,6 +163,8 @@ export default function Home() {
                   timerange={timerange}
                   month={month}
                   district={district}
+                  imageCintainerId={"home-img"}
+                  mapConatinerId={"home-map"}
                 />
               </div>
 

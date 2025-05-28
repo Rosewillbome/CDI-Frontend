@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { geoData } from "../../utils/geodata"; // Adjust the path to your GeoJSON file
 import { waterAreas } from "../../utils/waterAreas"; // Adjust the path to your GeoJSON file
 import "leaflet-simple-map-screenshoter";
+import { useSideberStore } from "../../store/useSideberStore";
 const UgandaMap = ({
   indicator,
   timerange,
@@ -17,7 +18,19 @@ const UgandaMap = ({
   setDistrict,
   getTheBounds,
   district,
+  mapConatinerId,
+  imageCintainerId,
 }) => {
+  let {
+    MapsToggle,
+    generatingStatus,
+    setGeneratingStatus,
+    setMapsToggle,
+    setDisTwo,
+    setDisOne,
+    disTwo,
+    disOne,
+  } = useSideberStore((state) => state);
   const pathname = usePathname();
   const [Hreload, setHreload] = useState("");
   const mapContainerRef = useRef(null);
@@ -401,9 +414,60 @@ const UgandaMap = ({
     }
   }, [getTheBounds, geoData]);
 
+  useEffect(() => {
+    if (MapsToggle && generatingStatus?.toLowerCase() === "preparing") {
+      const generateBlog = async () => {
+        const screenshoter = L.simpleMapScreenshoter({
+          hidden: false,
+          preventDownload: true,
+          position: "topright",
+        }).addTo(mapRef.current);
+
+        mapRef.current.screenshoter = screenshoter;
+        const mapBlob = await mapRef.current.screenshoter.takeScreen("blob");
+        const mapImageUrl = URL.createObjectURL(mapBlob);
+        const imageContainer = document.getElementById(imageCintainerId);
+
+        const img = document.createElement("img");
+        img.src = mapImageUrl;
+        img.style.width = "100%";
+        img.style.height = "100%";
+
+        imageContainer.style.display = "block";
+        imageContainer.appendChild(img);
+
+        const mp = document.getElementById(mapConatinerId);
+        mp.style.display = "none";
+
+        if (mapConatinerId === "district-section-one-map") {
+          setDisOne(true);
+        }
+        if (mapConatinerId === "district-section-two-map") {
+          setDisTwo(true);
+        }
+        mapRef.current.removeControl(screenshoter);
+      };
+      generateBlog();
+    }
+    if (!MapsToggle && generatingStatus?.toLowerCase() === "done") {
+      const imageContainer = document.getElementById(imageCintainerId);
+      imageContainer.style.display = "none";
+      const mp = document.getElementById(mapConatinerId);
+      mp.style.display = "block";
+    }
+  }, [MapsToggle, generatingStatus]);
+
+  useEffect(() => {
+    if (disTwo && disOne) {
+      setMapsToggle(false);
+      setGeneratingStatus("Generating");
+    }
+  }, [disTwo, disOne]);
+
   return (
     <>
       <div
+        id={mapConatinerId}
         ref={mapContainerRef}
         style={{
           position: "relative",
@@ -412,7 +476,16 @@ const UgandaMap = ({
           background: "#f0f0f0",
         }}
       />
-     
+      <div
+        id={imageCintainerId}
+        style={{
+          position: "relative",
+          height: "100%",
+          width: "100%",
+          background: "#f0f0f0",
+          display: "none",
+        }}
+      ></div>
     </>
   );
 };

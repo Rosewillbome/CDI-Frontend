@@ -107,10 +107,7 @@ const MapView = () => {
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-auto lg:h-auto mb-4">
         {/* Map Section */}
-        <div
-          ref={mapRef}
-          className=" w-full bg-white rounded-sm shadow-lg p-4"
-        >
+        <div ref={mapRef} className=" w-full bg-white rounded-sm shadow-lg p-4">
           {/* {!isLoading && (
             <div className="absolute top-4 right-4 z-[1000]">
               <button
@@ -131,6 +128,8 @@ const MapView = () => {
             minZoom={7.3}
             setDistrict={setDistrict}
             onLoad={() => setIsMapLoaded(true)}
+            imageCintainerId={"dash-img"}
+            mapConatinerId={"dash-map"}
           />
         </div>
 
@@ -209,7 +208,6 @@ const MapView = () => {
               chart_id={"Dasboard_time_series"}
               filterBylegend={filterBylegend}
               onLoad={() => setIsChartLoaded(true)}
-              
             />
           </div>
 
