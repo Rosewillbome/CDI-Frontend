@@ -6,50 +6,37 @@ import DistrictSectiontwo from "./DistrictSectiontwo";
 import { useSideberStore } from "../store/useSideberStore";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
+import { v4 } from "uuid";
 
 export default function Home() {
-  let { districtTwo, districtOne } = useSideberStore((state) => state);
+  let {
+    districtTwo,
+    districtOne,
+    setMapsToggle,
+    generatingStatus,
+    setGeneratingStatus,
+    MapsToggle,
+    setDisOne,
+    setDisTwo,
+  } = useSideberStore((state) => state);
   const [selectedIndicator] = useState("Combined Drought Index (CDI)");
   const reportRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  useEffect(() => {
-    const footer = document.querySelector("footer");
-    if (footer) {
-      footer.classList.add("hidden");
-    }
-  }, []);
-
-  // Function to ensure maps are fully loaded
-  const waitForMapsToLoad = async () => {
-    return new Promise((resolve) => {
-      const checkMaps = () => {
-        // Add your map loaded detection logic here
-        // For example, check if map tiles are visible
-        const mapTiles = document.querySelectorAll(".leaflet-tile-loaded");
-        if (mapTiles.length >= 4) {
-          // Assuming at least 4 tiles need to load
-          resolve(true);
-        } else {
-          setTimeout(checkMaps, 500);
-        }
-      };
-      checkMaps();
-    });
-  };
-
   const handleDownloadAllPdf = async () => {
     try {
-      setIsDownloading(true);
+      
+      // 📸 Take screenshot of the referenced HTML element
       const canvas = await html2canvas(reportRef.current, {
         useCORS: true,
-        scrollY: -window.scrollY, // optional: to handle fixed headers or current scroll
+        scrollY: -window.scrollY,
         windowWidth: document.body.scrollWidth,
         windowHeight: document.body.scrollHeight,
       });
-      const dataURL = canvas.toDataURL("image/png");
 
+      const dataURL = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
+
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
 
@@ -57,16 +44,35 @@ export default function Home() {
       const imgWidth = pageWidth;
       const imgHeight = (imgProps.height * pageWidth) / imgProps.width;
 
-      // Center vertically if smaller than the page
       const yOffset = imgHeight < pageHeight ? (pageHeight - imgHeight) / 2 : 0;
 
       pdf.addImage(dataURL, "PNG", 0, yOffset, imgWidth, imgHeight);
-      pdf.save("report.pdf");
+      pdf.save(`${districtOne} vs ${districtTwo}.pdf`);
     } catch (error) {
       console.error("Screenshot failed:", error);
     } finally {
       setIsDownloading(false);
+      setGeneratingStatus("Done");
+      setDisTwo(false);
+      setDisOne(false);
     }
+  };
+
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (footer) {
+      footer.classList.add("hidden");
+    }
+    if (!MapsToggle && generatingStatus?.toLowerCase() === "generating") {
+      handleDownloadAllPdf();
+    }
+  }, [generatingStatus, MapsToggle]);
+
+  // PDF download function
+  const handleDownloadPdf = () => {
+    setIsDownloading(true);
+    setGeneratingStatus("Preparing");
+    setMapsToggle(true);
   };
 
   return (
@@ -78,7 +84,7 @@ export default function Home() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
             <p className="text-lg font-semibold text-gray-900">
               {/* {mapsLoaded ? "Generating PDF..." : "Loading map data..."} */}
-              Generating PDF...
+              {`${generatingStatus} PDF...`}
             </p>
           </div>
         </div>
@@ -93,7 +99,7 @@ export default function Home() {
           </h1>
           <div className="w-1/3 flex justify-end">
             <button
-              onClick={handleDownloadAllPdf}
+              onClick={handleDownloadPdf}
               disabled={isDownloading}
               className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
                 isDownloading
@@ -127,13 +133,13 @@ export default function Home() {
 
         {/* District Comparison Sections */}
         <div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full mx-auto px-4"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full mx-auto  px-4"
           ref={reportRef}
         >
-          <div className="h-screen w-full">
+          <div className="w-full">
             <DistrictSection />
           </div>
-          <div className="h-screen w-full">
+          <div className="w-full">
             <DistrictSectiontwo />
           </div>
         </div>

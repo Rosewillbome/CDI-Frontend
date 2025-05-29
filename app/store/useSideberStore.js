@@ -17,6 +17,15 @@ export const useSideberStore = create((set) => ({
   tabs: "map-view",
   endYear: 2024,
   startYear: 2020,
+  MapsToggle: false,
+  generatingStatus:"",
+  disOne:false,
+  disTwo:false,
+  setDisOne: (newDisOne) => set((state) => ({ disOne: newDisOne })),
+  setDisTwo: (newDisTwo) => set((state) => ({ disTwo: newDisTwo })),
+  setGeneratingStatus: (newGeneratingStatus) =>
+    set((state) => ({ generatingStatus: newGeneratingStatus })),
+
   setEndYear: (newEndYear) => set((state) => ({ endYear: newEndYear })),
   setStartYear: (newStartYear) => set((state) => ({ startYear: newStartYear })),
 
@@ -40,4 +49,5 @@ export const useSideberStore = create((set) => ({
   setSliderYear: (newsliderYear) =>
     set((state) => ({ sliderYear: newsliderYear })),
   setTabs: (tabss) => set((state) => ({ tabs: tabss })),
+  setMapsToggle: (Mapss) => set((state) => ({ MapsToggle: Mapss })),
 }));
