@@ -53,7 +53,7 @@ function StaticModal({ data, endYear, startYear, selectedIndicator }) {
     setDownloading(true);
     try {
       const response = await axios.post(
-        "http://localhost:9000/pdfs",
+        "https://cdi-reports-generator.vercel.app/pdfs",
         {
           years: yrs,
           groupedData: data,
