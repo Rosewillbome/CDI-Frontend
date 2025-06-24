@@ -3,7 +3,7 @@ import React, {useEffect } from "react";
 import { moth  } from "../../utils/selectYear";
 import { useSideberStore } from "../../store/useSideberStore";
 function DashboardSlider() {
-  let { timerange, month, setTimerange, setMonth,sliderYear } = useSideberStore(
+  let { timerange, month, setTimerange, setMonth,sliderYear,lastCountMonth } = useSideberStore(
     (state) => state
   );
 
@@ -36,7 +36,7 @@ function DashboardSlider() {
         <input
           type="range"
           min={0}
-          max={(parseInt(sliderYear) - 2002) * 12 + 11}
+          max={(parseInt(sliderYear) - 2002) * 12 + moth.indexOf(lastCountMonth)}
           step={1}
           value={(timerange - 2002) * 12 + moth.indexOf(month)}
           onChange={(event) => handleSliderChange(event)}

@@ -14,13 +14,14 @@ export const useSideberStore = create((set) => ({
   monthTwo: "",
   filterBylegend: [],
   sliderYear: "2022",
+  lastCountMonth: "",
   tabs: "map-view",
   endYear: 2024,
   startYear: 2020,
   MapsToggle: false,
-  generatingStatus:"",
-  disOne:false,
-  disTwo:false,
+  generatingStatus: "",
+  disOne: false,
+  disTwo: false,
   setDisOne: (newDisOne) => set((state) => ({ disOne: newDisOne })),
   setDisTwo: (newDisTwo) => set((state) => ({ disTwo: newDisTwo })),
   setGeneratingStatus: (newGeneratingStatus) =>
@@ -50,4 +51,7 @@ export const useSideberStore = create((set) => ({
     set((state) => ({ sliderYear: newsliderYear })),
   setTabs: (tabss) => set((state) => ({ tabs: tabss })),
   setMapsToggle: (Mapss) => set((state) => ({ MapsToggle: Mapss })),
+
+  setLastCountMonth: (newlastCountMonth) =>
+    set((state) => ({ lastCountMonth: newlastCountMonth })),
 }));
