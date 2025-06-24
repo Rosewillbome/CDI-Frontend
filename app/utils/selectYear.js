@@ -242,11 +242,12 @@ export const filter_static_data = (data, month, year) => {
 
 export const returnYears = (startYear, endYear) => {
   let data = [];
-  if (endYear - startYear === 0) {
-    data = startYear;
+  if (parseInt(endYear) - parseInt(startYear) === 0) {
+    // data = startYear;
+    data.push(parseInt(startYear))
   } else {
     let da = [];
-    for (let i = startYear; i <= endYear; i++) {
+    for (let i = parseInt(startYear); i <= parseInt(endYear); i++) {
       da.push(i);
     }
     data = da;
@@ -298,6 +299,7 @@ export const refactorStaticMapData = (
   selectedOption
 ) => {
   let getFilteredData;
+   let getYears = returnYears(startYear, endYear);
   if (selectedOption?.trim() === "selected_option") {
     let getYears = returnYears(startYear, endYear);
     getFilteredData = data?.filter((static_dataa) =>
@@ -307,10 +309,10 @@ export const refactorStaticMapData = (
     getFilteredData = data;
   }
 
-  let yrs = [];
+  let yrss = [];
   getFilteredData?.map((item) => {
-    if (!yrs.includes(parseInt(item[1]))) {
-      yrs.push(parseInt(item[1]));
+    if (!yrss.includes(parseInt(item[1]))) {
+      yrss.push(parseInt(item[1]));
     }
   });
 
@@ -331,6 +333,8 @@ export const refactorStaticMapData = (
     }, []);
   }
   const groupedData = groupByMonth(getFilteredData);
-  console.log("yearListFromData", groupByMonth(getFilteredData));
+
+ let yrs = selectedOption?.trim() === "selected_option" ? getYears : yrss
+  console.log("year", yrs);
   return { yrs, groupedData };
 };

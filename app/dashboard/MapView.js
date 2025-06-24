@@ -125,7 +125,7 @@ const MapView = () => {
             month={month}
             district={district}
             zoom={7.3}
-            minZoom={7.3}
+            minZoom={7}
             setDistrict={setDistrict}
             onLoad={() => setIsMapLoaded(true)}
             imageCintainerId={"dash-img"}
