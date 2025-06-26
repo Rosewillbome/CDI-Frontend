@@ -18,7 +18,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   height: "20%",
-  width: "40%",
+  width: "35%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -132,7 +132,7 @@ function StaticModal({ data, endYear, startYear, selectedIndicator }) {
       >
         <Box sx={style}>
           {downloading ? (
-            <div className=" w-full flex items-center justify-center">
+            <div className=" w-full flex flex-col items-center justify-center">
               <CircularProgress />
               <p className="ml-2">{`Please Wait as we prepare ${
                 selectedIndicator?.trim()?.toLowerCase() === "vdi"
@@ -145,12 +145,14 @@ function StaticModal({ data, endYear, startYear, selectedIndicator }) {
               })`}</p>
             </div>
           ) : (
-            <button
-              className="flex items-center gap-2 p-2 bg-[#308DE0] text-white rounded-lg"
-              onClick={handleDownload}
-            >
-              <Download size={18} /> <span>Download the selected option</span>
-            </button>
+            <div className="w-full flex items-center justify-center">
+              <button
+                className="flex items-center gap-2 p-2 bg-[#308DE0] text-white rounded-lg"
+                onClick={handleDownload}
+              >
+                <Download size={18} /> <span>Download the selected option</span>
+              </button>
+            </div>
           )}
         </Box>
       </Modal>
