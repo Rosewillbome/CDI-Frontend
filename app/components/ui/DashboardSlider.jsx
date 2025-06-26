@@ -1,15 +1,49 @@
 "use client";
-import React, {useEffect } from "react";
-import { moth  } from "../../utils/selectYear";
+import React, { useEffect } from "react";
+import { moth } from "../../utils/selectYear";
 import { useSideberStore } from "../../store/useSideberStore";
+import axios from "axios";
 function DashboardSlider() {
-  let { timerange, month, setTimerange, setMonth,sliderYear,lastCountMonth } = useSideberStore(
-    (state) => state
-  );
+  let {
+    timerange,
+    month,
+    setTimerange,
+    setMonth,
+    sliderYear,
+    lastCountMonth,
+    setLastCountMonth,
+    setSliderYear,
+  } = useSideberStore((state) => state);
+
+  useEffect(() => {}, [timerange, month]);
 
   useEffect(() => {
-    console.log("month", moth[moth.indexOf(month)], "year", timerange);
-  }, [timerange, month]);
+    const fetchData = async () => {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_API}data/district/assessment/count`)
+        .then((response) => {
+          console.log("setAssesment", response?.data?.data);
+          setSliderYear(
+            response?.data?.data[response?.data?.data?.length - 1]?.[1]
+          );
+          setLastCountMonth(
+            response?.data?.data[response?.data?.data?.length - 1]?.[0]?.trim()
+          );
+
+          setTimerange(
+            response?.data?.data[response?.data?.data?.length - 1]?.[1]
+          );
+
+          setMonth(
+            response?.data?.data[response?.data?.data?.length - 1]?.[0]?.trim()
+          );
+        })
+        .catch((error) => {
+          console.error("comming error", error);
+        });
+    };
+    fetchData();
+  }, []);
   // Handler for the slider (time selector)
   const handleSliderChange = (event) => {
     event.preventDefault();
@@ -36,7 +70,9 @@ function DashboardSlider() {
         <input
           type="range"
           min={0}
-          max={(parseInt(sliderYear) - 2002) * 12 + moth.indexOf(lastCountMonth)}
+          max={
+            (parseInt(sliderYear) - 2002) * 12 + moth.indexOf(lastCountMonth)
+          }
           step={1}
           value={(timerange - 2002) * 12 + moth.indexOf(month)}
           onChange={(event) => handleSliderChange(event)}

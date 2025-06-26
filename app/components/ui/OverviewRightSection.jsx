@@ -10,7 +10,8 @@ function OverviewRightSection() {
   const [assessment, setAssesment] = useState([]);
   const [filtered, setfiltered] = useState([]);
 
-  const { timerange, month,setSliderYear,setLastCountMonth } = useSideberStore((state) => state);
+  const { timerange, month, setSliderYear, setLastCountMonth } =
+    useSideberStore((state) => state);
   useEffect(() => {
     const fetchData = async () => {
       axios
@@ -18,8 +19,8 @@ function OverviewRightSection() {
         .then((response) => {
           console.log("setAssesment", response?.data?.data);
           setAssesment(response?.data?.data);
-          setSliderYear(response?.data?.data[response?.data?.data?.length - 1]?.[1])
-          setLastCountMonth(response?.data?.data[response?.data?.data?.length - 1]?.[0]?.trim())
+          // setSliderYear(response?.data?.data[response?.data?.data?.length - 1]?.[1])
+          // setLastCountMonth(response?.data?.data[response?.data?.data?.length - 1]?.[0]?.trim())
         })
         .catch((error) => {
           console.error("comming error", error);
@@ -35,8 +36,9 @@ function OverviewRightSection() {
       if (timerange?.trim()?.length !== 0 && month?.trim()?.length !== 0) {
         const filterbypcu = assessment?.filter(
           (assessment_data) =>
-            assessment_data[0]?.trim()?.toLowerCase() === month?.trim()?.toLowerCase() &&
-          assessment_data[1]?.trim() === timerange?.trim()?.toString()
+            assessment_data[0]?.trim()?.toLowerCase() ===
+              month?.trim()?.toLowerCase() &&
+            assessment_data[1]?.trim() === timerange?.trim()?.toString()
         );
         console.log("filterbyassessment", filterbypcu[0]);
         filters = filterbypcu[0];
@@ -61,7 +63,11 @@ function OverviewRightSection() {
             <h3 className="text-md text-[#308DE0] font-bold">Assessment</h3>
           </div>
           <p className="text-sm text-black text-center mt-4">
-          This section provides a summary of the drought conditions across the districts as per the assessment period, <b>{month?.toUpperCase()},{timerange}</b>
+            This section provides a summary of the drought conditions across the
+            districts as per the assessment period,{" "}
+            <b>
+              {month?.toUpperCase()},{timerange}
+            </b>
           </p>
 
           <div className="space-y-4">
