@@ -2,6 +2,7 @@
 import React from "react";
 
 function SnapshotTable({ currentData }) {
+  console.log("currentData", currentData);
   return (
     <div className="bg-[#308DE0] rounded-sm shadow-lg overflow-hidden mb-3">
       <div className="overflow-x-auto">

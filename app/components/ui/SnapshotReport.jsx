@@ -37,7 +37,7 @@ function SnapshotReport({ assessment }) {
         .then((response) => {
           if (month?.trim()?.length !== 0) {
             function getYear(dateString) {
-              return dateString.split(" ")[0];
+              return dateString.split("-")[1];
             }
 
             let filteredByMonth = response?.data?.data?.filter(
