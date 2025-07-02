@@ -36,6 +36,8 @@ function Page() {
               ? `${process.env.NEXT_PUBLIC_API}data/all/cdi`
               : selectedIndicator === "VDI"
               ? `${process.env.NEXT_PUBLIC_API}data/all/vdi`
+              : selectedIndicator === "tdi"
+              ? `${process.env.NEXT_PUBLIC_API}data/all/tdi`
               : ""
           }`
         )
@@ -135,6 +137,7 @@ function Page() {
               <option value="CDI">CDI</option>
               <option value="VDI">NDVI Anomaly</option>
               <option value="Rainfall">Rainfall</option>
+              <option value="tdi">TDI</option>
             </select>
 
             <StaticModal
