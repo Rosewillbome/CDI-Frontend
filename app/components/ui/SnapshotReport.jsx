@@ -177,13 +177,13 @@ function SnapshotReport({ assessment }) {
         {/* Header */}
         <div className="flex justify-between items-center mb-8 border-b pb-6">
           <div>
-            <Image
+            {/* <Image
               src="/fao.png"
               alt="FAO Logo"
               width={200}
               height={100}
               className="object-contain"
-            />
+            /> */}
           </div>
           <div className="text-right">
             <h1 className="text-2xl font-bold text-gray-800">
