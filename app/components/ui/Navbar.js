@@ -15,13 +15,13 @@ function Navbar() {
     <div className="bg-gray-100 shadow-md border border-blue-100 flex justify-between items-center px-8 py-4">
       {/* Left Section - Title */}
       <div className="flex items-start">
-        <Image
+        {/* <Image
           src="/fao.png"
           alt="FAO Logo"
           width={200}
           height={100}
           className="object-contain"
-        />
+        /> */}
       </div>
 
       {/* Center Section - Navigation */}
