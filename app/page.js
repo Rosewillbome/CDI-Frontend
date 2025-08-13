@@ -71,13 +71,13 @@ export default function Home() {
             </button>
 
             {/* Header */}
-            <Image
+            {/* <Image
               src="/fao-white.png"
               alt="FAO Logo"
               width={250}
               height={150}
               className="object-contain"
-            />
+            /> */}
 
             <OverviewIntro />
           </div>
