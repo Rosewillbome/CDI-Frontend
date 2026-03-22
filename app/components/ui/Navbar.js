@@ -1,6 +1,6 @@
 import React from "react";
 import Navbtn from "./Navbtn";
-import Image from "next/image";
+//import Image from "next/image";
 
 function Navbar() {
   const navItems = [
@@ -14,7 +14,7 @@ function Navbar() {
   return (
     <div className="bg-gray-100 shadow-md border border-blue-100 flex justify-between items-center px-8 py-4">
       {/* Left Section - Title */}
-      <div className="flex items-start">
+      {/* <div className="flex items-start">
         <Image
           src="/fao.png"
           alt="FAO Logo"
@@ -22,7 +22,7 @@ function Navbar() {
           height={100}
           className="object-contain"
         />
-      </div>
+      </div> */}
 
       {/* Center Section - Navigation */}
       <nav className="flex ml-10 md:ml-40">
@@ -37,14 +37,14 @@ function Navbar() {
       </nav>
 
       {/* Right Section - Logo */}
-      <div className="flex flex-col items-center">
+      {/* <div className="flex flex-col items-center">
         <h2 className="text-lg text-[#308DE0] font-light tracking-wide uppercase">
           Uganda National Drought
         </h2>
         <h1 className="text-2xl md:text-3xl text-[#308DE0] font-semibold uppercase">
           Monitoring Tool
         </h1>
-      </div>
+      </div> */}
     </div>
   );
 }
